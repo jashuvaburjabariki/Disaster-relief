@@ -1,0 +1,861 @@
+/* =====================================================
+   ABOUT DISASTER RELIEF
+===================================================== */
+
+.about-section {
+
+    padding: 110px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8fafc 0%,
+            #ffffff 100%
+        );
+
+    overflow: hidden;
+}
+
+/* Keep the About page content clear of the fixed navbar and let the footer
+   settle naturally at the bottom when the page is shorter than the viewport. */
+body:has(> main) {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body:has(> main) main {
+    flex: 1 0 auto;
+}
+
+body:has(> main) footer {
+    flex-shrink: 0;
+}
+
+body:has(> main) .about-section {
+    padding-top: 160px;
+}
+
+
+/* ABOUT TITLE */
+
+.about-title {
+
+    max-width: 650px;
+
+    margin:
+        12px 0 22px;
+
+    font-size:
+        clamp(34px, 4vw, 52px);
+
+    line-height: 1.1;
+
+    letter-spacing: -2px;
+}
+
+
+.about-title span {
+
+    color: var(--red);
+
+}
+
+
+/* TEXT */
+
+.about-text {
+
+    max-width: 620px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    margin-bottom: 16px;
+
+}
+
+
+.must-know-btn {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 18px 0 20px;
+    padding: 14px 24px;
+
+    border-radius: 14px;
+
+    color: #fff;
+    background: linear-gradient(135deg, #e63946, #ff7b54);
+    box-shadow: 0 18px 35px rgba(230, 57, 70, 0.25);
+
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.must-know-btn:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 22px 38px rgba(230, 57, 70, 0.32);
+}
+
+
+/* ABOUT POINTS */
+
+.about-points {
+
+    margin-top: 30px;
+
+}
+
+
+.about-point {
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.point-icon {
+
+    flex-shrink: 0;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    background: var(--red);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 8px 20px
+        rgba(230,57,70,.20);
+
+}
+
+
+.about-point h5 {
+
+    margin: 0 0 5px;
+
+    font-size: 15px;
+
+}
+
+
+.about-point p {
+
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+}
+
+
+.about-point,
+.about-stat {
+
+    opacity: 0;
+
+    transform: translateY(20px);
+
+    transition:
+        opacity .7s ease,
+        transform .7s ease;
+}
+
+
+.about-point.about-visible,
+.about-stat.about-visible {
+
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =====================================================
+   ABOUT VISUAL
+===================================================== */
+
+.about-visual {
+
+    min-height: 520px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+/* Decorative circles */
+
+.about-circle {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(230,57,70,.12);
+
+}
+
+
+.circle-one {
+
+    width: 430px;
+    height: 430px;
+
+    animation:
+        rotateCircle 18s linear infinite;
+}
+
+
+.circle-two {
+
+    width: 330px;
+    height: 330px;
+
+    background:
+        rgba(230,57,70,.035);
+
+}
+
+
+@keyframes rotateCircle {
+
+    from {
+
+        transform: rotate(0deg);
+    }
+
+    to {
+
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* MAIN CARD */
+
+.about-main-card {
+
+    width: 330px;
+
+    min-height: 350px;
+
+    position: relative;
+
+    z-index: 3;
+
+    padding: 40px 35px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    border-radius: 28px;
+
+    color: white;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #111827,
+            #1e293b
+        );
+
+    box-shadow:
+        0 30px 70px
+        rgba(16,24,39,.25);
+
+}
+
+
+.about-card-icon {
+
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 25px;
+
+    border-radius: 18px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e63946,
+            #ff765f
+        );
+
+    font-size: 28px;
+
+}
+
+
+.about-main-card > span {
+
+    color: #ff8d95;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.about-main-card h3 {
+
+    font-size: 27px;
+
+    line-height: 1.25;
+
+    margin-bottom: 15px;
+
+}
+
+
+.about-main-card p {
+
+    color:
+        rgba(255,255,255,.65);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =====================================================
+   FLOATING CARDS
+===================================================== */
+
+.floating-card {
+
+    position: absolute;
+
+    z-index: 5;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 155px;
+
+    padding: 12px;
+
+    border-radius: 13px;
+
+    background: white;
+
+    box-shadow:
+        0 15px 35px
+        rgba(16,24,39,.12);
+
+    animation:
+        floatingAbout 4s ease-in-out infinite;
+
+}
+
+
+.floating-card strong {
+
+    display: block;
+
+    font-size: 11px;
+
+}
+
+
+.floating-card small {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+}
+
+
+.floating-icon {
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+}
+
+
+.red-bg {
+
+    color: var(--red);
+
+    background: #fff0f1;
+
+}
+
+
+.green-bg {
+
+    color: #16a05d;
+
+    background: #ebfbf2;
+
+}
+
+
+.blue-bg {
+
+    color: #2563eb;
+
+    background: #edf4ff;
+
+}
+
+
+.floating-card-one {
+
+    top: 65px;
+
+    left: 10px;
+
+}
+
+
+.floating-card-two {
+
+    right: 0;
+
+    top: 160px;
+
+    animation-delay: .7s;
+
+}
+
+
+.floating-card-three {
+
+    bottom: 60px;
+
+    left: 35px;
+
+    animation-delay: 1.2s;
+
+}
+
+
+@keyframes floatingAbout {
+
+    0%,
+    100% {
+
+        transform: translateY(0);
+
+    }
+
+    50% {
+
+        transform: translateY(-9px);
+
+    }
+
+}
+
+
+/* =====================================================
+   ABOUT STATS
+===================================================== */
+
+.must-know-section {
+
+    padding: 90px 0 110px;
+    background: linear-gradient(180deg, #fff7f7 0%, #ffffff 100%);
+}
+
+.section-heading {
+    margin-bottom: 42px;
+}
+
+.section-heading h2 {
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-top: 16px;
+}
+
+.section-heading h2 span {
+    color: var(--red);
+}
+
+.disaster-grid {
+    margin-top: 10px;
+}
+
+.disaster-card {
+    height: 100%;
+    padding: 24px 22px 20px;
+    border-radius: 24px;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.disaster-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+}
+
+.disaster-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.disaster-icon {
+    display: inline-flex;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(230, 57, 70, 0.08);
+    font-size: 24px;
+}
+
+.disaster-card h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.disaster-card p {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.disaster-phase {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.disaster-phase strong {
+    color: var(--dark);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.disaster-phase span {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.flood-card { border-left: 5px solid #2d9cdb; }
+.cyclone-card { border-left: 5px solid #5b8def; }
+.quake-card { border-left: 5px solid #f59e0b; }
+.fire-card { border-left: 5px solid #ef4444; }
+.storm-card { border-left: 5px solid #8b5cf6; }
+.landslide-card { border-left: 5px solid #f97316; }
+.heat-card { border-left: 5px solid #facc15; }
+.tsunami-card { border-left: 5px solid #06b6d4; }
+
+.must-know-bottom {
+    margin-top: 44px;
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 24px;
+}
+
+.kit-card,
+.rule-card {
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 24px;
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.06);
+    padding: 26px;
+}
+
+.kit-card-header h3,
+.rule-card h3 {
+    margin: 14px 0 10px;
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.small-tag {
+    display: inline-block;
+    background: rgba(230, 57, 70, 0.08);
+    color: var(--red);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+}
+
+.kit-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 18px;
+    color: var(--dark);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.rule-card h3 {
+    font-size: 20px;
+    margin-top: 18px;
+}
+
+.rule-card p {
+    margin: 0 0 10px;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.about-stats {
+
+    margin-top: 75px;
+
+    padding-top: 35px;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+.about-stat {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 15px;
+
+}
+
+
+.about-stat i {
+
+    margin-bottom: 10px;
+
+    color: var(--red);
+
+    font-size: 23px;
+
+}
+
+
+.about-stat strong {
+
+    font-family:
+        "Plus Jakarta Sans",
+        sans-serif;
+
+    font-size: 24px;
+
+}
+
+
+.about-stat span {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+/* =====================================================
+   ABOUT RESPONSIVE
+===================================================== */
+
+@media (max-width: 991px) {
+
+    .about-section {
+
+        padding: 80px 0;
+
+    }
+
+
+    .about-visual {
+
+        margin-top: 20px;
+
+    }
+
+    .must-know-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .kit-list {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 575px) {
+
+    .about-title {
+
+        font-size: 36px;
+
+    }
+
+
+    .about-visual {
+
+        min-height: 470px;
+
+    }
+
+
+    .about-main-card {
+
+        width: 285px;
+
+        min-height: 320px;
+
+        padding: 30px;
+
+    }
+
+
+    .about-main-card h3 {
+
+        font-size: 23px;
+
+    }
+
+
+    .circle-one {
+
+        width: 330px;
+        height: 330px;
+
+    }
+
+
+    .circle-two {
+
+        width: 270px;
+        height: 270px;
+
+    }
+
+
+    .floating-card-one {
+
+        left: 0;
+
+        top: 35px;
+
+    }
+
+
+    .floating-card-two {
+
+        right: -5px;
+
+        top: 130px;
+
+    }
+
+
+    .floating-card-three {
+
+        left: 5px;
+
+        bottom: 30px;
+
+    }
+
+
+    .about-stats {
+
+        margin-top: 40px;
+
+    }
+
+}

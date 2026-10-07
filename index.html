@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DISASTER RELIEF | India</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
+
+    <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand" href="#home">
+
+            <span class="brand-logo">
+                <i class="bi bi-shield-fill-check"></i>
+            </span>
+
+            <span>
+                DISASTER <strong>RELIEF</strong>
+            </span>
+
+        </a>
+
+
+        <!-- Mobile Button -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu"
+        >
+            <i class="bi bi-list"></i>
+        </button>
+
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarMenu">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="#home">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">
+                        About
+                    </a>
+                </li>
+
+                <!-- LOGIN DROPDOWN -->
+
+                <li class="nav-item dropdown ms-lg-3">
+
+                    <button
+                        class="btn login-btn dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                    >
+
+                        <i class="bi bi-person-circle"></i>
+                        Login
+
+                    </button>
+
+
+                    <ul class="dropdown-menu dropdown-menu-end login-menu">
+
+                        <li>
+                            <h6 class="dropdown-header">
+                                Choose Login Role
+                            </h6>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                onclick="openLogin('Volunteer')"
+                            >
+                                <i class="bi bi-people"></i>
+                                Volunteer
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                onclick="openLogin('Mandal Employee')"
+                            >
+                                <i class="bi bi-buildings"></i>
+                                Mandal / Employee
+                            </a>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                onclick="openLogin('Admin')"
+                            >
+                                <i class="bi bi-shield-lock"></i>
+                                District Admin
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO BANNER
+===================================================== -->
+
+<section id="home" class="hero-section">
+
+    <video class="hero-video" autoplay muted loop playsinline poster="disaster hero banner.png">
+        <source src="hero banner video motion.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
+
+        <div class="row align-items-center">
+
+            <!-- LEFT SIDE -->
+
+            <div class="col-lg-7">
+
+                <!-- DISASTER ALERT -->
+
+                <div class="alert-pill">
+
+                    <span class="pulse-dot"></span>
+
+                    <span>
+                        <strong>LIVE ALERT</strong>
+                        — Disaster response information
+                        across India
+                    </span>
+
+                </div>
+
+
+                <p class="eyebrow">
+                    INDIA • EMERGENCY RESPONSE
+                </p>
+
+
+                <h1>
+                    When disaster strikes,
+                    <span>help should move fast.</span>
+                </h1>
+
+
+                <p class="hero-description">
+
+                    A coordinated disaster relief platform connecting
+                    citizens, volunteers and relief teams to deliver
+                    emergency assistance where it matters most.
+
+                </p>
+
+
+                <!-- BUTTONS -->
+
+                <div class="hero-buttons">
+
+                    <a href="#help" class="btn emergency-btn">
+
+                        <i class="bi bi-life-preserver"></i>
+
+                        Request Emergency Help
+
+                    </a>
+
+
+                    <a href="#overview" class="btn explore-btn">
+
+                        Explore Platform
+
+                        <i class="bi bi-arrow-down"></i>
+
+                    </a>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="hero-stats">
+
+                    <div>
+                        <strong>24/7</strong>
+                        <span>Response Support</span>
+                    </div>
+
+                    <div>
+                        <strong>3</strong>
+                        <span>User Roles</span>
+                    </div>
+
+                    <div>
+                        <strong>1</strong>
+                        <span>Connected Platform</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =====================================================
+             ACTION CARDS (In front and bottom of hero banner)
+        ===================================================== -->
+
+        <div class="hero-action-cards" id="overview">
+
+            <div class="row g-4">
+
+                <!-- REQUEST HELP -->
+
+                <div class="col-lg-4" id="help">
+
+                    <div class="action-card help-card">
+
+                        <div class="action-icon">
+                            <i class="bi bi-life-preserver"></i>
+                        </div>
+
+                        <span class="action-label">
+                            NEED ASSISTANCE?
+                        </span>
+
+                        <h3>
+                            Request Help
+                        </h3>
+
+                        <p>
+                            Report your emergency and request support
+                            from available relief teams.
+                        </p>
+
+                        <button
+                            class="btn action-btn"
+                            onclick="openHelpRequest()"
+                        >
+
+                            Request Help
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VOLUNTEER -->
+
+                <div class="col-lg-4" id="volunteer">
+
+                    <div class="action-card volunteer-card">
+
+                        <div class="action-icon">
+                            <i class="bi bi-person-hearts"></i>
+                        </div>
+
+                        <span class="action-label">
+                            MAKE A DIFFERENCE
+                        </span>
+
+                        <h3>
+                            Become a Volunteer
+                        </h3>
+
+                        <p>
+                            Offer your time and skills to support
+                            people and communities affected by disasters.
+                        </p>
+
+                        <button
+                            class="btn action-btn"
+                            onclick="openVolunteerApplication()"
+                        >
+
+                            Join as Volunteer
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DONATE -->
+
+                <div class="col-lg-4" id="donate">
+
+                    <div class="action-card donate-card">
+
+                        <div class="action-icon">
+                            <i class="bi bi-heart-fill"></i>
+                        </div>
+
+                        <span class="action-label">
+                            SUPPORT RECOVERY
+                        </span>
+
+                        <h3>
+                            Donate
+                        </h3>
+
+                        <p>
+                            Your contribution can help provide food,
+                            water, medical supplies and emergency support.
+                        </p>
+
+                        <button
+                            class="btn action-btn"
+                            onclick="openDonationForm()"
+                        >
+
+                            Donate Now
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     EMERGENCY 112
+===================================================== -->
+
+<section class="emergency-strip">
+
+    <div class="container">
+
+        <div class="emergency-content">
+
+            <div>
+
+                <span>
+                    IN A LIFE-THREATENING EMERGENCY
+                </span>
+
+                <h3>
+                    Call emergency services immediately.
+                </h3>
+
+            </div>
+
+
+            <a href="tel:112" class="btn emergency-call">
+
+                <i class="bi bi-telephone-fill"></i>
+
+                Emergency: 112
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="row footer-main">
+
+            <!-- BRAND -->
+
+            <div class="col-lg-5">
+
+                <a href="#home" class="footer-brand">
+
+                    <span class="brand-logo">
+                        <i class="bi bi-shield-fill-check"></i>
+                    </span>
+
+                    DISASTER <strong>RELIEF</strong>
+
+                </a>
+
+                <p class="footer-description">
+
+                    A disaster relief coordination platform
+                    connecting citizens, volunteers and relief
+                    teams across India.
+
+                </p>
+
+            </div>
+
+
+            <!-- PLATFORM -->
+
+            <div class="col-6 col-lg-2">
+
+                <h6>
+                    Platform
+                </h6>
+
+                <a href="#home">Home</a>
+
+                <a href="#overview">Overview</a>
+
+                <a href="#help">Request Help</a>
+
+            </div>
+
+
+            <!-- GET INVOLVED -->
+
+            <div class="col-6 col-lg-2">
+
+                <h6>
+                    Get Involved
+                </h6>
+
+                <a href="#volunteer">
+                    Volunteer
+                </a>
+
+                <a href="#donate">
+                    Donate
+                </a>
+
+            </div>
+
+
+            <!-- EMERGENCY -->
+
+            <div class="col-lg-3">
+
+                <h6>
+                    Emergency
+                </h6>
+
+                <p>
+                    <i class="bi bi-telephone"></i>
+                    112 — Emergency Services
+                </p>
+
+                <p>
+                    <i class="bi bi-geo-alt"></i>
+                    India
+                </p>
+
+
+                <div class="social-icons">
+
+                    <a href="#">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 DISASTER RELIEF. All rights reserved.
+            </span>
+
+            <span>
+                Built for safer communities.
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     LOGIN MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="loginModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content login-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-tag">
+                        SECURE ACCESS
+                    </span>
+
+                    <h3>
+                        <span id="loginRole">Mandal / Employee</span> Login
+                    </h3>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <!-- Role Selector Tabs -->
+                <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border flex-wrap">
+                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-primary" onclick="openLogin('Mandal Employee')">Mandal / Employee</button>
+                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="openLogin('Volunteer')">Volunteer</button>
+                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="openLogin('Admin')">District Admin</button>
+                </div>
+
+                <div id="loginRoleNotice" class="alert alert-info py-2 px-3 small mb-3" style="display: none;"></div>
+
+                <p id="loginModalSubtitle">
+                    Sign in to access your DISASTER RELIEF dashboard.
+                </p>
+
+                <form onsubmit="loginUser(event)">
+
+                    <div class="form-group">
+
+                        <label id="loginUsernameLabel">
+                            Username
+                        </label>
+
+                        <input
+                            id="loginUsername"
+                            type="text"
+                            autocomplete="username"
+                            placeholder="Enter username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            placeholder="Enter password"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="login-options">
+                        <label class="remember-option">
+                            <input id="rememberPassword" type="checkbox">
+                            Remember password
+                        </label>
+                        <a href="#" onclick="forgotPassword(); return false;">Forgot password?</a>
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn login-submit"
+                    >
+
+                        Sign In
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+                <div class="p-2 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
+                    <strong>Quick Test Logins:</strong>
+                    <div class="mt-1" id="loginDemoCredentials">
+                        <span>• District Admin: <code>admin_krishna</code> / <code>admin123</code></span><br>
+                        <span>• Mandal Officer: <code>mandal_vja_rural</code> / <code>mandal123</code> (Approved)</span><br>
+                        <span>• Pending Mandal: <code>mandal_gudivada</code> / <code>mandal123</code> (Approval flow)</span>
+                    </div>
+                </div>
+
+                <p class="register-prompt mt-3 mb-0">
+                    New to DISASTER RELIEF?
+                    <a href="#" onclick="openRegister(); return false;">
+                        Register now
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REGISTER MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="registerModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content login-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-tag" id="registerSectionTag">
+                        MANDAL OPERATIONS
+                    </span>
+
+                    <h3 id="registerModalTitle">
+                        Mandal / Employee Registration
+                    </h3>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <!-- Registration Role Selector Tabs -->
+                <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border">
+                    <button type="button" id="regRoleMandalBtn" class="btn btn-sm flex-fill role-tab-btn btn-primary" onclick="setRegisterRole('Mandal Employee')">Mandal / Employee</button>
+                    <button type="button" id="regRoleAdminBtn" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="setRegisterRole('Admin')">District Admin</button>
+                </div>
+
+                <div id="registerRoleNotice" class="alert alert-warning py-2 px-3 small mb-3">
+                    <i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Approval Required:</strong> Mandal Employee logins are created as <em>Pending</em> and must be approved by the District Admin before access is granted.
+                </div>
+
+                <p class="text-muted small mb-3" id="registerModalSubtitle">
+                    Register as a Mandal Officer / Employee to oversee local relief operations.
+                </p>
+
+                <form onsubmit="registerUser(event)">
+
+                    <div class="form-group">
+
+                        <label for="registerName" id="registerNameLabel">
+                            Officer / Employee Full Name
+                        </label>
+
+                        <input
+                            id="registerName"
+                            type="text"
+                            placeholder="Enter full name"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Official Email (for password recovery & alerts)
+                        </label>
+
+                        <input
+                            id="registerEmail"
+                            type="email"
+                            placeholder="e.g. officer.mandal@disaster.gov.in"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="registerUsername">
+                            Login Username
+                        </label>
+
+                        <input
+                            id="registerUsername"
+                            type="text"
+                            autocomplete="username"
+                            placeholder="Choose a username (e.g. mandal_vja)"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Create Password
+                        </label>
+
+                        <input
+                            id="registerPassword"
+                            type="password"
+                            autocomplete="new-password"
+                            placeholder="Create a secure password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group"><label for="registerState">State / Union Territory</label><select id="registerState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
+                    <div class="form-group"><label for="registerDistrict">District</label><select id="registerDistrict" required disabled><option value="">Select a state first</option></select></div>
+                    <div class="form-group" id="registerMandalGroup">
+                        <label for="registerMandal">Mandal / Taluk</label>
+                        <select id="registerMandal" required disabled>
+                            <option value="">Select a district first</option>
+                        </select>
+                        <small class="form-hint text-muted">Select the local mandal or taluk for your operations desk.</small>
+                    </div>
+                    <div class="form-group"><label for="registerAddress" id="registerAddressLabel">Office / Station Address</label><textarea id="registerAddress" rows="2" placeholder="Mandal Revenue Office, Emergency Operations Desk..." required></textarea></div>
+
+                    <button
+                        type="submit"
+                        class="btn login-submit"
+                        id="registerSubmitBtn"
+                    >
+
+                        <span id="registerSubmitBtnText">Register Mandal Account</span>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+                <p class="register-prompt">
+                    Already registered?
+                    <a href="#" onclick="switchToLogin(); return false;">
+                        Sign in
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FORGOT PASSWORD MODAL (REBUILD PASSWORD WITH EMAIL & OTP)
+===================================================== -->
+<div
+    class="modal fade"
+    id="forgotPasswordModal"
+    tabindex="-1"
+    aria-labelledby="forgotPasswordModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content login-modal border-0 shadow-lg">
+            <div class="modal-header">
+                <div>
+                    <span class="section-tag text-primary">ACCOUNT SECURITY</span>
+                    <h3 class="modal-title fs-5" id="forgotPasswordModalLabel">Rebuild Password</h3>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- STEP 1: ENTER REGISTERED EMAIL -->
+                <div id="forgotStep1">
+                    <p class="text-muted small mb-3">
+                        Enter your registered email address. We will generate and send a 6-digit verification OTP to rebuild your password.
+                    </p>
+                    <form id="forgotSendOtpForm" onsubmit="handleSendForgotOtp(event)">
+                        <div class="form-group mb-3">
+                            <label for="forgotEmail" class="form-label small fw-bold">Registered Email</label>
+                            <input type="email" class="form-control" id="forgotEmail" placeholder="e.g. admin.krishna@disaster.gov.in" required>
+                        </div>
+                        <button type="submit" class="btn login-submit w-100 py-2" id="sendForgotOtpBtn">
+                            Send Verification OTP <i class="bi bi-send"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- STEP 2: ENTER OTP & REBUILD PASSWORD -->
+                <div id="forgotStep2" style="display: none;">
+                    <div class="alert alert-success py-2 px-3 small mb-3" id="forgotOtpNoticeBox">
+                        <i class="bi bi-envelope-check-fill me-1"></i>
+                        Verification OTP sent to <strong id="forgotTargetEmailDisplay"></strong>.
+                        <div class="mt-2 p-2 bg-white rounded border border-success-subtle text-center">
+                            <span class="text-muted small d-block">Your 6-Digit OTP:</span>
+                            <span class="fs-4 text-primary font-monospace fw-bold" id="forgotGeneratedOtpCode">123456</span>
+                        </div>
+                    </div>
+
+                    <form id="forgotRebuildForm" onsubmit="handleRebuildPassword(event)">
+                        <div class="form-group mb-3">
+                            <label for="forgotOtpInput" class="form-label small fw-bold">6-Digit Verification OTP</label>
+                            <input type="text" class="form-control font-monospace text-center fs-5 fw-bold" id="forgotOtpInput" maxlength="6" placeholder="123456" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="forgotNewPassword" class="form-label small fw-bold">New Password</label>
+                            <input type="password" class="form-control" id="forgotNewPassword" placeholder="Minimum 6 characters" minlength="6" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="forgotConfirmPassword" class="form-label small fw-bold">Confirm New Password</label>
+                            <input type="password" class="form-control" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required>
+                        </div>
+                        <button type="submit" class="btn login-submit w-100 py-2" id="rebuildPasswordBtn">
+                            Rebuild Password <i class="bi bi-check2-circle"></i>
+                        </button>
+                        <div class="text-center mt-2">
+                            <a href="#" class="small text-secondary text-decoration-none" onclick="backToForgotStep1(); return false;">
+                                <i class="bi bi-arrow-left"></i> Change email address
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-0 py-2 px-4 justify-content-between">
+                <span class="text-muted small">Remember your password?</span>
+                <a href="#" class="text-decoration-none small fw-bold" onclick="switchToLoginFromForgot(); return false;">Sign in</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     PUBLIC SUBMISSION MODALS
+===================================================== -->
+
+<div class="modal fade" id="helpRequestModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content login-modal">
+            <div class="modal-header"><div><span class="section-tag">REQUEST ASSISTANCE</span><h3>Request Help</h3></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <p>Share the emergency details so response teams can act quickly.</p>
+                <div class="tracking-panel">
+                    <div class="tracking-panel-heading">
+                        <span class="section-tag">REQUEST TRACKING</span>
+                        <strong>Check your request status</strong>
+                    </div>
+                    <div class="tracking-input-row">
+                        <input id="helpTrackId" type="text" placeholder="Enter Track ID, e.g. DR-20260918-123456" aria-label="Request tracking ID">
+                        <button type="button" class="tracking-button" id="trackHelpRequest"><i class="bi bi-search"></i> Track</button>
+                    </div>
+                    <small id="helpTrackStatus">Your Track ID will be shown after you submit this form.</small>
+                </div>
+                <form onsubmit="submitHelpRequest(event)">
+                    <div class="form-group"><label for="helpName">Name</label><input id="helpName" type="text" placeholder="Enter applicant name" required></div>
+                    <div class="form-group"><label for="helpFatherName">Father Name</label><input id="helpFatherName" type="text" placeholder="Enter father's name" required></div>
+                    <div class="form-group">
+                        <label for="helpPhone">Mobile Number</label>
+                        <input id="helpPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number" required>
+                    </div>
+                    <div class="form-group"><label for="helpState">State / Union Territory</label><select id="helpState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
+                    <div class="form-group"><label for="helpDistrict">District</label><select id="helpDistrict" required disabled><option value="">Select a state first</option></select></div>
+                    <div class="form-group"><label for="helpMandal">Mandal / Taluk</label><select id="helpMandal" required disabled><option value="">Select a district first</option></select><small class="form-hint">Select the local mandal or taluk for your emergency location.</small></div>
+                    <div class="form-group"><label for="helpVillage">Village and exact location</label><div class="location-input"><input id="helpVillage" type="text" placeholder="Enter the village or landmark" required><button type="button" class="location-button" id="useHelpLocation" title="Use your current GPS location"><i class="bi bi-crosshair"></i><span>Use GPS</span></button></div><small id="helpGpsStatus" class="form-hint">GPS coordinates will be captured with your request.</small></div>
+                    <input id="helpGps" type="hidden">
+                    <div class="form-group"><label for="helpDisasterType">Disaster Type</label><select id="helpDisasterType" required><option value="">Select disaster type</option><option>Flood</option><option>Cyclone</option><option>Earthquake</option><option>Landslide</option><option>Fire</option><option>Drought</option><option>Tsunami</option><option>Other</option></select></div>
+                    <div class="form-group"><label for="helpProof">Proof</label><input id="helpProof" type="file" accept="image/*,.pdf" required><small class="form-hint">Upload a photo or PDF showing the emergency.</small></div>
+                    <div class="form-group"><span class="form-field-label">Help required</span><details class="help-category-picker"><summary>Choose help needed</summary><div class="help-category-options" id="helpCategoryOptions"><label class="help-category-option"><input type="checkbox" value="Food and water"><span>Food and water</span></label><label class="help-category-option"><input type="checkbox" value="Medical support"><span>Medical support</span></label><label class="help-category-option"><input type="checkbox" value="Rescue support"><span>Rescue support</span></label><label class="help-category-option"><input type="checkbox" value="Shelter"><span>Shelter</span></label><label class="help-category-option"><input type="checkbox" value="Other emergency"><span>Other emergency</span></label></div></details><small class="form-hint">Select all that apply.</small></div>
+                    <div class="form-group"><label for="helpPriority">Priority</label><select id="helpPriority" required><option value="">Select priority</option><option>Critical</option><option>High</option><option>Medium</option></select></div>
+                    <div class="form-group"><label for="helpDetails">Details</label><textarea id="helpDetails" rows="3" placeholder="Describe what is needed" required></textarea></div>
+                    <button type="submit" class="btn login-submit">Submit Help Request <i class="bi bi-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="volunteerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content login-modal">
+            <div class="modal-header"><div><span class="section-tag">JOIN RESPONSE TEAMS</span><h3>Volunteer application</h3></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <p>Tell the admin team how you can help.</p>
+                <form onsubmit="submitVolunteerApplication(event)">
+                    <div class="form-group"><label for="volunteerName">Name</label><input id="volunteerName" type="text" placeholder="Enter your name" required></div>
+                    <div class="form-group"><label for="volunteerFatherName">Father's Name</label><input id="volunteerFatherName" type="text" placeholder="Enter father's name" required></div>
+                    <div class="form-group"><label for="volunteerUsername">Create username</label><input id="volunteerUsername" type="text" autocomplete="username" placeholder="Choose a username" required></div>
+                    <div class="form-group"><label for="volunteerPassword">Create password</label><input id="volunteerPassword" type="password" autocomplete="new-password" placeholder="Create a password" minlength="6" required></div>
+                    <div class="form-group">
+                        <label for="volunteerPhone">Mobile Number</label>
+                        <div class="location-input" style="gap: 8px; align-items: center;">
+                            <input id="volunteerPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number" required>
+                            <button type="button" class="location-button" id="sendVolunteerPhoneOtp">Verify with OTP</button>
+                        </div>
+                        <small id="volunteerPhoneStatus" class="form-hint">Enter the 10-digit mobile number and verify it with OTP.</small>
+                    </div>
+                    <div class="form-group" id="volunteerPhoneOtpGroup" style="display: none;">
+                        <label for="volunteerOtp">Enter OTP</label>
+                        <div class="location-input" style="gap: 8px; align-items: center;">
+                            <input id="volunteerOtp" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP">
+                            <button type="button" class="location-button" id="confirmVolunteerPhoneOtp">Confirm OTP</button>
+                        </div>
+                    </div>
+                    <input id="volunteerPhoneVerified" type="hidden" value="false">
+                    <div class="form-group"><label for="volunteerState">State / Union Territory</label><select id="volunteerState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
+                    <div class="form-group"><label for="volunteerDistrict">District</label><select id="volunteerDistrict" required disabled><option value="">Select a state first</option></select></div>
+                    <div class="form-group"><label for="volunteerMandal">Mandal / Taluk</label><select id="volunteerMandal" required disabled><option value="">Select a district first</option></select><small class="form-hint">Select the local mandal or taluk for your volunteer post.</small></div>
+                    <div class="form-group"><label for="volunteerLocation">Location</label><input id="volunteerLocation" type="text" placeholder="City or local area" required></div>
+                    <div class="form-group"><label for="volunteerSkills">Skills and experience</label><textarea id="volunteerSkills" rows="3" placeholder="Medical, rescue, driving, logistics..." required></textarea></div>
+                    <div class="form-group"><label for="volunteerPhoto">Profile photo</label><input id="volunteerPhoto" type="file" accept="image/*" required></div>
+                    <button type="submit" class="btn login-submit">Send Application <i class="bi bi-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="donationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content login-modal">
+            <div class="modal-header"><div><span class="section-tag">SUPPORT RECOVERY</span><h3>Register a donation</h3></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <p>Register your contribution for the admin team to track.</p>
+                <form onsubmit="submitDonation(event)">
+                    <div class="form-group"><label for="donorName">Donor name</label><input id="donorName" type="text" placeholder="Enter your name" required></div>
+                    <div class="form-group"><label for="donationState">State / Union Territory</label><select id="donationState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
+                    <div class="form-group"><label for="donationDistrict">District</label><select id="donationDistrict" required disabled><option value="">Select a state first</option></select></div>
+                    <div class="form-group"><label for="donationMandal">Mandal / Taluk</label><select id="donationMandal" disabled><option value="">Select a district first</option></select></div>
+                    <div class="form-group"><span class="form-field-label">Donation type</span><details class="help-category-picker" id="donationTypePicker"><summary>Choose donation types</summary><div class="help-category-options" id="donationTypeOptions"><label class="help-category-option"><input type="checkbox" value="Money"><span>Money</span></label><label class="help-category-option"><input type="checkbox" value="Food"><span>Food</span></label><label class="help-category-option"><input type="checkbox" value="Water"><span>Water</span></label><label class="help-category-option"><input type="checkbox" value="Clothes"><span>Clothes</span></label><label class="help-category-option"><input type="checkbox" value="Medicine"><span>Medicine</span></label><label class="help-category-option"><input type="checkbox" value="Blankets"><span>Blankets</span></label><label class="help-category-option"><input type="checkbox" value="Other materials"><span>Other materials</span></label><div class="donation-type-submit-row"><button type="button" class="donation-type-submit" onclick="applyDonationTypes()">Submit</button></div></div></details><div id="donationTypeSelection" class="donation-type-selection" data-types="[]" aria-live="polite">No donation types selected yet.</div><small class="form-hint">Select one or more types, then submit your selection.</small></div>
+                    <div class="form-group"><label for="donationQuantity">Quantity or amount</label><input id="donationQuantity" type="text" placeholder="Example: 50 packets or Rs. 5,000" required></div>
+                    <div class="form-group"><label for="donorPhone">Phone number</label><input id="donorPhone" type="tel" placeholder="Enter your phone number" required></div>
+                    <div class="form-group"><label for="donationMessage">Message</label><textarea id="donationMessage" rows="3" placeholder="Add a message or donation details (optional)"></textarea></div>
+                    <button type="submit" class="btn login-submit">Submit Donation <i class="bi bi-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     TOAST MESSAGE
+===================================================== -->
+
+<div class="toast-container position-fixed bottom-0 end-0 p-4">
+
+    <div
+        id="siteToast"
+        class="toast"
+        role="alert"
+    >
+
+        <div class="toast-body">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+            <span id="toastMessage"></span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<!-- Custom JS -->
+<script src="mandals-data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

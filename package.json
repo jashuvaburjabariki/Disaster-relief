@@ -1,0 +1,17 @@
+{
+  "name": "disaster-management-platform",
+  "version": "1.0.0",
+  "description": "Disaster Relief and Emergency Management Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "disaster-relief",
+    "emergency-response",
+    "india"
+  ],
+  "author": "Disaster Relief Team",
+  "license": "ISC"
+}

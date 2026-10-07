@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - DISASTER RELIEF | India</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="about.css">
+</head>
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg fixed-top scrolled" id="mainNavbar">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="index.html">
+            <span class="brand-logo">
+                <i class="bi bi-shield-fill-check"></i>
+            </span>
+            <span>
+                DISASTER <strong>RELIEF</strong>
+            </span>
+        </a>
+
+        <!-- Mobile Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="about.html">About</a>
+                </li>
+                <!-- LOGIN DROPDOWN -->
+
+                <li class="nav-item dropdown ms-lg-3">
+
+                    <button
+                        class="btn login-btn dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                    >
+
+                        <i class="bi bi-person-circle"></i>
+                        Login
+
+                    </button>
+
+
+                    <ul class="dropdown-menu dropdown-menu-end login-menu">
+
+                        <li>
+                            <h6 class="dropdown-header">
+                                Choose Login
+                            </h6>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="index.html?role=Citizen"
+                            >
+                                <i class="bi bi-person"></i>
+                                Citizen
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="index.html?role=Volunteer"
+                            >
+                                <i class="bi bi-people"></i>
+                                Volunteer
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="admin.html"
+                            >
+                                <i class="bi bi-shield-lock"></i>
+                                Admin
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- =====================================================
+     ABOUT CONTENT
+===================================================== -->
+
+<section class="about-section" style="padding-top: 160px;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-6">
+                <span class="section-tag">
+                    ABOUT DISASTER RELIEF
+                </span>
+                <h2 class="about-title">
+                    Helping communities
+                    <span>respond, recover and rebuild.</span>
+                </h2>
+                <p class="about-text">
+                    DISASTER RELIEF is a digital platform designed to
+                    connect people affected by disasters with volunteers,
+                    relief teams and administrators.
+                </p>
+                <p class="about-text">
+                    During floods, cyclones, earthquakes, landslides,
+                    fires and other emergencies, quick communication and
+                    organized support can save lives. Our platform provides
+                    a central place where citizens can request help,
+                    volunteers can offer assistance and administrators
+                    can coordinate relief activities.
+                </p>
+
+                <a href="#must-know" class="must-know-btn">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    MUST KNOW
+                </a>
+
+                <div class="about-points">
+                    <div class="about-point">
+                        <div class="point-icon">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <div>
+                            <h5>Fast Emergency Response</h5>
+                            <p>Help requests can be communicated quickly to the appropriate response teams.</p>
+                        </div>
+                    </div>
+                    <div class="about-point">
+                        <div class="point-icon">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <div>
+                            <h5>Community Participation</h5>
+                            <p>Citizens and volunteers can work together to support affected communities.</p>
+                        </div>
+                    </div>
+                    <div class="about-point">
+                        <div class="point-icon">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <div>
+                            <h5>Organized Relief Management</h5>
+                            <p>Relief activities can be managed through a centralized platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="col-lg-6">
+                <div class="about-visual">
+                    <div class="about-circle circle-one"></div>
+                    <div class="about-circle circle-two"></div>
+                    <div class="about-main-card">
+                        <div class="about-card-icon">
+                            <i class="bi bi-shield-fill-check"></i>
+                        </div>
+                        <span>OUR MISSION</span>
+                        <h3>
+                            Stronger communities.
+                            Faster response.
+                        </h3>
+                        <p>Building a connected emergency response ecosystem for safer communities.</p>
+                    </div>
+                    <!-- Floating cards -->
+                    <div class="floating-card floating-card-one">
+                        <div class="floating-icon red-bg">
+                            <i class="bi bi-heart-pulse-fill"></i>
+                        </div>
+                        <div>
+                            <strong>Emergency</strong>
+                            <small>Support</small>
+                        </div>
+                    </div>
+                    <div class="floating-card floating-card-two">
+                        <div class="floating-icon green-bg">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div>
+                            <strong>Community</strong>
+                            <small>Volunteers</small>
+                        </div>
+                    </div>
+                    <div class="floating-card floating-card-three">
+                        <div class="floating-icon blue-bg">
+                            <i class="bi bi-broadcast-pin"></i>
+                        </div>
+                        <div>
+                            <strong>Real-Time</strong>
+                            <small>Information</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT STATS -->
+        <div class="row about-stats mt-5">
+            <div class="col-md-3 col-6">
+                <div class="about-stat">
+                    <i class="bi bi-clock-history"></i>
+                    <strong>24/7</strong>
+                    <span>Emergency Support</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="about-stat">
+                    <i class="bi bi-people"></i>
+                    <strong>3</strong>
+                    <span>User Roles</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="about-stat">
+                    <i class="bi bi-shield-check"></i>
+                    <strong>100%</strong>
+                    <span>Dedicated Support</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="about-stat">
+                    <i class="bi bi-geo-alt"></i>
+                    <strong>India</strong>
+                    <span>Nationwide Coverage</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     MUST KNOW
+===================================================== -->
+
+<section class="must-know-section" id="must-know">
+    <div class="container">
+
+        <div class="section-heading text-center">
+            <span class="section-tag">DISASTER TYPES & PREPAREDNESS</span>
+            <h2>
+                Know the disaster.
+                <span>Know the action.</span>
+            </h2>
+        </div>
+
+        <div class="row g-4 disaster-grid">
+
+            <div class="col-lg-6">
+                <article class="disaster-card flood-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">🌊</span>
+                        <h3>Flood</h3>
+                    </div>
+                    <p>Heavy rain, river overflow, flash floods</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Keep emergency kit, identify higher ground, protect important documents</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Move to higher ground, avoid floodwater, follow official warnings</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Avoid contaminated water and return only when authorities say it is safe</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card cyclone-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">🌪️</span>
+                        <h3>Cyclone</h3>
+                    </div>
+                    <p>Strong winds, storm surge</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Secure doors and windows, store food and water, charge phones</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Stay indoors away from windows and follow official alerts</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Watch for damaged buildings, fallen wires and flooding</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card quake-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">🌎</span>
+                        <h3>Earthquake</h3>
+                    </div>
+                    <p>Ground shaking</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Secure heavy furniture and prepare an emergency kit</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Drop, Cover, Hold On and stay away from windows</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Check injuries, gas leaks and structural damage; expect aftershocks</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card fire-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">🔥</span>
+                        <h3>Fire</h3>
+                    </div>
+                    <p>Building, forest, electrical fire</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Install smoke alarms, keep exits clear and learn evacuation routes</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Raise the alarm, evacuate, stay low in smoke and call emergency services</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Do not re-enter until authorities declare it safe</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card storm-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">⛈️</span>
+                        <h3>Thunderstorm / Lightning</h3>
+                    </div>
+                    <p>Lightning, strong winds</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Monitor weather warnings and identify the safest shelter</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Go indoors, stay away from windows and electrical equipment</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Avoid damaged power lines and report hazards immediately</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card landslide-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">🌋</span>
+                        <h3>Landslide</h3>
+                    </div>
+                    <p>Heavy rain, unstable slopes</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Know landslide-prone areas and monitor warnings</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Move away from slopes and drainage channels when warned</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Stay away from unstable areas and damaged roads</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card heat-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">☀️</span>
+                        <h3>Heatwave</h3>
+                    </div>
+                    <p>Extreme temperatures</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Stay hydrated and plan outdoor activities carefully</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>Stay in a cool place, drink water and avoid strenuous activity</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Watch for heat illness and seek medical help when needed</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-6">
+                <article class="disaster-card tsunami-card">
+                    <div class="disaster-top">
+                        <span class="disaster-icon">🌊</span>
+                        <h3>Tsunami</h3>
+                    </div>
+                    <p>Undersea earthquake</p>
+                    <div class="disaster-phase">
+                        <strong>Before</strong>
+                        <span>Know evacuation routes and warning signs</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>During</strong>
+                        <span>If near the coast, move quickly to higher ground or inland</span>
+                    </div>
+                    <div class="disaster-phase">
+                        <strong>After</strong>
+                        <span>Stay away from the coast until authorities give an all-clear</span>
+                    </div>
+                </article>
+            </div>
+
+        </div>
+
+        <div class="must-know-bottom">
+            <div class="kit-card">
+                <div class="kit-card-header">
+                    <span class="section-tag small-tag">EMERGENCY KIT</span>
+                    <h3>Be ready before disaster hits.</h3>
+                </div>
+                <ul class="kit-list">
+                    <li>💧 Drinking water</li>
+                    <li>🥫 Ready-to-eat food</li>
+                    <li>🔦 Torch</li>
+                    <li>🔋 Power bank</li>
+                    <li>📻 Battery or hand-crank radio</li>
+                    <li>🩹 First-aid kit</li>
+                    <li>💊 Essential medicines</li>
+                    <li>😷 Masks</li>
+                    <li>📄 Copies of important documents</li>
+                    <li>🧤 Basic protective clothing</li>
+                    <li>💰 Some emergency cash</li>
+                    <li>📱 Charged mobile phone</li>
+                </ul>
+            </div>
+
+            <div class="rule-card">
+                <span class="section-tag small-tag">BASIC RULE</span>
+                <h3>BEFORE → PREPARE</h3>
+                <p>Know the risks, make a family emergency plan, save emergency contacts and prepare supplies.</p>
+                <h3>DURING → PROTECT</h3>
+                <p>Stay calm, follow official instructions, move to a safe location and avoid unnecessary risks.</p>
+                <h3>AFTER → CHECK & HELP</h3>
+                <p>Check for injuries, avoid damaged structures and utilities, use safe water and food, and help others when it is safe.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="row footer-main">
+
+            <!-- BRAND -->
+
+            <div class="col-lg-5">
+
+                <a href="index.html#home" class="footer-brand">
+
+                    <span class="brand-logo">
+                        <i class="bi bi-shield-fill-check"></i>
+                    </span>
+
+                    DISASTER <strong>RELIEF</strong>
+
+                </a>
+
+                <p class="footer-description">
+
+                    A disaster relief coordination platform
+                    connecting citizens, volunteers and relief
+                    teams across India.
+
+                </p>
+
+            </div>
+
+
+            <!-- PLATFORM -->
+
+            <div class="col-6 col-lg-2">
+
+                <h6>
+                    Platform
+                </h6>
+
+                <a href="index.html#home">Home</a>
+
+                <a href="index.html#overview">Overview</a>
+
+                <a href="index.html#help">Request Help</a>
+
+            </div>
+
+
+            <!-- GET INVOLVED -->
+
+            <div class="col-6 col-lg-2">
+
+                <h6>
+                    Get Involved
+                </h6>
+
+                <a href="index.html#volunteer">
+                    Volunteer
+                </a>
+
+                <a href="index.html#donate">
+                    Donate
+                </a>
+
+            </div>
+
+
+            <!-- EMERGENCY -->
+
+            <div class="col-lg-3">
+
+                <h6>
+                    Emergency
+                </h6>
+
+                <p>
+                    <i class="bi bi-telephone"></i>
+                    112 — Emergency Services
+                </p>
+
+                <p>
+                    <i class="bi bi-geo-alt"></i>
+                    India
+                </p>
+
+
+                <div class="social-icons">
+
+                    <a href="#">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 DISASTER RELIEF. All rights reserved.
+            </span>
+
+            <span>
+                Built for safer communities.
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="about.js"></script>
+</body>
+</html>
