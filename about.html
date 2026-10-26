@@ -50,6 +50,22 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="about.html">About</a>
                 </li>
+
+                <!-- LIVE WEATHER REPORT WIDGET -->
+                <li class="nav-item ms-lg-2 me-lg-2 my-1 my-lg-0">
+                    <div class="weather-topbar-widget" id="citizenWeatherWidget" role="button" tabindex="0"
+                        title="Click to view Live Weather Report & Warnings" onclick="openWeatherDetailModal()">
+                        <div class="weather-topbar-icon" id="citizenWeatherIcon"><i class="bi bi-cloud-rain-fill text-info"></i></div>
+                        <div class="weather-topbar-info">
+                            <div class="weather-temp-row">
+                                <strong id="citizenWeatherTemp">29°C</strong>
+                                <span class="badge bg-danger text-white py-0 px-1" id="citizenWeatherBadge" style="font-size: 8.5px;">Rain Watch</span>
+                            </div>
+                            <small id="citizenWeatherCondition">Scattered Rain · Andhra Pradesh</small>
+                        </div>
+                    </div>
+                </li>
+
                 <!-- LOGIN DROPDOWN -->
 
                 <li class="nav-item dropdown ms-lg-3">
@@ -76,7 +92,8 @@
                         <li>
                             <a
                                 class="dropdown-item"
-                                href="index.html?role=Volunteer"
+                                href="#"
+                                onclick="openLogin('Volunteer')"
                             >
                                 <i class="bi bi-people"></i>
                                 Volunteer
@@ -86,7 +103,8 @@
                         <li>
                             <a
                                 class="dropdown-item"
-                                href="index.html?role=Mandal+Employee"
+                                href="#"
+                                onclick="openLogin('Mandal Employee')"
                             >
                                 <i class="bi bi-buildings"></i>
                                 Mandal / Employee
@@ -100,7 +118,8 @@
                         <li>
                             <a
                                 class="dropdown-item"
-                                href="index.html?role=Admin"
+                                href="#"
+                                onclick="openLogin('Admin')"
                             >
                                 <i class="bi bi-shield-lock"></i>
                                 District Admin
@@ -125,6 +144,26 @@
 
 <section class="about-section" style="padding-top: 160px;">
     <div class="container">
+        <!-- PRE-DISASTER MOBILE TEXT ALERT BROADCAST BANNER -->
+        <div class="pre-disaster-sms-bar mb-4 p-3 rounded-3 shadow-lg border border-danger-subtle bg-dark text-white" id="preDisasterSmsBar">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="sms-pulse-badge"><i class="bi bi-broadcast"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
+                    <span class="sms-text-preview" id="latestSmsText">
+                        ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood alert active. Follow emergency directions immediately.
+                    </span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-light fw-bold" onclick="viewLatestSmsAlert()">
+                        <i class="bi bi-phone-fill me-1"></i> View Mobile Text
+                    </button>
+                    <a href="index.html#help" class="btn btn-sm btn-light fw-bold text-danger">
+                        <i class="bi bi-life-preserver me-1"></i> Request Help
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <div class="row align-items-center g-5">
             <!-- LEFT CONTENT -->
             <div class="col-lg-6">
@@ -629,8 +668,684 @@
 
 </footer>
 
+
+
+<!-- =====================================================
+     LOGIN MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="loginModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content login-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-tag">
+                        SECURE ACCESS
+                    </span>
+
+                    <h3>
+                        <span id="loginRole">Mandal / Employee</span> Login
+                    </h3>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <!-- Role Selector Tabs -->
+                <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border flex-wrap">
+                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-primary" onclick="openLogin('Mandal Employee')">Mandal / Employee</button>
+                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="openLogin('Volunteer')">Volunteer</button>
+                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="openLogin('Admin')">District Admin</button>
+                </div>
+
+                <div id="loginRoleNotice" class="alert alert-info py-2 px-3 small mb-3" style="display: none;"></div>
+
+                <p id="loginModalSubtitle">
+                    Sign in to access your DISASTER RELIEF dashboard.
+                </p>
+
+                <form onsubmit="loginUser(event)">
+
+                    <div class="form-group">
+
+                        <label id="loginUsernameLabel">
+                            Username
+                        </label>
+
+                        <input
+                            id="loginUsername"
+                            type="text"
+                            autocomplete="username"
+                            placeholder="Enter username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <div class="password-input-wrap position-relative">
+                            <input
+                                id="loginPassword"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Enter password"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle-btn"
+                                id="showPasswordToggleBtn"
+                                aria-label="Show password"
+                                title="Show password"
+                                style="display: none;"
+                            >
+                                <i class="bi bi-eye" id="showPasswordToggleIcon"></i>
+                                <span id="showPasswordToggleText">Show</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="login-options">
+                        <div class="d-flex align-items-center gap-3">
+                            <label class="remember-option">
+                                <input id="rememberPassword" type="checkbox">
+                                Remember password
+                            </label>
+                            <label class="remember-option show-password-option" id="showPasswordCheckboxLabel" style="display: none;">
+                                <input id="showPasswordCheckbox" type="checkbox">
+                                Show password
+                            </label>
+                        </div>
+                        <a href="#" onclick="forgotPassword(); return false;">Forgot password?</a>
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn login-submit"
+                    >
+
+                        Sign In
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+                <div class="p-2 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
+                    <strong>Quick Test Logins:</strong>
+                    <div class="mt-1" id="loginDemoCredentials">
+                        <span>• District Admin: <code>admin_krishna</code> / <code>admin123</code></span><br>
+                        <span>• Mandal Officer: <code>mandal_vja_rural</code> / <code>mandal123</code> (Approved)</span><br>
+                        <span>• Pending Mandal: <code>mandal_gudivada</code> / <code>mandal123</code> (Approval flow)</span>
+                    </div>
+                </div>
+
+                <p class="register-prompt mt-3 mb-0">
+                    New to DISASTER RELIEF?
+                    <a href="#" onclick="openRegister(); return false;">
+                        Register now
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REGISTER MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="registerModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content login-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-tag" id="registerSectionTag">
+                        MANDAL OPERATIONS
+                    </span>
+
+                    <h3 id="registerModalTitle">
+                        Mandal / Employee Registration
+                    </h3>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <!-- Registration Role Selector Tabs -->
+                <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border">
+                    <button type="button" id="regRoleMandalBtn" class="btn btn-sm flex-fill role-tab-btn btn-primary" onclick="setRegisterRole('Mandal Employee')">Mandal / Employee</button>
+                    <button type="button" id="regRoleAdminBtn" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="setRegisterRole('Admin')">District Admin</button>
+                </div>
+
+                <div id="registerRoleNotice" class="alert alert-warning py-2 px-3 small mb-3">
+                    <i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Approval Required:</strong> Mandal Employee logins are created as <em>Pending</em> and must be approved by the District Admin before access is granted.
+                </div>
+
+                <p class="text-muted small mb-3" id="registerModalSubtitle">
+                    Register as a Mandal Officer / Employee to oversee local relief operations.
+                </p>
+
+                <form onsubmit="registerUser(event)">
+
+                    <div class="form-group">
+
+                        <label for="registerName" id="registerNameLabel">
+                            Officer / Employee Full Name
+                        </label>
+
+                        <input
+                            id="registerName"
+                            type="text"
+                            placeholder="Enter full name"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Official Email (for password recovery & alerts)
+                        </label>
+
+                        <input
+                            id="registerEmail"
+                            type="email"
+                            placeholder="e.g. officer.mandal@disaster.gov.in"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="registerUsername">
+                            Login Username
+                        </label>
+
+                        <input
+                            id="registerUsername"
+                            type="text"
+                            autocomplete="username"
+                            placeholder="Choose a username (e.g. mandal_vja)"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Create Password
+                        </label>
+
+                        <div class="password-input-wrap position-relative">
+                            <input
+                                id="registerPassword"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Create a secure password"
+                                minlength="6"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle-btn"
+                                id="registerPasswordToggleBtn"
+                                aria-label="Show password"
+                                title="Show password"
+                                style="display: none;"
+                                onclick="toggleGenericPassword('registerPassword', 'registerPasswordToggleBtn')"
+                            >
+                                <i class="bi bi-eye"></i>
+                                <span>Show</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group"><label for="registerState">State / Union Territory</label><select id="registerState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
+                    <div class="form-group"><label for="registerDistrict">District</label><select id="registerDistrict" required disabled><option value="">Select a state first</option></select></div>
+                    <div class="form-group" id="registerMandalGroup">
+                        <label for="registerMandal">Mandal / Taluk</label>
+                        <select id="registerMandal" required disabled>
+                            <option value="">Select a district first</option>
+                        </select>
+                        <small class="form-hint text-muted">Select the local mandal or taluk for your operations desk.</small>
+                    </div>
+                    <div class="form-group"><label for="registerAddress" id="registerAddressLabel">Office / Station Address</label><textarea id="registerAddress" rows="2" placeholder="Mandal Revenue Office, Emergency Operations Desk..." required></textarea></div>
+
+                    <button
+                        type="submit"
+                        class="btn login-submit"
+                        id="registerSubmitBtn"
+                    >
+
+                        <span id="registerSubmitBtnText">Register Mandal Account</span>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+                <p class="register-prompt">
+                    Already registered?
+                    <a href="#" onclick="switchToLogin(); return false;">
+                        Sign in
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FORGOT PASSWORD MODAL (REBUILD PASSWORD WITH EMAIL & OTP)
+===================================================== -->
+<div
+    class="modal fade"
+    id="forgotPasswordModal"
+    tabindex="-1"
+    aria-labelledby="forgotPasswordModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content login-modal border-0 shadow-lg">
+            <div class="modal-header">
+                <div>
+                    <span class="section-tag text-primary">ACCOUNT SECURITY</span>
+                    <h3 class="modal-title fs-5" id="forgotPasswordModalLabel">Rebuild Password</h3>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- STEP 1: ENTER REGISTERED EMAIL -->
+                <div id="forgotStep1">
+                    <p class="text-muted small mb-3">
+                        Enter your registered email address. We will generate and send a 6-digit verification OTP to rebuild your password.
+                    </p>
+                    <form id="forgotSendOtpForm" onsubmit="handleSendForgotOtp(event)">
+                        <div class="form-group mb-3">
+                            <label for="forgotEmail" class="form-label small fw-bold">Registered Email</label>
+                            <input type="email" class="form-control" id="forgotEmail" placeholder="e.g. admin.krishna@disaster.gov.in" required>
+                        </div>
+                        <button type="submit" class="btn login-submit w-100 py-2" id="sendForgotOtpBtn">
+                            Send Verification OTP <i class="bi bi-send"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- STEP 2: ENTER OTP & REBUILD PASSWORD -->
+                <div id="forgotStep2" style="display: none;">
+                    <div class="alert alert-success py-2 px-3 small mb-3" id="forgotOtpNoticeBox">
+                        <i class="bi bi-envelope-check-fill me-1"></i>
+                        Verification OTP sent to <strong id="forgotTargetEmailDisplay"></strong>.
+                        <div class="mt-2 p-2 bg-white rounded border border-success-subtle text-center">
+                            <span class="text-muted small d-block">Your 6-Digit OTP:</span>
+                            <span class="fs-4 text-primary font-monospace fw-bold" id="forgotGeneratedOtpCode">123456</span>
+                        </div>
+                    </div>
+
+                    <form id="forgotRebuildForm" onsubmit="handleRebuildPassword(event)">
+                        <div class="form-group mb-3">
+                            <label for="forgotOtpInput" class="form-label small fw-bold">6-Digit Verification OTP</label>
+                            <input type="text" class="form-control font-monospace text-center fs-5 fw-bold" id="forgotOtpInput" maxlength="6" placeholder="123456" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="forgotNewPassword" class="form-label small fw-bold">New Password</label>
+                            <div class="password-input-wrap position-relative">
+                                <input type="password" class="form-control" id="forgotNewPassword" placeholder="Minimum 6 characters" minlength="6" required>
+                                <button
+                                    type="button"
+                                    class="password-toggle-btn"
+                                    id="forgotNewPasswordToggleBtn"
+                                    aria-label="Show password"
+                                    title="Show password"
+                                    style="display: none;"
+                                    onclick="toggleGenericPassword('forgotNewPassword', 'forgotNewPasswordToggleBtn')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                    <span>Show</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="forgotConfirmPassword" class="form-label small fw-bold">Confirm New Password</label>
+                            <div class="password-input-wrap position-relative">
+                                <input type="password" class="form-control" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required>
+                                <button
+                                    type="button"
+                                    class="password-toggle-btn"
+                                    id="forgotConfirmPasswordToggleBtn"
+                                    aria-label="Show password"
+                                    title="Show password"
+                                    style="display: none;"
+                                    onclick="toggleGenericPassword('forgotConfirmPassword', 'forgotConfirmPasswordToggleBtn')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                    <span>Show</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn login-submit w-100 py-2" id="rebuildPasswordBtn">
+                            Rebuild Password <i class="bi bi-check2-circle"></i>
+                        </button>
+                        <div class="text-center mt-2">
+                            <a href="#" class="small text-secondary text-decoration-none" onclick="backToForgotStep1(); return false;">
+                                <i class="bi bi-arrow-left"></i> Change email address
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-0 py-2 px-4 justify-content-between">
+                <span class="text-muted small">Remember your password?</span>
+                <a href="#" class="text-decoration-none small fw-bold" onclick="switchToLoginFromForgot(); return false;">Sign in</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     INCOMING SMARTPHONE MOBILE SMS MODAL POPUP
+===================================================== -->
+<div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 bg-transparent shadow-none">
+            <div class="sms-phone-frame">
+                <div class="sms-phone-header">
+                    <span><i class="bi bi-reception-4"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="sms-bubble">
+                    <div class="sms-sender">
+                        <i class="bi bi-shield-fill-exclamation"></i>
+                        <span id="modalSmsSender">DISASTER CONTROL ROOM</span>
+                    </div>
+                    <div class="sms-body-text" id="modalSmsBody">
+                        ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your mobile. Relocate to designated shelters immediately. Follow volunteer guidance. Call 112 for rescue dispatch.
+                    </div>
+                    <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                    <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast Delivered</small>
+                    <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i class="bi bi-telephone-fill"></i> Dial 112</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     TOAST MESSAGE
+===================================================== -->
+
+    <!-- LOCATION WEATHER REPORT & WARNING MODAL -->
+    <div class="modal fade" id="weatherDetailModal" tabindex="-1" aria-labelledby="weatherModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-cloud-sun-fill fs-4 text-warning"></i>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0" id="weatherModalTitle">Live Weather Intelligence &
+                                Early Warning</h5>
+                            <small class="text-white-50">Location-specific weather report & disaster alerts</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- DISTRICT SELECTOR FOR STATE-WIDE FORECAST -->
+                    <div
+                        class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 p-2 bg-white rounded-2 border">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small fw-bold text-muted"><i class="bi bi-geo-alt-fill text-danger"></i> Target
+                                Location:</span>
+                            <select class="form-select form-select-sm" id="weatherDistrictSelect"
+                                style="width: auto; min-width: 200px;">
+                                <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+                                <option value="Anakapalli">Anakapalli</option>
+                                <option value="Ananthapuramu">Ananthapuramu</option>
+                                <option value="Annamayya">Annamayya</option>
+                                <option value="Bapatla">Bapatla</option>
+                                <option value="Chittoor">Chittoor</option>
+                                <option value="East Godavari">East Godavari</option>
+                                <option value="Eluru">Eluru</option>
+                                <option value="Guntur">Guntur</option>
+                                <option value="Kakinada">Kakinada</option>
+                                <option value="Konaseema">Konaseema</option>
+                                <option value="Krishna" selected>Krishna (Vijayawada)</option>
+                                <option value="Kurnool">Kurnool</option>
+                                <option value="Nandyal">Nandyal</option>
+                                <option value="NTR">NTR District</option>
+                                <option value="Palnadu">Palnadu</option>
+                                <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+                                <option value="Prakasam">Prakasam</option>
+                                <option value="Srikakulam">Srikakulam</option>
+                                <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+                                <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+                                <option value="Tirupati">Tirupati</option>
+                                <option value="Visakhapatnam">Visakhapatnam</option>
+                                <option value="Vizianagaram">Vizianagaram</option>
+                                <option value="West Godavari">West Godavari</option>
+                                <option value="YSR Kadapa">YSR Kadapa</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnRefreshWeatherModal">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Data
+                        </button>
+                    </div>
+
+                    <!-- CURRENT CONDITIONS HERO CARD -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 text-center text-sm-start mb-3 mb-sm-0">
+                                <div
+                                    class="d-flex align-items-center justify-content-center justify-content-sm-start gap-3">
+                                    <div id="weatherModalHeroIcon" style="font-size: 48px;">
+                                        <i class="bi bi-cloud-rain-fill text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="display-5 fw-bold text-dark mb-0" id="weatherModalHeroTemp">29°C
+                                        </div>
+                                        <div class="fw-semibold text-secondary" id="weatherModalHeroCondition">Scattered
+                                            Rain</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-muted small">
+                                    <i class="bi bi-geo-alt"></i> <span id="weatherModalHeroLocation">Vijayawada Rural,
+                                        Krishna, Andhra Pradesh</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row g-2 text-center">
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Humidity</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalHumidity">78%</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Wind Speed</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalWind">18 km/h</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Visibility</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalVisibility">8.5 km</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Pressure</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalPressure">1008 hPa</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2-COLUMN SECTION: RAINFALL FORECAST & STRONG WIND WARNING -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-cloud-drizzle-fill text-primary me-2"></i>Rainfall Forecast
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">24-Hr Precipitation:</span>
+                                    <strong class="text-primary font-monospace" id="weatherModalRainVolume">14.2
+                                        mm</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Rain Probability:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalRainProb">75%</strong>
+                                </div>
+                                <div class="p-2 rounded border bg-primary-subtle border-primary-subtle small text-primary-emphasis"
+                                    id="weatherModalRainRiskText">
+                                    Moderate scattered rainfall expected in coastal mandals. Keep emergency tarpaulins
+                                    ready.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-wind text-warning me-2"></i>Strong Wind Warning
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Current Wind Speed:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalWindSpeed">18 km/h</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Wind Category:</span>
+                                    <span class="badge bg-success" id="weatherModalWindCategory">Moderate Breeze</span>
+                                </div>
+                                <div class="p-2 rounded border small" id="weatherModalWindWarningBox"
+                                    style="background: #f0fdf4; border-color: #bbf7d0; color: #166534;">
+                                    Wind conditions within safe operational limits for field volunteers and boats.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WEATHER ALERTS & OFFICIAL ADVISORIES -->
+                    <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster Weather Alerts</h6>
+                            <span class="badge bg-danger" id="weatherModalAlertLevelBadge">ADVISORY ACTIVE</span>
+                        </div>
+                        <div class="alert alert-warning mb-0 p-2 small border" id="weatherModalOfficialAlertText">
+                            ⚠️ <strong>IMD & AP Disaster Management Advisory:</strong> Monsoon low-pressure system
+                            active over Bay of Bengal. Citizens in coastal and low-lying zones advised to follow volunteer guidance and emergency advisories. Helpline: 112 / 1077.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2">
+                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Data Source:
+                        Open-Meteo & AP Disaster Management</small>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-4">
+
+    <div
+        id="siteToast"
+        class="toast"
+        role="alert"
+    >
+
+        <div class="toast-body">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+            <span id="toastMessage"></span>
+
+        </div>
+
+    </div>
+
+</div>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script src="mandals-data.js"></script>
+<script src="script.js"></script>
 <script src="about.js"></script>
 </body>
 </html>

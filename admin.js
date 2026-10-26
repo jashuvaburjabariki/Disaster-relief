@@ -15,8 +15,8 @@ const indiaStates = [
 ];
 
 const savedJurisdiction = JSON.parse(localStorage.getItem("disasterAdminJurisdiction") || "{}");
-let adminDistrict = savedJurisdiction.district || localStorage.getItem("disasterAdminDistrict") || "Krishna";
-let adminState = savedJurisdiction.state || (adminDistrict.toLowerCase() === "krishna" ? "Andhra Pradesh" : (adminDistrict.toLowerCase() === "chennai" ? "Tamil Nadu" : (adminDistrict.toLowerCase() === "wayanad" ? "Kerala" : "all")));
+let adminDistrict = savedJurisdiction.district || localStorage.getItem("disasterAdminDistrict") || "Alluri Sitharama Raju";
+let adminState = savedJurisdiction.state || (adminDistrict.toLowerCase().includes("alluri") ? "Andhra Pradesh" : (adminDistrict.toLowerCase() === "krishna" ? "Andhra Pradesh" : (adminDistrict.toLowerCase() === "chennai" ? "Tamil Nadu" : (adminDistrict.toLowerCase() === "wayanad" ? "Kerala" : "Andhra Pradesh"))));
 
 document.querySelectorAll(".india-state-select").forEach(function (select) {
     indiaStates.forEach(function (state) {
@@ -27,8 +27,17 @@ document.querySelectorAll(".india-state-select").forEach(function (select) {
     });
 });
 
-document.getElementById("adminState").value = adminState;
-document.getElementById("adminDistrict").value = adminDistrict;
+function syncJurisdictionDisplay() {
+    const textEl = document.getElementById("adminJurisdictionText");
+    if (textEl) textEl.textContent = `${adminState} / ${adminDistrict}`;
+    const stateEl = document.getElementById("adminState");
+    if (stateEl) stateEl.value = adminState;
+    const distEl = document.getElementById("adminDistrict");
+    if (distEl) distEl.value = adminDistrict;
+    const distHeadText = document.getElementById("shelterDistrictNameText");
+    if (distHeadText) distHeadText.textContent = adminDistrict;
+}
+syncJurisdictionDisplay();
 
 function recordsForAdmin(key) {
     return readRecords(key).filter(function (record) {
@@ -121,6 +130,28 @@ function hideOverviewModal() {
     if (backdrop) backdrop.remove();
 }
 
+function renderLossBadges(lossesStr) {
+    if (!lossesStr) return '<span class="text-muted small">None declared</span>';
+    const items = String(lossesStr).split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!items.length) return '<span class="text-muted small">None declared</span>';
+    return `<div class="d-flex flex-wrap gap-1">` + items.map(function (item) {
+        const lower = item.toLowerCase();
+        let cls = "loss-house";
+        let icon = "bi-house-door-fill";
+        if (lower.includes("animal") || lower.includes("livestock") || lower.includes("cattle")) {
+            cls = "loss-animals";
+            icon = "bi-heart-pulse-fill";
+        } else if (lower.includes("agri") || lower.includes("crop")) {
+            cls = "loss-agriculture";
+            icon = "bi-flower1";
+        } else if (lower.includes("injur") || lower.includes("person") || lower.includes("human")) {
+            cls = "loss-injury";
+            icon = "bi-bandaid-fill";
+        }
+        return `<span class="loss-badge ${cls}"><i class="bi ${icon}"></i> ${escapeHtml(item)}</span>`;
+    }).join("") + `</div>`;
+}
+
 function renderRequests() {
     const requests = recordsForAdmin("disasterHelpRequests");
     const table = document.getElementById("requestTable");
@@ -136,13 +167,14 @@ function renderRequests() {
             proofMarkup = `<a class="text-link proof-link" href="${request.proof.data}" target="_blank" rel="noopener" title="Open proof document"><i class="bi bi-paperclip"></i> View</a>`;
         }
 
-        return `<tr data-id="${request.id}" data-priority="${escapeHtml(priority)}" data-status="${escapeHtml(status)}" class="${isHighlighted ? "row-new-highlight" : ""}" title="Click to view full application overview">
+        return `<tr data-id="${request.id}" data-priority="${escapeHtml(priority)}" data-status="${escapeHtml(status)}" data-losses="${escapeHtml(request.losses || '')}" class="${isHighlighted ? "row-new-highlight" : ""}" title="Click to view full application overview">
             <td><strong>${escapeHtml(displayId)}</strong><small>${escapeHtml(request.createdAt || "Recent")}</small></td>
             <td><strong>${escapeHtml(request.name || "N/A")}</strong></td>
             <td>${escapeHtml(request.fatherName || "N/A")}</td>
             <td>${escapeHtml(request.mobileNumber || "N/A")}</td>
             <td><strong>${escapeHtml(request.village || request.location || "N/A")}</strong><small>${escapeHtml(request.mandal || "")}, ${escapeHtml(request.district || "")}, ${escapeHtml(request.state || "")}${request.gps ? ` · GPS: ${escapeHtml(request.gps)}` : ""}</small></td>
             <td><span class="badge bg-light text-dark border">${escapeHtml(request.disasterType || "Emergency")}</span></td>
+            <td>${renderLossBadges(request.losses)}</td>
             <td>${escapeHtml(request.help || "N/A")}</td>
             <td>${proofMarkup}</td>
             <td><span class="status-pill ${priority}">${escapeHtml(request.priority || "Medium")}</span></td>
@@ -261,6 +293,12 @@ function openRequestOverview(requestId) {
 
     // Emergency Details
     document.getElementById("modalDisasterType").textContent = request.disasterType || "Emergency Incident";
+
+    // Reported Losses
+    const lossesContainer = document.getElementById("modalLossesBadges");
+    if (lossesContainer) {
+        lossesContainer.innerHTML = renderLossBadges(request.losses);
+    }
 
     // Help Categories
     const helpContainer = document.getElementById("modalHelpCategories");
@@ -526,10 +564,60 @@ function renderVolunteers() {
 }
 
 function renderDonations() {
-    const donations = recordsForAdmin("disasterDonations");
+    const allDonations = recordsForAdmin("disasterDonations");
+    const q = (document.getElementById("donationSearchInput") ? document.getElementById("donationSearchInput").value : "").toLowerCase().trim();
+    const typeFilter = document.getElementById("donationTypeFilter") ? document.getElementById("donationTypeFilter").value : "all";
+
+    const donations = allDonations.filter(function (d) {
+        if (q) {
+            const matchDonor = (d.donor || d.name || "").toLowerCase().includes(q);
+            const matchType = (d.type || "").toLowerCase().includes(q);
+            const matchPhone = (d.phone || "").toLowerCase().includes(q);
+            const matchMandal = (d.mandal || d.destinationMandal || "").toLowerCase().includes(q);
+            const matchMsg = (d.message || "").toLowerCase().includes(q);
+            if (!matchDonor && !matchType && !matchPhone && !matchMandal && !matchMsg) return false;
+        }
+        if (typeFilter !== "all") {
+            const t = (d.type || "").toLowerCase();
+            if (typeFilter === "money" && !t.includes("fund") && !t.includes("money") && !t.includes("cash") && !t.includes("finan")) return false;
+            if (typeFilter === "food" && !t.includes("food") && !t.includes("ration") && !t.includes("meal")) return false;
+            if (typeFilter === "water" && !t.includes("water") && !t.includes("drink")) return false;
+            if (typeFilter === "medicine" && !t.includes("medic") && !t.includes("drug") && !t.includes("aid")) return false;
+            if (typeFilter === "clothes" && !t.includes("cloth") && !t.includes("blanket") && !t.includes("wear")) return false;
+        }
+        return true;
+    });
+
+    const badge = document.getElementById("donationFilterCountBadge");
+    if (badge) badge.textContent = `Showing ${donations.length} of ${allDonations.length}`;
+
+    const countBadge = document.getElementById("donationsBadgeCount");
+    if (countBadge) countBadge.textContent = `${donations.length} donations`;
+
     document.getElementById("donationSubmissions").innerHTML = donations.length ? donations.map(function (item) {
-        return `<article class="submission-item"><strong>${escapeHtml(item.donor)}</strong><span>${escapeHtml(item.type)} · ${escapeHtml(item.quantity)}</span><small>${escapeHtml(item.district)}, ${escapeHtml(item.state)} · ${escapeHtml(item.phone)}</small>${item.message ? `<small>${escapeHtml(item.message)}</small>` : ""}<button type="button" class="mini-action mark-donation" data-id="${item.id}">${escapeHtml(item.status)}</button></article>`;
-    }).join("") : '<p class="empty-submission">No donations registered yet.</p>';
+        const destMandal = item.mandal || item.destinationMandal || "Alluri Sitharama Raju Mandals";
+        const isMoney = String(item.type || "").toLowerCase().includes("money") || String(item.type || "").toLowerCase().includes("fund");
+        return `<article class="submission-item border-start border-4 ${isMoney ? 'border-warning' : 'border-success'} p-3 mb-2 bg-white rounded shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong class="fs-6 text-dark">${escapeHtml(item.donor || "Anonymous Citizen")}</strong>
+                <span class="badge ${isMoney ? 'bg-warning text-dark' : 'bg-primary text-white'}">${escapeHtml(item.type || "Contribution")}</span>
+            </div>
+            <div class="mb-2">
+                <span class="fw-bold text-success fs-6">${escapeHtml(item.quantity || "Financial Donation")}</span>
+            </div>
+            <div class="small text-muted mb-1">
+                <i class="bi bi-geo-alt-fill text-danger"></i> <strong>Intended Destination:</strong> <span class="badge bg-light text-dark border">${escapeHtml(destMandal)}</span> (${escapeHtml(item.district || adminDistrict)}, ${escapeHtml(item.state || adminState)})
+            </div>
+            <div class="small text-muted mb-2">
+                <i class="bi bi-bank2 text-primary"></i> <strong>Credited Bank:</strong> State Bank of India (SBI) · A/C: <code>38588079208</code> (IFSC: SBIN0018884)
+            </div>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 border-top">
+                <small class="text-muted"><i class="bi bi-telephone"></i> ${escapeHtml(item.phone || "Not provided")} · <i class="bi bi-clock"></i> ${escapeHtml(item.createdAt || "Recent")}</small>
+                <button type="button" class="mini-action mark-donation btn btn-sm btn-outline-success py-0 px-2" data-id="${item.id}">${escapeHtml(item.status || "Registered")}</button>
+            </div>
+            ${item.message ? `<div class="mt-2 p-2 bg-light rounded small text-muted fst-italic">"${escapeHtml(item.message)}"</div>` : ""}
+        </article>`;
+    }).join("") : '<p class="empty-submission">No registered donations match the selected criteria.</p>';
 }
 
 function renderRegistrations() {
@@ -540,17 +628,23 @@ function renderRegistrations() {
 }
 
 function filterRequests() {
-    const searchTerm = document.getElementById("requestSearch").value.toLowerCase().trim();
-    const priority = document.getElementById("priorityFilter").value;
-    const status = document.getElementById("statusFilter").value;
+    const searchTerm = (document.getElementById("requestSearch") ? document.getElementById("requestSearch").value : "").toLowerCase().trim();
+    const priority = document.getElementById("priorityFilter") ? document.getElementById("priorityFilter").value : "all";
+    const status = document.getElementById("statusFilter") ? document.getElementById("statusFilter").value : "all";
+    const loss = document.getElementById("lossesFilter") ? document.getElementById("lossesFilter").value : "all";
     const rows = Array.from(document.querySelectorAll("#requestTable tr"));
     let visibleRows = 0;
     rows.forEach(function (row) {
-        const visible = row.textContent.toLowerCase().includes(searchTerm) && (priority === "all" || row.dataset.priority === priority) && (status === "all" || row.dataset.status === status);
+        const matchesSearch = row.textContent.toLowerCase().includes(searchTerm);
+        const matchesPriority = priority === "all" || row.dataset.priority === priority;
+        const matchesStatus = status === "all" || row.dataset.status === status;
+        const matchesLoss = loss === "all" || (row.dataset.losses || "").toLowerCase().includes(loss.toLowerCase());
+        const visible = matchesSearch && matchesPriority && matchesStatus && matchesLoss;
         row.hidden = !visible;
         if (visible) visibleRows += 1;
     });
-    document.getElementById("emptyState").classList.toggle("visible", visibleRows === 0);
+    const empty = document.getElementById("emptyState");
+    if (empty) empty.classList.toggle("visible", visibleRows === 0);
 }
 
 function createAlert() {
@@ -565,10 +659,40 @@ function createAlert() {
 }
 
 function renderAlerts() {
-    const alerts = recordsForAdmin("disasterAlerts");
+    const allAlerts = recordsForAdmin("disasterAlerts");
+    const q = (document.getElementById("alertSearchInput") ? document.getElementById("alertSearchInput").value : "").toLowerCase().trim();
+    const typeFilter = document.getElementById("alertTypeFilter") ? document.getElementById("alertTypeFilter").value : "all";
+
+    const alerts = allAlerts.filter(function (alert) {
+        if (q) {
+            const matchTitle = (alert.title || "").toLowerCase().includes(q);
+            const matchDetails = (alert.details || alert.message || "").toLowerCase().includes(q);
+            const matchDist = (alert.district || "").toLowerCase().includes(q);
+            if (!matchTitle && !matchDetails && !matchDist) return false;
+        }
+        if (typeFilter !== "all") {
+            if (typeFilter === "sms" && !alert.isSms) return false;
+            if (typeFilter === "warning" && !String(alert.type || alert.title || "").toLowerCase().includes("warn") && !String(alert.type || alert.title || "").toLowerCase().includes("red")) return false;
+            if (typeFilter === "advisory" && !String(alert.type || alert.title || "").toLowerCase().includes("advis") && !String(alert.type || alert.title || "").toLowerCase().includes("orange")) return false;
+        }
+        return true;
+    });
+
     const markup = alerts.length ? alerts.map(function (alert, index) {
-        return `<article class="alert-item ${index % 2 ? "alert-info" : "alert-critical"}"><span class="alert-mark"><i class="bi ${index % 2 ? "bi-info-lg" : "bi-exclamation-lg"}"></i></span><div><strong>${escapeHtml(alert.title)}</strong><p>${escapeHtml(alert.details)}</p><small>Published ${escapeHtml(alert.createdAt)}</small></div><button class="row-action remove-alert" type="button" data-id="${alert.id || ""}" aria-label="Remove alert"><i class="bi bi-x-lg"></i></button></article>`;
-    }).join("") : '<p class="empty-submission">No active alerts. Create one when needed.</p>';
+        const isSms = alert.isSms;
+        return `<article class="alert-item ${isSms ? "alert-critical" : (index % 2 ? "alert-info" : "alert-critical")}">
+            <span class="alert-mark"><i class="bi ${isSms ? "bi-broadcast" : (index % 2 ? "bi-info-lg" : "bi-exclamation-lg")}"></i></span>
+            <div class="flex-grow-1">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <strong>${escapeHtml(alert.title || alert.type || "Alert")}</strong>
+                    ${isSms ? '<span class="badge bg-danger text-white"><i class="bi bi-phone-fill me-1"></i> Mobile SMS Broadcast</span>' : ''}
+                </div>
+                <p class="mb-1">${escapeHtml(alert.details || alert.message || "Disaster Advisory")}</p>
+                <small class="text-muted"><i class="bi bi-geo-alt"></i> ${escapeHtml(alert.district || "Area-wide")} · Published ${escapeHtml(alert.createdAt || "Recent")}</small>
+            </div>
+            <button class="row-action remove-alert" type="button" data-id="${alert.id || ""}" aria-label="Remove alert"><i class="bi bi-x-lg"></i></button>
+        </article>`;
+    }).join("") : '<p class="empty-submission">No alerts match the selected criteria.</p>';
 
     const alertListEl = document.getElementById("alertList");
     if (alertListEl) alertListEl.innerHTML = markup;
@@ -1399,14 +1523,25 @@ const adminAddVolForm = document.getElementById("adminAddVolunteerForm");
 if (adminAddVolForm) {
     adminAddVolForm.addEventListener("submit", async function (e) {
         e.preventDefault();
+        const userEl = document.getElementById("volUsername") || document.getElementById("adminAddVolUsername");
+        const passEl = document.getElementById("volPassword") || document.getElementById("adminAddVolPassword");
+        const emailEl = document.getElementById("volEmail") || document.getElementById("adminAddVolEmail");
+        const username = (userEl ? userEl.value : "").trim().toLowerCase();
+        const password = passEl ? passEl.value : "";
+        const email = (emailEl ? emailEl.value : "").trim().toLowerCase();
         const name = document.getElementById("adminAddVolName").value.trim();
         const fatherName = document.getElementById("adminAddVolFatherName").value.trim() || "Applicant Guardian";
         const phone = document.getElementById("adminAddVolPhone").value.replace(/\D/g, "");
-        const state = document.getElementById("adminAddVolState").value;
-        const district = document.getElementById("adminAddVolDistrict").value;
+        const state = document.getElementById("adminAddVolState").value || adminState;
+        const district = document.getElementById("adminAddVolDistrict").value || adminDistrict;
         const mandal = document.getElementById("adminAddVolMandal").value;
         const skills = document.getElementById("adminAddVolSkills").value.trim();
         const status = document.getElementById("adminAddVolStatus").value || "Available";
+
+        if (!username || !password || !email) {
+            alert("Please provide Username, Password, and Email for the volunteer login credentials.");
+            return;
+        }
 
         if (phone.length !== 10) {
             alert("Please enter a valid 10-digit mobile number.");
@@ -1430,6 +1565,9 @@ if (adminAddVolForm) {
         const newVol = {
             id: Date.now(),
             name: name,
+            username: username,
+            password: password,
+            email: email,
             fatherName: fatherName,
             phone: phone,
             mobileNumber: phone,
@@ -1444,6 +1582,31 @@ if (adminAddVolForm) {
         };
         volunteers.unshift(newVol);
         writeRecords("disasterVolunteers", volunteers);
+
+        // Also save to user accounts for login authentication
+        const userAccounts = readRecords("disasterUserAccounts");
+        const existingIdx = userAccounts.findIndex(function (u) { return (u.username || "").toLowerCase() === username; });
+        const userObj = {
+            id: Date.now() + 1,
+            name: name,
+            username: username,
+            password: password,
+            email: email,
+            phone: phone,
+            role: "Volunteer",
+            state: state,
+            district: district,
+            mandal: mandal,
+            status: "Approved",
+            createdAt: new Date().toISOString()
+        };
+        if (existingIdx >= 0) {
+            userAccounts[existingIdx] = userObj;
+        } else {
+            userAccounts.push(userObj);
+        }
+        writeRecords("disasterUserAccounts", userAccounts);
+
         renderVolunteersFullTable();
         renderVolunteers();
         renderVolunteerAssignmentMatrix();
@@ -1459,7 +1622,7 @@ if (adminAddVolForm) {
 
         adminAddVolForm.reset();
         setupAdminVolunteerModalCascade();
-        showDashboardMessage(`Volunteer ${name} (${mandal}, ${district}) added to roster.`);
+        showDashboardMessage(`Volunteer ${name} registered! Active Login Username: ${username}`);
     });
 }
 
@@ -1652,26 +1815,224 @@ if (activeAssignTableEl) {
 // ==========================================
 // VIEW 6: SHELTERS MANAGEMENT
 // ==========================================
+// ==========================================
+// VIEW 6: SHELTERS MANAGEMENT (2-STEP MANDAL DRILL-DOWN)
+// ==========================================
+let currentShelterMandal = null;
+
 const defaultSheltersData = [
-    { id: 1, name: "Krishna District Primary Relief Shelter", location: "Vijayawada, Andhra Pradesh", capacity: 250, occupied: 195, status: "Active" },
-    { id: 2, name: "Chennai Coastal Cyclone Refuge Centre", location: "Marina Coast, Chennai, Tamil Nadu", capacity: 400, occupied: 310, status: "Active" },
-    { id: 3, name: "Wayanad High Ground Emergency Camp", location: "Meppadi, Wayanad, Kerala", capacity: 180, occupied: 145, status: "Active" },
-    { id: 4, name: "Cuttack Flood Relief School Campus", location: "Cuttack, Odisha", capacity: 200, occupied: 80, status: "Active" },
-    { id: 5, name: "Surat Central Community Disaster Depot", location: "Surat, Gujarat", capacity: 300, occupied: 45, status: "Active" },
-    { id: 6, name: "Patna Ganga Basin Relief Shelter", location: "Patna, Bihar", capacity: 220, occupied: 67, status: "Active" }
+    // ALLURI SITHARAMA RAJU (ASR) DISTRICT SHELTERS
+    { id: 101, district: "Alluri Sitharama Raju", mandal: "Paderu", name: "Paderu Tribal Welfare Residential School Shelter", location: "Collectorate Road, Paderu", capacity: 350, occupied: 180, contact: "08935-242222", status: "Active" },
+    { id: 102, district: "Alluri Sitharama Raju", mandal: "Paderu", name: "Paderu ITDA Community Cyclone & Flood Shelter", location: "ITDA Grounds, Paderu", capacity: 250, occupied: 110, contact: "08935-242333", status: "Active" },
+    { id: 103, district: "Alluri Sitharama Raju", mandal: "Araku Valley", name: "Araku Valley Emergency Relief Camp & Youth Centre", location: "Main Road, Araku Valley", capacity: 300, occupied: 140, contact: "08936-249111", status: "Active" },
+    { id: 104, district: "Alluri Sitharama Raju", mandal: "Araku Valley", name: "Araku Hill Station High Ground Shelter", location: "Padmapuram Junction, Araku", capacity: 200, occupied: 65, contact: "08936-249222", status: "Active" },
+    { id: 105, district: "Alluri Sitharama Raju", mandal: "Rampachodavaram", name: "Rampachodavaram Godavari Basin Flood Refuge Camp", location: "Agency High School, Rampachodavaram", capacity: 450, occupied: 290, contact: "08864-243100", status: "Active" },
+    { id: 106, district: "Alluri Sitharama Raju", mandal: "Rampachodavaram", name: "Rampachodavaram ITDA Complex Emergency Shelter", location: "ITDA Complex, Rampachodavaram", capacity: 280, occupied: 120, contact: "08864-243200", status: "Active" },
+    { id: 107, district: "Alluri Sitharama Raju", mandal: "Chintapalli", name: "Chintapalli Hill Area Disaster Relief Depot & Shelter", location: "Bus Stand Road, Chintapalli", capacity: 220, occupied: 75, contact: "08937-241050", status: "Active" },
+    { id: 108, district: "Alluri Sitharama Raju", mandal: "Maredumilli", name: "Maredumilli Eco-Refuge & Forest Emergency Center", location: "Main Ghat Road, Maredumilli", capacity: 180, occupied: 40, contact: "08864-245100", status: "Active" },
+    { id: 109, district: "Alluri Sitharama Raju", mandal: "Ananthagiri", name: "Ananthagiri Ghats Emergency Evacuation Shelter", location: "Coffee Board Campus, Ananthagiri", capacity: 160, occupied: 50, contact: "08936-244010", status: "Active" },
+    { id: 110, district: "Alluri Sitharama Raju", mandal: "Devipatnam", name: "Devipatnam Godavari Flood Relocation Shelter", location: "River Bank High School, Devipatnam", capacity: 400, occupied: 260, contact: "08864-248020", status: "Active" },
+    { id: 111, district: "Alluri Sitharama Raju", mandal: "G.K. Veedhi", name: "G.K. Veedhi Tribal High School Relief Shelter", location: "Ashram High School, G.K. Veedhi", capacity: 200, occupied: 60, contact: "08937-247015", status: "Active" },
+    { id: 112, district: "Alluri Sitharama Raju", mandal: "Koyyuru", name: "Koyyuru Agency Disaster Mitigation Shelter", location: "Mandal Parishad Hall, Koyyuru", capacity: 190, occupied: 45, contact: "08937-243005", status: "Active" },
+    { id: 113, district: "Alluri Sitharama Raju", mandal: "Pedabayalu", name: "Pedabayalu High Altitude Relief Station", location: "Main Center, Pedabayalu", capacity: 150, occupied: 30, contact: "08935-246010", status: "Active" },
+    { id: 114, district: "Alluri Sitharama Raju", mandal: "Munchingiputtu", name: "Munchingiputtu Interstate Border Disaster Camp", location: "Munchingiputtu Govt School", capacity: 180, occupied: 55, contact: "08935-248012", status: "Active" },
+
+    // KRISHNA DISTRICT SHELTERS
+    { id: 201, district: "Krishna", mandal: "Vijayawada Rural", name: "Krishna District Primary Relief Shelter", location: "Nunna, Vijayawada Rural", capacity: 350, occupied: 210, contact: "0866-248900", status: "Active" },
+    { id: 202, district: "Krishna", mandal: "Vijayawada Rural", name: "Enikepadu Community Disaster Refuge", location: "Enikepadu, Vijayawada Rural", capacity: 250, occupied: 120, contact: "0866-248911", status: "Active" },
+    { id: 203, district: "Krishna", mandal: "Machilipatnam", name: "Machilipatnam Coastal Cyclone Refuge Centre", location: "Bandar Coast, Machilipatnam", capacity: 500, occupied: 320, contact: "08672-252100", status: "Active" },
+    { id: 204, district: "Krishna", mandal: "Gudivada", name: "Gudivada Municipal Relief Shelter", location: "Municipal High School, Gudivada", capacity: 300, occupied: 110, contact: "08674-243200", status: "Active" },
+    { id: 205, district: "Krishna", mandal: "Avanigadda", name: "Avanigadda Krishna Estuary Multi-Purpose Cyclone Shelter", location: "Delta Main Center, Avanigadda", capacity: 450, occupied: 290, contact: "08671-272300", status: "Active" },
+    { id: 206, district: "Krishna", mandal: "Gannavaram", name: "Gannavaram Buffer Relief & Logistics Center", location: "Near Airport, Gannavaram", capacity: 320, occupied: 140, contact: "0866-284500", status: "Active" }
 ];
 
-function renderSheltersView() {
-    const container = document.getElementById("sheltersContainer");
-    if (!container) return;
-
+function getSheltersData() {
     let shelters = JSON.parse(localStorage.getItem("disasterSheltersData") || "null");
-    if (!shelters) {
+    if (!shelters || !Array.isArray(shelters) || shelters.length === 0 || !shelters[0].mandal) {
         shelters = defaultSheltersData;
         localStorage.setItem("disasterSheltersData", JSON.stringify(shelters));
     }
+    return shelters;
+}
 
-    container.innerHTML = shelters.map(function (shelter) {
+function showSheltersMandalList() {
+    currentShelterMandal = null;
+    renderSheltersView();
+}
+window.showSheltersMandalList = showSheltersMandalList;
+
+function openMandalShelters(mandalName) {
+    currentShelterMandal = mandalName;
+    renderSheltersView();
+}
+window.openMandalShelters = openMandalShelters;
+
+function renderSheltersView() {
+    const mandalListView = document.getElementById("sheltersMandalListView");
+    const detailView = document.getElementById("sheltersDetailView");
+    const backBtn = document.getElementById("backToAllMandalsBtn") || document.getElementById("backToMandalsListBtn");
+    const mandalsGrid = document.getElementById("shelterMandalsGrid");
+    const container = document.getElementById("sheltersContainer");
+    const currentDist = (adminDistrict || "Alluri Sitharama Raju").trim();
+
+    const distHeadText = document.getElementById("shelterDistrictNameText");
+    if (distHeadText) distHeadText.textContent = currentDist;
+
+    const allShelters = getSheltersData();
+    // Filter shelters by district
+    const districtShelters = allShelters.filter(function (s) {
+        return (s.district || "").toLowerCase() === currentDist.toLowerCase() ||
+               (currentDist.toLowerCase().includes("alluri") && (s.district || "").toLowerCase().includes("alluri")) ||
+               (currentDist.toLowerCase() === "all" || !s.district);
+    });
+
+    // STEP 1: MANDALS DIRECTORY VIEW (FIRST DISPLAYED)
+    if (!currentShelterMandal) {
+        if (mandalListView) mandalListView.style.display = "block";
+        if (detailView) detailView.style.display = "none";
+        if (backBtn) backBtn.style.display = "none";
+
+        const subtitleEl = document.getElementById("shelterViewSubtitle");
+        if (subtitleEl) subtitleEl.textContent = `Showing mandals in ${currentDist} District. Click any mandal to view only its available shelters.`;
+
+        // Retrieve mandals for this district
+        const mandalsList = (typeof mandalsByDistrictData !== "undefined" && mandalsByDistrictData[currentDist]) || [
+            "Paderu", "Araku Valley", "Ananthagiri", "Chintapalli", "G.K. Veedhi",
+            "Rampachodavaram", "Maredumilli", "Devipatnam", "Y. Ramavaram", "Koyyuru",
+            "Pedabayalu", "Munchingiputtu", "Dumbriguda", "Hukumpeta", "G. Madugula"
+        ];
+
+        const searchInput = document.getElementById("shelterMandalSearchInput");
+        const q = (searchInput ? searchInput.value : "").toLowerCase().trim();
+
+        const filteredMandals = mandalsList.filter(function (m) {
+            return !q || m.toLowerCase().includes(q);
+        });
+
+        const badge = document.getElementById("shelterMandalsCountBadge");
+        if (badge) badge.textContent = `${filteredMandals.length} Mandals (${districtShelters.length} Shelters in District)`;
+
+        if (!filteredMandals.length) {
+            if (mandalsGrid) {
+                mandalsGrid.innerHTML = `<div class="col-12 text-center py-5 text-muted">
+                    <i class="bi bi-search fs-1 d-block mb-2 opacity-50"></i>
+                    No mandals found matching "${escapeHtml(q)}".
+                </div>`;
+            }
+            return;
+        }
+
+        if (mandalsGrid) {
+            mandalsGrid.innerHTML = filteredMandals.map(function (mandalName) {
+                const mandalShelters = districtShelters.filter(function (s) {
+                    return (s.mandal || "").toLowerCase() === mandalName.toLowerCase();
+                });
+                const totalCap = mandalShelters.reduce(function (sum, s) { return sum + (Number(s.capacity) || 0); }, 0);
+                const totalOcc = mandalShelters.reduce(function (sum, s) { return sum + (Number(s.occupied) || 0); }, 0);
+                const freeBeds = Math.max(0, totalCap - totalOcc);
+                const percent = totalCap > 0 ? Math.min(100, Math.round((totalOcc / totalCap) * 100)) : 0;
+                const shelterCount = mandalShelters.length;
+
+                return `<div class="col-md-6 col-lg-4">
+                    <div class="mandal-shelter-card" onclick="openMandalShelters('${escapeHtml(mandalName)}')">
+                        <div class="mandal-card-header">
+                            <div class="mandal-card-icon"><i class="bi bi-buildings"></i></div>
+                            <div>
+                                <h4 class="mandal-card-title">${escapeHtml(mandalName)}</h4>
+                                <span class="mandal-card-meta">${currentDist} District</span>
+                            </div>
+                            <span class="badge ${shelterCount > 0 ? 'bg-success text-white' : 'bg-secondary text-white'} ms-auto">
+                                ${shelterCount} ${shelterCount === 1 ? 'Shelter' : 'Shelters'}
+                            </span>
+                        </div>
+                        <div class="mandal-card-stats">
+                            <div>
+                                <span>Total Capacity</span>
+                                <strong>${totalCap} Beds</strong>
+                            </div>
+                            <div>
+                                <span>Available Beds</span>
+                                <strong class="text-success">${freeBeds} Free</strong>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small text-muted mb-1">
+                                <span>Occupancy Rate</span>
+                                <strong class="${percent >= 80 ? 'text-danger' : 'text-primary'}">${percent}%</strong>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar ${percent >= 80 ? 'bg-danger' : 'bg-primary'}" role="progressbar" style="width: ${percent}%;"></div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger w-100 mandal-drilldown-btn">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> View Available Shelters (${shelterCount}) &rarr;
+                        </button>
+                    </div>
+                </div>`;
+            }).join("");
+        }
+        return;
+    }
+
+    // STEP 2: AVAILABLE SHELTERS IN SELECTED MANDAL
+    if (mandalListView) mandalListView.style.display = "none";
+    if (detailView) detailView.style.display = "block";
+    if (backBtn) backBtn.style.display = "inline-flex";
+
+    const headerText = document.getElementById("selectedMandalSheltersHeader");
+    if (headerText) headerText.innerHTML = `<i class="bi bi-buildings-fill text-danger me-2"></i>Available Shelters in <strong>${escapeHtml(currentShelterMandal)} Mandal</strong> (${escapeHtml(currentDist)})`;
+
+    const subtitleEl = document.getElementById("shelterViewSubtitle");
+    if (subtitleEl) subtitleEl.textContent = `Showing verified shelters located within ${currentShelterMandal} Mandal, ${currentDist} District.`;
+
+    // Filter shelters strictly for selected mandal
+    const mandalShelters = districtShelters.filter(function (s) {
+        return (s.mandal || "").toLowerCase() === currentShelterMandal.toLowerCase();
+    });
+
+    const q = (document.getElementById("shelterSearchInput") ? document.getElementById("shelterSearchInput").value : "").toLowerCase().trim();
+    const statusFilter = document.getElementById("shelterStatusFilter") ? document.getElementById("shelterStatusFilter").value : "all";
+
+    const filtered = mandalShelters.filter(function (shelter) {
+        if (q) {
+            const matchName = (shelter.name || "").toLowerCase().includes(q);
+            const matchLoc = (shelter.location || "").toLowerCase().includes(q);
+            if (!matchName && !matchLoc) return false;
+        }
+        const percent = Math.min(100, Math.round((shelter.occupied / shelter.capacity) * 100));
+        if (statusFilter === "open" && percent >= 100) return false;
+        if (statusFilter === "near" && (percent < 75 || percent >= 100)) return false;
+        if (statusFilter === "full" && percent < 100) return false;
+        return true;
+    });
+
+    const filterBadge = document.getElementById("shelterFilterCountBadge");
+    if (filterBadge) filterBadge.textContent = `Showing ${filtered.length} of ${mandalShelters.length} in ${currentShelterMandal}`;
+
+    const totalOcc = mandalShelters.reduce(function (sum, s) { return sum + (Number(s.occupied) || 0); }, 0);
+    const totalCap = mandalShelters.reduce(function (sum, s) { return sum + (Number(s.capacity) || 0); }, 0);
+    const capacityBadge = document.getElementById("mandalCapacityBadge");
+    if (capacityBadge) {
+        capacityBadge.textContent = `${Math.max(0, totalCap - totalOcc)} Beds Available (${mandalShelters.length} Shelters)`;
+    }
+
+    if (!container) return;
+
+    if (!filtered.length) {
+        container.innerHTML = `<div class="col-12 text-center py-5">
+            <div class="panel p-4 text-center">
+                <i class="bi bi-house-exclamation fs-1 text-danger d-block mb-3"></i>
+                <h5>No Shelters Found for ${escapeHtml(currentShelterMandal)} Mandal</h5>
+                <p class="text-muted small">No available relief shelters match this filter in ${escapeHtml(currentShelterMandal)} Mandal.</p>
+                <button type="button" class="btn btn-sm btn-primary mt-2" onclick="promptAddShelterForCurrentMandal()">
+                    <i class="bi bi-plus-lg me-1"></i> Add New Shelter in ${escapeHtml(currentShelterMandal)}
+                </button>
+            </div>
+        </div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(function (shelter) {
         const percent = Math.min(100, Math.round((shelter.occupied / shelter.capacity) * 100));
         const free = Math.max(0, shelter.capacity - shelter.occupied);
         const isHigh = percent >= 75;
@@ -1680,21 +2041,21 @@ function renderSheltersView() {
             <div class="shelter-card">
                 <div class="shelter-card-top">
                     <div>
-                        <strong class="d-block mb-1" style="font-size: 13px;">${escapeHtml(shelter.name)}</strong>
-                        <small class="text-muted"><i class="bi bi-geo-alt"></i> ${escapeHtml(shelter.location)}</small>
+                        <strong class="d-block mb-1 text-dark" style="font-size: 14px;">${escapeHtml(shelter.name)}</strong>
+                        <small class="text-muted"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(shelter.location || currentShelterMandal)}</small>
                     </div>
                     <span class="badge ${isHigh ? 'bg-danger' : 'bg-success'}">${percent}% full</span>
                 </div>
-                <div class="d-flex justify-content-between small text-muted my-2">
+                <div class="d-flex justify-content-between small text-muted my-2 p-2 bg-light rounded">
                     <span>Occupied: <strong>${shelter.occupied}</strong> beds</span>
-                    <span>Free: <strong class="text-success">${free}</strong> beds</span>
+                    <span>Available: <strong class="text-success">${free}</strong> beds</span>
                 </div>
-                <div class="progress-track" style="height: 8px;">
-                    <span style="width: ${percent}%; background: ${isHigh ? '#e14c59' : '#20a177'};"></span>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar ${isHigh ? 'bg-danger' : 'bg-success'}" style="width: ${percent}%;"></div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
-                    <span class="small text-muted">Total: ${shelter.capacity} beds</span>
-                    <button class="btn btn-sm btn-outline-primary py-0 px-2 update-shelter-btn" data-id="${shelter.id}">
+                    <span class="small text-muted"><i class="bi bi-telephone text-secondary me-1"></i> ${escapeHtml(shelter.contact || "112 / Helpline")}</span>
+                    <button class="btn btn-sm btn-outline-primary py-1 px-2 update-shelter-btn" data-id="${shelter.id}">
                         <i class="bi bi-pencil-square"></i> Update Beds
                     </button>
                 </div>
@@ -1709,11 +2070,11 @@ if (sheltersContainerEl) {
         const btn = event.target.closest(".update-shelter-btn");
         if (!btn) return;
         const id = Number(btn.dataset.id);
-        const shelters = JSON.parse(localStorage.getItem("disasterSheltersData") || "[]");
+        const shelters = getSheltersData();
         const shelter = shelters.find(function (s) { return s.id === id; });
         if (!shelter) return;
 
-        const val = window.prompt(`Enter currently occupied beds for ${shelter.name} (Max: ${shelter.capacity}):`, shelter.occupied);
+        const val = window.prompt(`Update occupied beds for "${shelter.name}" in ${shelter.mandal} Mandal (Total Capacity: ${shelter.capacity}):`, shelter.occupied);
         if (val === null) return;
         const num = parseInt(val, 10);
         if (isNaN(num) || num < 0) {
@@ -1723,31 +2084,44 @@ if (sheltersContainerEl) {
         shelter.occupied = Math.min(shelter.capacity, num);
         localStorage.setItem("disasterSheltersData", JSON.stringify(shelters));
         renderSheltersView();
-        showDashboardMessage(`${shelter.name} capacity updated.`);
+        showDashboardMessage(`${shelter.name} occupied beds updated to ${shelter.occupied}.`);
     });
 }
 
+function promptAddShelterForCurrentMandal() {
+    const currentDist = (adminDistrict || "Alluri Sitharama Raju").trim();
+    const defaultM = currentShelterMandal || "Paderu";
+    const name = window.prompt(`Enter Relief Shelter Name for ${defaultM} Mandal:`);
+    if (!name || !name.trim()) return;
+    const location = window.prompt(`Location / Address in ${defaultM} Mandal:`, `${defaultM}, ${currentDist}`);
+    const capacity = parseInt(window.prompt("Total Bed Capacity (e.g. 250):") || "200", 10);
+
+    const shelters = getSheltersData();
+    shelters.push({
+        id: Date.now(),
+        district: currentDist,
+        mandal: defaultM,
+        name: name.trim(),
+        location: (location || defaultM).trim(),
+        capacity: capacity || 200,
+        occupied: 0,
+        contact: "Helpline 112",
+        status: "Active"
+    });
+    localStorage.setItem("disasterSheltersData", JSON.stringify(shelters));
+    renderSheltersView();
+    showDashboardMessage(`Shelter "${name.trim()}" registered in ${defaultM} Mandal.`);
+}
+window.promptAddShelterForCurrentMandal = promptAddShelterForCurrentMandal;
+
 const addNewShelterBtn = document.getElementById("addNewShelterBtn");
 if (addNewShelterBtn) {
-    addNewShelterBtn.addEventListener("click", function () {
-        const name = window.prompt("New Shelter / Relief Camp Name:");
-        if (!name) return;
-        const location = window.prompt("Location & District:") || "India";
-        const capacity = parseInt(window.prompt("Total Bed Capacity (e.g. 200):") || "200", 10);
+    addNewShelterBtn.addEventListener("click", promptAddShelterForCurrentMandal);
+}
 
-        const shelters = JSON.parse(localStorage.getItem("disasterSheltersData") || JSON.stringify(defaultSheltersData));
-        shelters.push({
-            id: Date.now(),
-            name: name.trim(),
-            location: location.trim(),
-            capacity: capacity || 200,
-            occupied: 0,
-            status: "Active"
-        });
-        localStorage.setItem("disasterSheltersData", JSON.stringify(shelters));
-        renderSheltersView();
-        showDashboardMessage(`Shelter ${name} registered.`);
-    });
+const shelterMandalSearchEl = document.getElementById("shelterMandalSearchInput");
+if (shelterMandalSearchEl) {
+    shelterMandalSearchEl.addEventListener("input", renderSheltersView);
 }
 
 // ==========================================
@@ -1774,7 +2148,37 @@ function renderInventoryView() {
         localStorage.setItem("disasterReliefInventory", JSON.stringify(items));
     }
 
-    container.innerHTML = items.map(function (item) {
+    const q = (document.getElementById("inventorySearchInput") ? document.getElementById("inventorySearchInput").value : "").toLowerCase().trim();
+    const catFilter = document.getElementById("inventoryCategoryFilter") ? document.getElementById("inventoryCategoryFilter").value : "all";
+
+    const filtered = items.filter(function (item) {
+        if (q) {
+            const matchItem = (item.item || "").toLowerCase().includes(q);
+            const matchCat = (item.category || "").toLowerCase().includes(q);
+            if (!matchItem && !matchCat) return false;
+        }
+        if (catFilter !== "all") {
+            const c = (item.category || "").toLowerCase();
+            if (catFilter === "food" && !c.includes("nutri") && !c.includes("food") && !c.includes("water")) return false;
+            if (catFilter === "medical" && !c.includes("medic") && !c.includes("aid")) return false;
+            if (catFilter === "shelter" && !c.includes("shelt") && !c.includes("blanket") && !c.includes("tent")) return false;
+            if (catFilter === "gear" && !c.includes("rescu") && !c.includes("safe") && !c.includes("light")) return false;
+        }
+        return true;
+    });
+
+    const badge = document.getElementById("inventoryFilterCountBadge");
+    if (badge) badge.textContent = `Showing ${filtered.length} of ${items.length}`;
+
+    if (!filtered.length) {
+        container.innerHTML = `<div class="col-12 text-center py-5 text-muted">
+            <i class="bi bi-box-seam fs-1 d-block mb-2 opacity-50"></i>
+            No relief inventory items match the selected filter.
+        </div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(function (item) {
         const isLow = item.stock <= item.min;
         return `<div class="col-md-6 col-lg-3">
             <div class="inventory-card">
@@ -1982,26 +2386,49 @@ document.querySelectorAll("[data-bs-dismiss='modal']").forEach(function (button)
     });
 });
 
-document.getElementById("applyJurisdiction").addEventListener("click", function () {
-    adminState = document.getElementById("adminState").value;
-    adminDistrict = document.getElementById("adminDistrict").value.trim();
-    localStorage.setItem("disasterAdminJurisdiction", JSON.stringify({ state: adminState, district: adminDistrict }));
-    const p = document.querySelector(".welcome-row p");
-    if (p) {
-        p.textContent = adminState === "all" ? "Here is the latest overview of emergency operations across India." : `Showing operations for ${adminDistrict || "all districts"}, ${adminState}.`;
-    }
-    renderRequests();
-    renderVolunteers();
-    renderVolunteersFullTable();
-    renderVolunteerAssignmentMatrix();
-    renderDonations();
-    renderRegistrations();
-    showDashboardMessage("Admin jurisdiction updated.");
-});
+const applyJurBtn = document.getElementById("applyJurisdiction");
+if (applyJurBtn) {
+    applyJurBtn.addEventListener("click", function () {
+        adminState = document.getElementById("adminState").value;
+        adminDistrict = document.getElementById("adminDistrict").value.trim();
+        localStorage.setItem("disasterAdminJurisdiction", JSON.stringify({ state: adminState, district: adminDistrict }));
+        syncJurisdictionDisplay();
+        renderRequests();
+        renderVolunteers();
+        renderVolunteersFullTable();
+        renderVolunteerAssignmentMatrix();
+        renderDonations();
+        renderRegistrations();
+        renderSheltersView();
+        showDashboardMessage("Admin jurisdiction updated.");
+    });
+}
 
 document.getElementById("requestSearch").addEventListener("input", filterRequests);
 document.getElementById("priorityFilter").addEventListener("change", filterRequests);
 document.getElementById("statusFilter").addEventListener("change", filterRequests);
+const lossesFilterEl = document.getElementById("lossesFilter");
+if (lossesFilterEl) lossesFilterEl.addEventListener("change", filterRequests);
+
+const shelterSearchEl = document.getElementById("shelterSearchInput");
+if (shelterSearchEl) shelterSearchEl.addEventListener("input", renderSheltersView);
+const shelterStatEl = document.getElementById("shelterStatusFilter");
+if (shelterStatEl) shelterStatEl.addEventListener("change", renderSheltersView);
+
+const invSearchEl = document.getElementById("inventorySearchInput");
+if (invSearchEl) invSearchEl.addEventListener("input", renderInventoryView);
+const invCatEl = document.getElementById("inventoryCategoryFilter");
+if (invCatEl) invCatEl.addEventListener("change", renderInventoryView);
+
+const donSearchEl = document.getElementById("donationSearchInput");
+if (donSearchEl) donSearchEl.addEventListener("input", renderDonations);
+const donTypeEl = document.getElementById("donationTypeFilter");
+if (donTypeEl) donTypeEl.addEventListener("change", renderDonations);
+
+const alertSearchEl = document.getElementById("alertSearchInput");
+if (alertSearchEl) alertSearchEl.addEventListener("input", renderAlerts);
+const alertTypeEl = document.getElementById("alertTypeFilter");
+if (alertTypeEl) alertTypeEl.addEventListener("change", renderAlerts);
 // Handle alert removal across alert containers
 document.addEventListener("click", function (event) {
     const newAlertBtn = event.target.closest("[data-action='new-alert']");
@@ -3472,6 +3899,414 @@ renderMandalsView();
 // Check URL Hash on initial page load to automatically activate requested view (e.g. #volunteers)
 const initialHash = window.location.hash ? window.location.hash.replace(/^#/, "") : "dashboard";
 switchAdminView(initialHash);
+
+// Initialize latest SMS banner
+initAdminLatestSmsBanner();
+
+// ==========================================
+// PRE-DISASTER MOBILE SMS BROADCAST SYSTEM
+// ==========================================
+function initAdminLatestSmsBanner() {
+    const alerts = readRecords("disasterAlerts");
+    const sms = alerts.find(function (a) { return a.isSms; });
+    const bannerText = document.getElementById("latestSmsText");
+    if (bannerText && sms) {
+        bannerText.textContent = `${sms.type || 'EMERGENCY'}: ${sms.title || 'Disaster Alert'} - ${sms.message || sms.details}`;
+    }
+}
+
+function handleAdminSendPreDisasterSms(event) {
+    if (event) event.preventDefault();
+    const typeEl = document.getElementById("smsDisasterType");
+    const levelEl = document.getElementById("smsWarningLevel");
+    const msgEl = document.getElementById("smsMessageText");
+    if (!typeEl || !levelEl || !msgEl) return;
+
+    const title = typeEl.value;
+    const level = levelEl.value;
+    const message = msgEl.value.trim();
+    const currentDist = (adminDistrict || "Alluri Sitharama Raju").trim();
+    const currentState = adminState || "Andhra Pradesh";
+
+    // 1. Save Master Disaster Alert Record
+    const alerts = readRecords("disasterAlerts");
+    const newAlert = {
+        id: Date.now(),
+        title: title,
+        type: level,
+        details: message,
+        message: message,
+        isSms: true,
+        mandal: "All Mandals",
+        district: currentDist,
+        state: currentState,
+        sender: `DISTRICT DISASTER CONTROL ROOM (${currentDist.toUpperCase()})`,
+        scope: `All Mandals & Registered Volunteers in ${currentDist}`,
+        createdAt: new Date().toLocaleString(),
+        broadcastScope: "District-Wide"
+    };
+    alerts.unshift(newAlert);
+    writeRecords("disasterAlerts", alerts);
+
+    // 2. Broadcast to EVERY Mandal in this district
+    const mandalsList = (typeof mandalsByDistrictData !== "undefined" && mandalsByDistrictData[currentDist]) || [
+        "Paderu", "Araku Valley", "Ananthagiri", "Chintapalli", "G.K. Veedhi",
+        "Rampachodavaram", "Maredumilli", "Devipatnam", "Y. Ramavaram", "Koyyuru",
+        "Pedabayalu", "Munchingiputtu", "Dumbriguda", "Hukumpeta", "G. Madugula"
+    ];
+    const mandalSmsLog = readRecords("disasterMandalSmsLog");
+    mandalsList.forEach(function (mandalName) {
+        mandalSmsLog.unshift({
+            id: Date.now() + "_" + Math.random().toString(36).substr(2, 6),
+            alertId: newAlert.id,
+            district: currentDist,
+            mandal: mandalName,
+            title: title,
+            level: level,
+            message: message,
+            sender: newAlert.sender,
+            receivedAt: new Date().toLocaleString(),
+            read: false
+        });
+    });
+    writeRecords("disasterMandalSmsLog", mandalSmsLog);
+
+    // 3. Broadcast to ALL Volunteers registered within this district
+    const allVolunteers = readRecords("disasterVolunteers");
+    const districtVolunteers = allVolunteers.filter(function (vol) {
+        const d = (vol.district || "").toLowerCase().trim();
+        return !d || d === currentDist.toLowerCase() || (currentDist.toLowerCase().includes("alluri") && d.includes("alluri")) || currentDist.toLowerCase() === "all";
+    });
+    const volunteerSmsLog = readRecords("disasterVolunteerSmsLog");
+    districtVolunteers.forEach(function (vol) {
+        volunteerSmsLog.unshift({
+            id: Date.now() + "_" + Math.random().toString(36).substr(2, 6),
+            alertId: newAlert.id,
+            volunteerId: vol.id,
+            volunteerName: vol.name,
+            volunteerPhone: vol.phone || vol.mobileNumber,
+            district: currentDist,
+            mandal: vol.mandal || "General",
+            title: title,
+            level: level,
+            message: message,
+            sender: newAlert.sender,
+            receivedAt: new Date().toLocaleString(),
+            read: false
+        });
+    });
+    writeRecords("disasterVolunteerSmsLog", volunteerSmsLog);
+
+    // Save active broadcast for instant sync across tabs
+    localStorage.setItem("disasterLatestDistrictSms", JSON.stringify(newAlert));
+
+    const bannerText = document.getElementById("latestSmsText");
+    if (bannerText) bannerText.textContent = `${level}: ${title} - ${message}`;
+
+    const modalEl = document.getElementById("preDisasterSmsModal");
+    if (modalEl && typeof bootstrap !== "undefined" && bootstrap.Modal) {
+        const inst = bootstrap.Modal.getInstance(modalEl);
+        if (inst) inst.hide();
+    }
+
+    renderAlerts();
+    showDashboardMessage(`Emergency SMS alert broadcast dispatched to ALL ${mandalsList.length} Mandals and ${districtVolunteers.length} registered Volunteers in ${currentDist} District!`);
+
+    openSmsNotificationModal(newAlert);
+}
+window.handleAdminSendPreDisasterSms = handleAdminSendPreDisasterSms;
+
+function openSmsNotificationModal(alertObj) {
+    if (!alertObj) {
+        const alerts = readRecords("disasterAlerts");
+        alertObj = alerts.find(function (a) { return a.isSms; }) || alerts[0] || {
+            sender: "DISTRICT DISASTER CONTROL ROOM",
+            message: "⚠️ URGENT PRE-DISASTER WARNING: Severe weather alert. Relocate to designated shelters immediately.",
+            createdAt: "Delivered to registered mobile numbers"
+        };
+    }
+    const senderEl = document.getElementById("modalSmsSender");
+    const bodyEl = document.getElementById("modalSmsBody");
+    const timeEl = document.getElementById("modalSmsTime");
+    if (senderEl) senderEl.textContent = alertObj.sender || "DISTRICT DISASTER CONTROL ROOM";
+    if (bodyEl) bodyEl.textContent = alertObj.message || alertObj.details || alertObj.title;
+    if (timeEl) timeEl.textContent = alertObj.createdAt || "Sent to Registered Mobiles";
+
+    const modalEl = document.getElementById("smsNotificationModal");
+    if (modalEl && typeof bootstrap !== "undefined" && bootstrap.Modal) {
+        let inst = bootstrap.Modal.getInstance(modalEl);
+        if (!inst) inst = new bootstrap.Modal(modalEl);
+        inst.show();
+    }
+}
+window.openSmsNotificationModal = openSmsNotificationModal;
+window.viewLatestSmsAlert = function () { openSmsNotificationModal(); };
+
+// ==========================================
+// SECTION: DISTRICT LIVE WEATHER & INTELLIGENCE
+// ==========================================
+const AP_DISTRICT_COORDS = {
+    "alluri sitharama raju": { lat: 18.0667, lon: 82.5333, name: "Alluri Sitharama Raju" },
+    "anakapalli": { lat: 17.6896, lon: 83.0032, name: "Anakapalli" },
+    "ananthapuramu": { lat: 14.6819, lon: 77.6006, name: "Ananthapuramu" },
+    "annamayya": { lat: 14.0167, lon: 78.7500, name: "Annamayya" },
+    "bapatla": { lat: 15.9042, lon: 80.4674, name: "Bapatla" },
+    "chittoor": { lat: 13.2172, lon: 79.1003, name: "Chittoor" },
+    "east godavari": { lat: 17.0005, lon: 81.8040, name: "East Godavari (Rajahmundry)" },
+    "eluru": { lat: 16.7107, lon: 81.0952, name: "Eluru" },
+    "guntur": { lat: 16.3067, lon: 80.4365, name: "Guntur" },
+    "kakinada": { lat: 16.9891, lon: 82.2475, name: "Kakinada" },
+    "konaseema": { lat: 16.5700, lon: 82.0000, name: "Dr. B.R. Ambedkar Konaseema" },
+    "krishna": { lat: 16.1800, lon: 81.1300, name: "Krishna (Vijayawada / Machilipatnam)" },
+    "kurnool": { lat: 15.8281, lon: 78.0373, name: "Kurnool" },
+    "nandyal": { lat: 15.4886, lon: 78.4836, name: "Nandyal" },
+    "ntr": { lat: 16.5062, lon: 80.6480, name: "NTR District (Vijayawada)" },
+    "palnadu": { lat: 16.2333, lon: 80.0500, name: "Palnadu (Narasaraopet)" },
+    "parvathipuram manyam": { lat: 18.7800, lon: 83.4300, name: "Parvathipuram Manyam" },
+    "prakasam": { lat: 15.5057, lon: 80.0499, name: "Prakasam (Ongole)" },
+    "srikakulam": { lat: 18.2969, lon: 83.8968, name: "Srikakulam" },
+    "sri potti sriramulu nellore": { lat: 14.4426, lon: 79.9865, name: "SPS Nellore" },
+    "sri sathya sai": { lat: 14.1667, lon: 77.8167, name: "Sri Sathya Sai (Puttaparthi)" },
+    "tirupati": { lat: 13.6288, lon: 79.4192, name: "Tirupati" },
+    "visakhapatnam": { lat: 17.6868, lon: 83.2185, name: "Visakhapatnam" },
+    "vizianagaram": { lat: 18.1133, lon: 83.4072, name: "Vizianagaram" },
+    "west godavari": { lat: 16.5449, lon: 81.5212, name: "West Godavari (Bhimavaram)" },
+    "ysr kadapa": { lat: 14.4673, lon: 78.8242, name: "YSR Kadapa" }
+};
+
+function getDistrictLocation(distName) {
+    if (!distName) return AP_DISTRICT_COORDS["krishna"];
+    const key = distName.toLowerCase().trim();
+    for (const dKey in AP_DISTRICT_COORDS) {
+        if (key.includes(dKey) || dKey.includes(key)) {
+            return AP_DISTRICT_COORDS[dKey];
+        }
+    }
+    return { lat: 16.5062, lon: 80.6480, name: distName };
+}
+
+async function loadAdminLiveWeather() {
+    const tempEl = document.getElementById("adminWeatherTemp");
+    const condEl = document.getElementById("adminWeatherCondition");
+    const badgeEl = document.getElementById("adminWeatherBadge");
+    const iconEl = document.getElementById("adminWeatherIcon");
+    if (!tempEl || !condEl) return;
+
+    const currentDist = (typeof adminDistrict !== "undefined" && adminDistrict && adminDistrict !== "all") ? adminDistrict : "Krishna";
+    const loc = getDistrictLocation(currentDist);
+
+    try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true`);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const current = data.current_weather;
+        if (!current) throw new Error("No payload");
+
+        const temp = Math.round(current.temperature);
+        const code = current.weathercode;
+        const wind = current.windspeed;
+
+        let condition = "Clear Skies";
+        let iconClass = "bi-sun-fill text-warning";
+        let badgeText = "Normal";
+        let badgeClass = "bg-success";
+
+        if (code >= 51 && code <= 67) {
+            condition = "Scattered Rain";
+            iconClass = "bi-cloud-rain-fill text-info";
+            badgeText = "Rain Watch";
+            badgeClass = "bg-danger";
+        } else if (code >= 71 && code <= 77) {
+            condition = "Precipitation";
+            iconClass = "bi-cloud-snow text-primary";
+            badgeText = "Advisory";
+            badgeClass = "bg-warning text-dark";
+        } else if (code >= 80 && code <= 82) {
+            condition = "Heavy Downpour";
+            iconClass = "bi-cloud-lightning-rain-fill text-danger";
+            badgeText = "Heavy Rain Alert";
+            badgeClass = "bg-danger";
+        } else if (code >= 95) {
+            condition = "Thunderstorm Warning";
+            iconClass = "bi-lightning-charge-fill text-danger";
+            badgeText = "Storm Alert";
+            badgeClass = "bg-danger";
+        } else if (code >= 1 && code <= 3) {
+            condition = "Partly Cloudy";
+            iconClass = "bi-cloud-sun-fill text-warning";
+            badgeText = "Monitoring";
+            badgeClass = "bg-info text-dark";
+        }
+
+        if (wind > 35) {
+            badgeText = "High Winds";
+            badgeClass = "bg-danger";
+        }
+
+        tempEl.textContent = `${temp}°C`;
+        condEl.textContent = `${condition} · ${currentDist}`;
+        if (badgeEl) {
+            badgeEl.className = `badge ${badgeClass} text-white py-0 px-1`;
+            badgeEl.textContent = badgeText;
+            badgeEl.style.fontSize = "8.5px";
+        }
+        if (iconEl) {
+            iconEl.innerHTML = `<i class="bi ${iconClass}"></i>`;
+        }
+    } catch (e) {
+        tempEl.textContent = "29°C";
+        condEl.textContent = `Clear Skies · ${currentDist}`;
+        if (badgeEl) {
+            badgeEl.className = "badge bg-success text-white py-0 px-1";
+            badgeEl.textContent = "Normal";
+        }
+        if (iconEl) {
+            iconEl.innerHTML = '<i class="bi bi-sun-fill text-warning"></i>';
+        }
+    }
+}
+window.loadAdminLiveWeather = loadAdminLiveWeather;
+
+async function openWeatherDetailModal(districtName) {
+    const currentDist = districtName || ((typeof adminDistrict !== "undefined" && adminDistrict && adminDistrict !== "all") ? adminDistrict : "Krishna");
+    const loc = getDistrictLocation(currentDist);
+
+    const distSelect = document.getElementById("weatherDistrictSelect");
+    if (distSelect) {
+        for (let i = 0; i < distSelect.options.length; i++) {
+            if (distSelect.options[i].value.toLowerCase().includes(currentDist.toLowerCase()) || currentDist.toLowerCase().includes(distSelect.options[i].value.toLowerCase())) {
+                distSelect.selectedIndex = i;
+                break;
+            }
+        }
+    }
+
+    const modalEl = document.getElementById("weatherDetailModal");
+    if (!modalEl) return;
+    const modalInst = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalInst.show();
+
+    try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,wind_speed_10m`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const cur = data.current_weather || { temperature: 29, weathercode: 61, windspeed: 18 };
+
+        const temp = Math.round(cur.temperature);
+        const code = cur.weathercode;
+        const wind = Math.round(cur.windspeed);
+
+        let condition = "Scattered Showers";
+        let iconHtml = '<i class="bi bi-cloud-rain-fill text-info"></i>';
+        if (code === 0) { condition = "Clear Sunny"; iconHtml = '<i class="bi bi-sun-fill text-warning"></i>'; }
+        else if (code >= 1 && code <= 3) { condition = "Partly Cloudy"; iconHtml = '<i class="bi bi-cloud-sun-fill text-warning"></i>'; }
+        else if (code >= 51 && code <= 67) { condition = "Scattered Showers"; iconHtml = '<i class="bi bi-cloud-drizzle-fill text-info"></i>'; }
+        else if (code >= 80 && code <= 82) { condition = "Heavy Torrential Rain"; iconHtml = '<i class="bi bi-cloud-lightning-rain-fill text-danger"></i>'; }
+        else if (code >= 95) { condition = "Severe Thunderstorm"; iconHtml = '<i class="bi bi-lightning-charge-fill text-danger"></i>'; }
+
+        const heroTemp = document.getElementById("weatherModalHeroTemp");
+        if (heroTemp) heroTemp.textContent = `${temp}°C`;
+        const heroCond = document.getElementById("weatherModalHeroCondition");
+        if (heroCond) heroCond.textContent = condition;
+        const heroIcon = document.getElementById("weatherModalHeroIcon");
+        if (heroIcon) heroIcon.innerHTML = iconHtml;
+        const heroLoc = document.getElementById("weatherModalHeroLocation");
+        if (heroLoc) heroLoc.textContent = `${loc.name}, Andhra Pradesh`;
+
+        let humidity = 78;
+        let rainProb = 75;
+        let rainVol = 14.2;
+        if (data.hourly) {
+            if (data.hourly.relative_humidity_2m && data.hourly.relative_humidity_2m[0]) humidity = data.hourly.relative_humidity_2m[0];
+            if (data.hourly.precipitation_probability && data.hourly.precipitation_probability[0]) rainProb = data.hourly.precipitation_probability[0];
+            if (data.hourly.precipitation && data.hourly.precipitation[0] !== undefined) rainVol = data.hourly.precipitation.slice(0, 24).reduce((a, b) => a + (b || 0), 0).toFixed(1);
+        }
+
+        const humEl = document.getElementById("weatherModalHumidity");
+        if (humEl) humEl.textContent = `${humidity}%`;
+        const windEl = document.getElementById("weatherModalWind");
+        if (windEl) windEl.textContent = `${wind} km/h`;
+        const rainVolEl = document.getElementById("weatherModalRainVolume");
+        if (rainVolEl) rainVolEl.textContent = `${rainVol} mm`;
+        const rainProbEl = document.getElementById("weatherModalRainProb");
+        if (rainProbEl) rainProbEl.textContent = `${rainProb}%`;
+
+        const rainRisk = document.getElementById("weatherModalRainRiskText");
+        if (rainRisk) {
+            if (Number(rainVol) > 50 || rainProb > 80) {
+                rainRisk.className = "p-2 rounded border bg-danger-subtle border-danger-subtle small text-danger-emphasis";
+                rainRisk.textContent = "High flood inundation risk. Low-lying habitations must be placed under evacuation watch.";
+            } else if (Number(rainVol) > 15 || rainProb > 50) {
+                rainRisk.className = "p-2 rounded border bg-warning-subtle border-warning-subtle small text-warning-emphasis";
+                rainRisk.textContent = "Moderate precipitation forecast. Relief teams and drainage stations on standby.";
+            } else {
+                rainRisk.className = "p-2 rounded border bg-success-subtle border-success-subtle small text-success-emphasis";
+                rainRisk.textContent = "Normal weather conditions. Regular relief and logistics operations permitted.";
+            }
+        }
+
+        const windSpeedEl = document.getElementById("weatherModalWindSpeed");
+        if (windSpeedEl) windSpeedEl.textContent = `${wind} km/h`;
+        const windCatEl = document.getElementById("weatherModalWindCategory");
+        const windBoxEl = document.getElementById("weatherModalWindWarningBox");
+        if (wind > 55) {
+            if (windCatEl) { windCatEl.textContent = "Gale / Storm Force"; windCatEl.className = "badge bg-danger"; }
+            if (windBoxEl) {
+                windBoxEl.style.background = "#fef2f2"; windBoxEl.style.borderColor = "#fecaca"; windBoxEl.style.color = "#991b1b";
+                windBoxEl.textContent = "⚠️ DANGER: Strong gale winds. Tree falls and tin roof hazards expected. Restrict volunteer boat travel.";
+            }
+        } else if (wind > 35) {
+            if (windCatEl) { windCatEl.textContent = "Strong Breeze"; windCatEl.className = "badge bg-warning text-dark"; }
+            if (windBoxEl) {
+                windBoxEl.style.background = "#fffbeb"; windBoxEl.style.borderColor = "#fde68a"; windBoxEl.style.color = "#92400e";
+                windBoxEl.textContent = "Elevated wind speeds. Caution advised near water bodies and unstable temporary structures.";
+            }
+        } else {
+            if (windCatEl) { windCatEl.textContent = "Moderate Breeze"; windCatEl.className = "badge bg-success"; }
+            if (windBoxEl) {
+                windBoxEl.style.background = "#f0fdf4"; windBoxEl.style.borderColor = "#bbf7d0"; windBoxEl.style.color = "#166534";
+                windBoxEl.textContent = "Wind conditions within safe operational limits for field volunteers and boats.";
+            }
+        }
+    } catch (e) {
+        console.warn("Open-Meteo weather load error:", e);
+    }
+}
+window.openWeatherDetailModal = openWeatherDetailModal;
+
+// Event Listeners for Weather Widget & Modal
+const adminWeatherWidgetEl = document.getElementById("adminWeatherWidget");
+if (adminWeatherWidgetEl) {
+    adminWeatherWidgetEl.addEventListener("click", function (e) {
+        if (e.target.closest("#refreshWeatherBtn")) return;
+        openWeatherDetailModal();
+    });
+}
+const refreshWeatherBtnEl = document.getElementById("refreshWeatherBtn");
+if (refreshWeatherBtnEl) {
+    refreshWeatherBtnEl.addEventListener("click", function (e) {
+        e.stopPropagation();
+        loadAdminLiveWeather();
+        if (typeof showDashboardMessage === "function") showDashboardMessage("Live weather refreshed for district operations.");
+    });
+}
+const weatherDistSelectEl = document.getElementById("weatherDistrictSelect");
+if (weatherDistSelectEl) {
+    weatherDistSelectEl.addEventListener("change", function () {
+        openWeatherDetailModal(weatherDistSelectEl.value);
+    });
+}
+const btnRefreshWeatherModalEl = document.getElementById("btnRefreshWeatherModal");
+if (btnRefreshWeatherModalEl) {
+    btnRefreshWeatherModalEl.addEventListener("click", function () {
+        const dist = weatherDistSelectEl ? weatherDistSelectEl.value : null;
+        openWeatherDetailModal(dist);
+    });
+}
+
+// Initialize Weather
+loadAdminLiveWeather();
+
 
 
 

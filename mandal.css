@@ -18,31 +18,73 @@
     --mandal-success: #16a34a;
 }
 
+/* VIDEO BACKDROP & GLASSMORPHISM */
+.admin-video-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.admin-backdrop-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    filter: brightness(0.68) contrast(1.1);
+}
+
+.admin-backdrop-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.72) 100%);
+    backdrop-filter: blur(2px);
+}
+
 body.mandal-body {
     margin: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--mandal-bg);
+    background-color: transparent;
     color: var(--mandal-text);
     overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
 }
 
 .mandal-shell {
     display: flex;
     min-height: 100vh;
+    background: transparent;
+    position: relative;
+    z-index: 1;
 }
 
-/* SIDEBAR */
+/* SIDEBAR (EXACT ADMIN ALIGNMENT) */
 .mandal-sidebar {
-    width: 280px;
-    background: var(--mandal-sidebar);
-    color: #fff;
+    width: 254px;
+    flex: 0 0 254px;
+    background: var(--admin-navy, #0f172a);
+    color: #aab8cc;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1040;
+    padding: 28px 16px 22px;
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    z-index: 10;
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -195,58 +237,55 @@ body.mandal-body {
     gap: 4px;
 }
 
-/* MAIN LAYOUT */
+/* MAIN LAYOUT (EXACT ADMIN ALIGNMENT) */
 .mandal-main {
+    min-width: 0;
     flex: 1;
-    margin-left: 280px;
+    margin-left: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: var(--mandal-bg);
+    background: transparent;
+    position: relative;
 }
 
 /* TOPBAR */
-.mandal-topbar {
-    height: 70px;
-    background: #ffffff;
-    border-bottom: 1px solid var(--mandal-border);
-    padding: 0 28px;
+.admin-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: 84px;
+    padding: 0 36px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(220, 226, 238, 0.85);
+    box-shadow: 0 2px 14px rgba(10, 20, 40, 0.04);
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-index: 100;
 }
 
-.topbar-breadcrumb {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--mandal-primary);
+.breadcrumb-label {
+    margin: 0 0 4px;
 }
 
-.topbar-title {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 18px;
+.admin-topbar h1 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 25px;
+    letter-spacing: -.4px;
     font-weight: 700;
     color: #0f172a;
 }
 
-.topbar-actions {
+.topbar-actions,
+.admin-profile {
     display: flex;
     align-items: center;
-    gap: 16px;
 }
 
-.weather-topbar-widget {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f1f5f9;
-    border: 1px solid var(--mandal-border);
-    border-radius: 10px;
-    padding: 6px 12px;
+.topbar-actions {
+    gap: 16px;
 }
 
 .emergency-quick-pill {
@@ -321,8 +360,15 @@ body.mandal-body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ALERT BANNER */
@@ -375,10 +421,25 @@ body.mandal-body {
     flex-shrink: 0;
 }
 
-.stat-red .stat-icon { background: #fee2e2; color: #dc2626; }
-.stat-blue .stat-icon { background: #dbeafe; color: #2563eb; }
-.stat-amber .stat-icon { background: #fef3c7; color: #d97706; }
-.stat-green .stat-icon { background: #dcfce7; color: #16a34a; }
+.stat-red .stat-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.stat-blue .stat-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.stat-amber .stat-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.stat-green .stat-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
 
 .stat-label {
     display: block;
@@ -485,5 +546,165 @@ body.mandal-body {
 
     .mandal-main {
         margin-left: 0;
+    }
+}
+
+/* ========================================================
+   GLASSMORPHISM & ALIGNMENT PARITY WITH ADMIN LOGIN
+   ======================================================== */
+.panel,
+.table-filter-card,
+.shelter-card,
+.weather-topbar-widget {
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(226, 232, 240, 0.85) !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+.table-wrap {
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* MULTI-VOLUNTEER ASSIGNMENT CHECKLIST (REQUIREMENT 4) */
+.assign-volunteers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.assign-vol-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.assign-vol-item:hover {
+    background: #f8fafc;
+    border-color: #3b82f6;
+    transform: translateY(-1px);
+}
+
+.assign-vol-item.selected {
+    background: #eff6ff;
+    border-color: #2563eb;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+.assign-vol-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #0284c7);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+/* FAMILY MEMBER ROSTER CARD (REQUIREMENT 3) */
+.family-member-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.family-member-card .delete-member-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+/* DEPARTMENT STEPPED QUESTION CARDS (REQUIREMENT 5) */
+.dept-step-card {
+    transition: all 0.3s ease;
+}
+
+.modal-icon-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+/* KEYFRAME ANIMATIONS (PARITY WITH ADMIN LOGIN) */
+@keyframes mandalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInCard {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.mandal-view {
+    animation: mandalFadeIn 0.25s ease-out;
+}
+
+.shelter-card,
+.panel,
+.table-filter-card {
+    animation: fadeInCard 0.28s ease-out;
+}
+
+/* Responsive adjustments for Tablets and Mobile (Matching Admin Login) */
+@media (max-width: 991px) {
+    .mandal-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 280px;
+        z-index: 1040;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .mandal-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .mandal-main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .admin-topbar.mandal-topbar {
+        padding: 0 16px;
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,184 +9,351 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="mandal.css">
 </head>
+
 <body class="mandal-body">
-    <div class="mandal-shell">
-        <!-- SIDEBAR -->
-        <aside class="mandal-sidebar" id="mandalSidebar">
-            <div class="mandal-brand">
-                <span class="mandal-brand-icon"><i class="bi bi-building-fill-check"></i></span>
-                <div>
-                    <div class="brand-title">DISASTER <strong>RELIEF</strong></div>
-                    <div class="brand-sub">MANDAL OPERATIONS</div>
+    <div class="admin-video-backdrop" aria-hidden="true">
+        <video class="admin-backdrop-video" autoplay muted loop playsinline poster="disaster hero banner.png">
+            <source src="hero banner video motion.mp4" type="video/mp4">
+        </video>
+        <div class="admin-backdrop-overlay"></div>
+    </div>
+
+    <div class="admin-shell mandal-shell">
+        <!-- SIDEBAR (EXACT ADMIN ALIGNMENT) -->
+        <aside class="admin-sidebar mandal-sidebar" id="mandalSidebar">
+            <div class="sidebar-brand">
+                <span class="brand-logo"><i class="bi bi-shield-fill-check"></i></span>
+                <span>DISASTER <strong>RELIEF</strong></span>
+            </div>
+
+            <div class="sidebar-label">MANDAL OPERATIONS</div>
+
+            <!-- MANDAL OFFICER PROFILE CHIP (COMPACT ADMIN-STYLE ALIGNMENT) -->
+            <div class="sidebar-officer-pill mx-2 mb-2 p-2 rounded-2 border d-flex align-items-center gap-2"
+                style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08)!important;">
+                <div class="officer-avatar" id="sidebarOfficerAvatar"
+                    style="width: 32px; height: 32px; font-size: 11px;">MO</div>
+                <div class="officer-meta small" style="line-height: 1.2;">
+                    <strong id="sidebarOfficerName" class="d-block text-white" style="font-size: 11.5px;">Mandal
+                        Officer</strong>
+                    <span class="badge bg-primary-subtle text-primary border py-0 px-1" id="sidebarEmpId"
+                        style="font-size: 8.5px;">EMP-001</span>
+                    <span class="d-none" id="sidebarMandalName">Mandal: Vijayawada Rural</span>
+                    <span class="d-none" id="sidebarDistrictName">District: Krishna</span>
                 </div>
             </div>
 
-            <!-- MANDAL JURISDICTION CHIP -->
-            <div class="mandal-officer-chip">
-                <div class="officer-avatar" id="sidebarOfficerAvatar">MO</div>
-                <div class="officer-meta">
-                    <strong id="sidebarOfficerName">Mandal Officer</strong>
-                    <div class="officer-badge-row">
-                        <span class="badge bg-primary-subtle text-primary border" id="sidebarEmpId">EMP-001</span>
-                    </div>
-                    <small id="sidebarMandalName">Mandal: Vijayawada Rural</small>
-                    <small id="sidebarDistrictName">District: Krishna</small>
-                </div>
-            </div>
-
-            <!-- NAVIGATION -->
-            <nav class="mandal-nav" aria-label="Mandal Navigation">
-                <a class="mandal-nav-item active" href="#overview" data-view="overview">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Overview</span>
+            <!-- NAVIGATION (EXACT ADMIN ALIGNMENT) -->
+            <nav class="sidebar-nav mandal-nav" aria-label="Mandal Navigation">
+                <a class="sidebar-link mandal-nav-item active" href="#dashboard" data-view="dashboard">
+                    <i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span>
                 </a>
-                <a class="mandal-nav-item" href="#requests" data-view="requests">
-                    <i class="bi bi-exclamation-octagon-fill"></i>
-                    <span>Routed Help Requests</span>
-                    <span class="badge bg-danger ms-auto" id="navRequestsPendingCount">0</span>
+                <a class="sidebar-link mandal-nav-item" href="#requests" data-view="requests">
+                    <i class="bi bi-clipboard2-pulse"></i> <span>Help Requests</span>
+                    <span class="nav-count ms-auto" id="navRequestsPendingCount">0</span>
                 </a>
-                <a class="mandal-nav-item" href="#volunteers" data-view="volunteers">
-                    <i class="bi bi-people-fill"></i>
-                    <span>Mandal Volunteers</span>
-                    <span class="badge bg-secondary ms-auto" id="navVolunteersCount">0</span>
+                <a class="sidebar-link mandal-nav-item" href="#volunteers" data-view="volunteers">
+                    <i class="bi bi-people-fill"></i> <span>Volunteers</span>
+                    <span class="nav-count ms-auto" id="navVolunteersCount">0</span>
                 </a>
-                <a class="mandal-nav-item" href="#reports" data-view="reports">
-                    <i class="bi bi-journal-bookmark-fill"></i>
-                    <span>Annual Statements</span>
+                <a class="sidebar-link mandal-nav-item" href="#assign" data-view="assign">
+                    <i class="bi bi-link-45deg"></i> <span>Assign Volunteers</span>
                 </a>
-                <a class="mandal-nav-item" href="#profile" data-view="profile">
-                    <i class="bi bi-person-gear"></i>
-                    <span>Officer Profile</span>
+                <a class="sidebar-link mandal-nav-item" href="#shelters" data-view="shelters">
+                    <i class="bi bi-house-heart"></i> <span>Shelters</span>
+                </a>
+                <a class="sidebar-link mandal-nav-item" href="#inventory" data-view="inventory">
+                    <i class="bi bi-box-seam"></i> <span>Relief Inventory</span>
+                </a>
+                <a class="sidebar-link mandal-nav-item" href="#donations" data-view="donations">
+                    <i class="bi bi-heart"></i> <span>Donations</span>
+                    <span class="nav-count ms-auto" id="donationsBadgeCount">0</span>
+                </a>
+                <a class="sidebar-link mandal-nav-item" href="#reports" data-view="reports">
+                    <i class="bi bi-bar-chart-fill"></i> <span>Reports</span>
+                </a>
+                <a class="sidebar-link mandal-nav-item" href="#profile" data-view="profile">
+                    <i class="bi bi-person-gear"></i> <span>Officer Profile</span>
                 </a>
             </nav>
 
-            <div class="mandal-sidebar-footer">
-                <a href="index.html" class="mandal-nav-item text-secondary"><i class="bi bi-house-door"></i> <span>Main Portal</span></a>
-                <button type="button" class="mandal-nav-item text-danger border-0 bg-transparent w-100 text-start" id="mandalLogoutBtn"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></button>
+            <div class="sidebar-footer mandal-sidebar-footer">
+                <button class="sidebar-link logout-link mandal-nav-item text-danger w-100 text-start" type="button"
+                    id="mandalLogoutBtn"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></button>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
-        <main class="mandal-main">
-            <!-- TOPBAR -->
-            <header class="mandal-topbar">
-                <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-outline-secondary d-lg-none" id="mandalMenuToggle" type="button" aria-label="Toggle Menu">
-                        <i class="bi bi-list"></i>
-                    </button>
-                    <div>
-                        <div class="topbar-breadcrumb" id="topbarBreadcrumb">MANDAL EMERGENCY DESK</div>
-                        <h2 class="topbar-title mb-0" id="topbarMandalHeading">Vijayawada Rural Mandal Operations</h2>
-                    </div>
+        <!-- MAIN CONTENT AREA (EXACT ADMIN ALIGNMENT) -->
+        <main class="admin-main mandal-main" id="dashboard">
+            <!-- TOPBAR (EXACT ADMIN ALIGNMENT) -->
+            <header class="admin-topbar mandal-topbar">
+                <button class="mobile-menu" id="mandalMenuToggle" type="button" aria-label="Open mandal menu"><i
+                        class="bi bi-list"></i></button>
+                <div>
+                    <p class="breadcrumb-label" id="topbarBreadcrumb">MANDAL OPERATIONS / EMERGENCY DESK</p>
+                    <h1 id="topbarMandalHeading">Mandal Disaster Relief Operations</h1>
                 </div>
 
                 <div class="topbar-actions">
-                    <!-- LIVE WEATHER REPORT WIDGET -->
-                    <div class="weather-topbar-widget" id="mandalWeatherWidget" title="Live Weather Report for this Mandal">
-                        <div id="mandalWeatherIcon"><i class="bi bi-cloud-sun-fill text-warning"></i></div>
-                        <div>
-                            <div class="d-flex align-items-center gap-1">
-                                <strong id="mandalWeatherTemp" style="font-size: 13px;">29°C</strong>
-                                <span class="badge bg-success text-white py-0 px-1" id="mandalWeatherBadge" style="font-size: 8px;">Normal</span>
+                    <!-- LIVE WEATHER REPORT WIDGET (EXACT ADMIN ALIGNMENT) -->
+                    <div class="weather-topbar-widget" id="mandalWeatherWidget"
+                        title="Live Weather Report for this Mandal">
+                        <div class="weather-topbar-icon" id="mandalWeatherIcon"><i
+                                class="bi bi-cloud-sun-fill text-warning"></i></div>
+                        <div class="weather-topbar-info">
+                            <div class="weather-temp-row">
+                                <strong id="mandalWeatherTemp">29°C</strong>
+                                <span class="badge bg-success text-white py-0 px-1" id="mandalWeatherBadge"
+                                    style="font-size: 8.5px;">Normal</span>
                             </div>
-                            <small id="mandalWeatherCondition" style="font-size: 10px; color: #64748b;">Live Weather</small>
+                            <small id="mandalWeatherCondition">Live Weather</small>
                         </div>
-                        <button type="button" class="btn btn-sm btn-link text-muted p-0 ms-1" id="refreshMandalWeatherBtn" title="Refresh Live Weather">
+                        <button type="button" class="btn btn-sm btn-link text-white-50 p-0 ms-1"
+                            id="refreshMandalWeatherBtn" title="Refresh Live Weather">
                             <i class="bi bi-arrow-clockwise"></i>
                         </button>
                     </div>
 
-                    <a href="tel:112" class="emergency-quick-pill" title="National Emergency Helpline">
-                        <i class="bi bi-telephone-fill text-danger"></i>
-                        <span>112</span>
-                    </a>
+                    <!-- NOTIFICATION BUTTON (EXACT ADMIN ALIGNMENT) -->
+                    <button class="icon-button" type="button" aria-label="View notifications"><i
+                            class="bi bi-bell"></i><span class="notification-dot"></span></button>
 
-                    <!-- Topbar Profile Button -->
-                    <button type="button" class="mandal-profile-btn" id="topbarProfileBtn">
-                        <span class="mandal-avatar-circle" id="topbarAvatarDisplay">MO</span>
-                        <div class="d-none d-sm-block text-start">
-                            <div class="topbar-name" id="topbarOfficerName">Mandal Officer</div>
-                            <small class="topbar-role text-muted" id="topbarOfficerRole">Disaster Response Desk</small>
+                    <!-- FIXED JURISDICTION BADGE (EXACT ADMIN ALIGNMENT) -->
+                    <div class="fixed-jurisdiction-box"
+                        title="Assigned Mandal & District Jurisdiction (Fixed & Authorized)">
+                        <div class="jurisdiction-pill">
+                            <span class="jurisdiction-shield"><i class="bi bi-shield-lock-fill text-warning"></i></span>
+                            <div class="jurisdiction-text-wrap">
+                                <span class="jurisdiction-tag">ASSIGNED JURISDICTION</span>
+                                <span class="jurisdiction-display" id="mandalJurisdictionDisplay">Andhra Pradesh /
+                                    Krishna / Vijayawada Rural</span>
+                            </div>
+                            <span class="jurisdiction-lock-icon"
+                                title="Fixed Jurisdiction - Cannot be edited manually"><i
+                                    class="bi bi-lock-fill"></i></span>
                         </div>
+                    </div>
+
+                    <!-- OFFICER PROFILE BUTTON (EXACT ADMIN ALIGNMENT) -->
+                    <button class="admin-profile mandal-profile-btn" type="button" id="topbarProfileBtn"
+                        title="Click to view & edit Profile">
+                        <div class="admin-topbar-avatar-wrap">
+                            <span class="profile-avatar" id="topbarAvatarDisplay">MO</span>
+                            <span class="admin-online-badge" title="Active Duty"></span>
+                        </div>
+                        <div class="admin-profile-text">
+                            <strong id="topbarOfficerName">Mandal Officer</strong>
+                            <small id="topbarOfficerRole">Disaster Response Desk</small>
+                        </div>
+                        <i class="bi bi-chevron-down admin-profile-chevron"></i>
                     </button>
                 </div>
             </header>
 
+            <!-- PRE-DISASTER MOBILE SMS ALERT BROADCAST BANNER (RECEIVES DISTRICT ADMIN ALERTS) -->
+            <div id="preDisasterSmsBar" class="pre-disaster-sms-bar" style="display: flex;">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="sms-badge"><i class="bi bi-broadcast"></i> PRE-DISASTER SMS ALERT</span>
+                    <span id="preDisasterSmsMessage">⚠️ URGENT ADVISORY: District Emergency Alert active. Monitor relief
+                        shelters and volunteer deployment.</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="sms-action-btn" onclick="openSmsDetailsModal()"><i
+                            class="bi bi-phone-fill"></i> Read Mobile SMS</button>
+                    <button type="button" class="btn btn-sm btn-outline-light py-0 px-2"
+                        onclick="openPreDisasterSmsBroadcastModal()"><i class="bi bi-send-fill"></i> Dispatch SMS
+                        Alert</button>
+                </div>
+            </div>
+
             <!-- CONTAINER FOR VIEWS -->
             <div class="mandal-content p-4">
 
-                <!-- 1. VIEW: OVERVIEW -->
-                <div class="mandal-view active" id="view-overview">
-                    <!-- BANNER -->
-                    <div class="mandal-alert-banner mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="alert-icon-wrap"><i class="bi bi-broadcast"></i></div>
+                <!-- 1. VIEW: DASHBOARD OVERVIEW -->
+                <div class="mandal-view admin-view active" id="view-dashboard">
+                    <div class="welcome-row">
+                        <div>
+                            <span class="eyebrow">MANDAL EMERGENCY RESPONSE NETWORK</span>
+                            <h2 id="dashWelcomeHeading">Good morning, Mandal Officer.</h2>
+                            <p id="dashWelcomeSub">Here is the operational overview of disaster response, relief
+                                shelters, and volunteer forces.</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="secondary-button" type="button" onclick="switchMandalView('reports')"><i
+                                    class="bi bi-file-earmark-bar-graph"></i> View Reports</button>
+                            <button class="primary-button" type="button" onclick="switchMandalView('requests')"><i
+                                    class="bi bi-clipboard2-pulse"></i> Review Queue</button>
+                        </div>
+                    </div>
+
+                    <!-- STATS GRID MATCHING ADMIN -->
+                    <div class="stat-grid mb-4" aria-label="Mandal operational statistics">
+                        <article class="stat-card" onclick="switchMandalView('requests')" style="cursor: pointer;">
+                            <div class="stat-icon stat-red"><i class="bi bi-clipboard2-pulse"></i></div>
                             <div>
-                                <h5 class="mb-1">Active Jurisdiction: <span id="bannerMandalTitle">Vijayawada Rural</span>, <span id="bannerDistrictTitle">Krishna District</span></h5>
-                                <p class="mb-0 text-muted small">All help requests and volunteer signups submitted by citizens within this mandal are routed exclusively to this dashboard.</p>
+                                <span>Active Requests</span>
+                                <strong id="activeRequestsCount">0</strong>
+                                <small class="trend-up">Mandal queue &rarr;</small>
                             </div>
-                        </div>
+                        </article>
+                        <article class="stat-card" onclick="switchMandalView('requests')" style="cursor: pointer;">
+                            <div class="stat-icon stat-orange"><i class="bi bi-exclamation-triangle"></i></div>
+                            <div>
+                                <span>Critical Requests</span>
+                                <strong id="criticalRequestsCount">0</strong>
+                                <small class="trend-down">High priority &rarr;</small>
+                            </div>
+                        </article>
+                        <article class="stat-card" onclick="switchMandalView('volunteers')" style="cursor: pointer;">
+                            <div class="stat-icon stat-blue"><i class="bi bi-people"></i></div>
+                            <div>
+                                <span>Total Volunteers</span>
+                                <strong id="volunteersCount">0</strong>
+                                <small class="trend-up">Active force &rarr;</small>
+                            </div>
+                        </article>
+                        <article class="stat-card" onclick="switchMandalView('requests')" style="cursor: pointer;">
+                            <div class="stat-icon stat-green"><i class="bi bi-check2-circle"></i></div>
+                            <div>
+                                <span>Resolved Requests</span>
+                                <strong id="resolvedRequestsCount">0</strong>
+                                <small class="trend-up">Archived in log</small>
+                            </div>
+                        </article>
+                        <article class="stat-card" onclick="switchMandalView('shelters')" style="cursor: pointer;">
+                            <div class="stat-icon stat-purple"><i class="bi bi-house-heart"></i></div>
+                            <div>
+                                <span>Relief Shelters</span>
+                                <strong id="statSheltersCount">6</strong>
+                                <small class="stat-muted">Beds & capacity &rarr;</small>
+                            </div>
+                        </article>
+                        <article class="stat-card" onclick="switchMandalView('inventory')" style="cursor: pointer;">
+                            <div class="stat-icon stat-amber"><i class="bi bi-box-seam"></i></div>
+                            <div>
+                                <span>Relief Inventory</span>
+                                <strong id="statInventoryCount">8</strong>
+                                <small class="trend-up">Essential stocks &rarr;</small>
+                            </div>
+                        </article>
+                        <article class="stat-card" onclick="switchMandalView('donations')" style="cursor: pointer;">
+                            <div class="stat-icon stat-teal"><i class="bi bi-heart"></i></div>
+                            <div>
+                                <span>Donations</span>
+                                <strong id="statDonationsCount">0</strong>
+                                <small class="trend-up">Community aid &rarr;</small>
+                            </div>
+                        </article>
                     </div>
 
-                    <!-- STATS ROW -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-12 col-sm-6 col-xl-3">
-                            <div class="stat-box stat-red">
-                                <div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
-                                <div class="stat-info">
-                                    <span class="stat-label">Active Help Requests</span>
-                                    <h3 class="stat-value" id="statActiveRequests">0</h3>
-                                    <small class="stat-sub text-danger" id="statCriticalRequests">0 Critical priority</small>
+                    <!-- LOCAL JURISDICTION COMMAND INFO -->
+                    <div class="content-grid mb-4">
+                        <section class="panel requests-panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <span class="eyebrow">LIVE OPERATIONAL QUEUE</span>
+                                    <h3>Recent Help Requests in Mandal</h3>
+                                </div>
+                                <a href="#requests" class="text-link"
+                                    onclick="switchMandalView('requests'); return false;">View all <i
+                                        class="bi bi-arrow-right"></i></a>
+                            </div>
+                            <div class="request-toolbar">
+                                <div class="search-box">
+                                    <i class="bi bi-search"></i>
+                                    <input id="dashRequestSearch" type="search"
+                                        placeholder="Search ID, citizen, location..."
+                                        aria-label="Search dashboard requests">
+                                </div>
+                                <select id="dashStatusFilter" aria-label="Filter dashboard requests by status">
+                                    <option value="all">All statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="verified">Verified</option>
+                                    <option value="assigned">Assigned</option>
+                                    <option value="in progress">In progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </div>
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Track ID</th>
+                                            <th>Citizen Name</th>
+                                            <th>Contact</th>
+                                            <th>Village / Location</th>
+                                            <th>Disaster Type</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashRequestTable">
+                                        <!-- Snapshot populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <span class="eyebrow">COMMAND DESK INFO</span>
+                                    <h3>Mandal Jurisdiction Info</h3>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2"
+                                    onclick="switchMandalView('profile')"><i class="bi bi-person"></i> Officer</button>
+                            </div>
+                            <div class="overview-details-box p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted small">Assigned Mandal:</span>
+                                    <strong class="text-dark" id="dashCurrentMandalText">Vijayawada Rural</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted small">District:</span>
+                                    <span class="text-dark fw-bold" id="dashCurrentDistrictText">Krishna</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted small">State / UT:</span>
+                                    <span class="text-dark" id="dashCurrentStateText">Andhra Pradesh</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted small">Mandal Officer:</span>
+                                    <span class="text-primary fw-semibold" id="dashOfficerDisplayName">K. Ramesh
+                                        Kumar</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted small">National Helpline:</span>
+                                    <span class="font-monospace text-danger fw-bold">112 / 1077</span>
+                                </div>
+                                <div class="mt-3 pt-2 border-top">
+                                    <button class="secondary-button full-width" type="button"
+                                        onclick="switchMandalView('shelters')">
+                                        <i class="bi bi-house-heart me-1"></i> View Relief Shelters
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-xl-3">
-                            <div class="stat-box stat-blue">
-                                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                                <div class="stat-info">
-                                    <span class="stat-label">Mandal Volunteers</span>
-                                    <h3 class="stat-value" id="statTotalVolunteers">0</h3>
-                                    <small class="stat-sub text-primary" id="statAvailableVolunteers">0 Available on call</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-xl-3">
-                            <div class="stat-box stat-amber">
-                                <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
-                                <div class="stat-info">
-                                    <span class="stat-label">In-Progress Operations</span>
-                                    <h3 class="stat-value" id="statInProgressRequests">0</h3>
-                                    <small class="stat-sub text-warning">Field teams deployed</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-xl-3">
-                            <div class="stat-box stat-green">
-                                <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
-                                <div class="stat-info">
-                                    <span class="stat-label">Resolved (Annual)</span>
-                                    <h3 class="stat-value" id="statResolvedRequests">0</h3>
-                                    <small class="stat-sub text-success">Logged in statement</small>
-                                </div>
-                            </div>
-                        </div>
+                        </section>
                     </div>
 
-                    <!-- TWO-COLUMN DASHBOARD CONTENT -->
+                    <!-- TWO-COLUMN LIST VIEW -->
                     <div class="row g-4">
-                        <!-- Left: Urgent routed requests -->
                         <div class="col-12 col-lg-7">
                             <div class="mandal-card h-100">
                                 <div class="mandal-card-header d-flex justify-content-between align-items-center">
                                     <div>
                                         <h5 class="mb-0">Priority Help Requests</h5>
-                                        <small class="text-muted">Citizens awaiting emergency response in this mandal</small>
+                                        <small class="text-muted">Citizens awaiting emergency response in this
+                                            mandal</small>
                                     </div>
-                                    <button class="btn btn-sm btn-outline-primary" id="viewAllRequestsBtn" type="button">View All</button>
+                                    <button class="btn btn-sm btn-outline-primary" type="button"
+                                        onclick="switchMandalView('requests')">View All</button>
                                 </div>
                                 <div class="mandal-card-body p-0">
                                     <div class="list-group list-group-flush" id="dashPriorityRequestsList">
@@ -195,7 +363,6 @@
                             </div>
                         </div>
 
-                        <!-- Right: Active Volunteers in this mandal -->
                         <div class="col-12 col-lg-5">
                             <div class="mandal-card h-100">
                                 <div class="mandal-card-header d-flex justify-content-between align-items-center">
@@ -203,7 +370,8 @@
                                         <h5 class="mb-0">Mandal Response Force</h5>
                                         <small class="text-muted">Volunteers ready to deploy</small>
                                     </div>
-                                    <button class="btn btn-sm btn-outline-primary" id="viewAllVolunteersBtn" type="button">View All</button>
+                                    <button class="btn btn-sm btn-outline-primary" type="button"
+                                        onclick="switchMandalView('volunteers')">View All</button>
                                 </div>
                                 <div class="mandal-card-body p-0">
                                     <div class="list-group list-group-flush" id="dashVolunteersList">
@@ -216,14 +384,20 @@
                 </div>
 
                 <!-- 2. VIEW: ROUTED HELP REQUESTS -->
-                <div class="mandal-view" id="view-requests">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                <div class="mandal-view admin-view" id="view-requests">
+                    <div class="welcome-row">
                         <div>
-                            <h4 class="mb-1">Routed Citizen Help Requests</h4>
-                            <p class="text-muted small mb-0">Applications submitted from this mandal are automatically routed here for verification and response.</p>
+                            <span class="eyebrow">CITIZEN RESCUE OPERATIONS</span>
+                            <h2>Routed Citizen Help Requests</h2>
+                            <p>Applications submitted from this mandal. Verify needs, deploy field volunteers, and track
+                                each case to full resolution.</p>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-secondary" id="refreshRequestsTableBtn" type="button"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-sm btn-danger px-3" type="button"
+                                onclick="openPreDisasterSmsBroadcastModal()"><i
+                                    class="bi bi-phone-vibrate-fill me-1"></i> Broadcast Pre-Disaster SMS</button>
+                            <button class="secondary-button" type="button" id="refreshRequestsTableBtn"><i
+                                    class="bi bi-arrow-clockwise"></i> Refresh</button>
                         </div>
                     </div>
 
@@ -233,92 +407,117 @@
                             <div class="col-12 col-md-4">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                    <input type="text" class="form-control" id="requestSearchInput" placeholder="Search by name, phone, village...">
+                                    <input type="text" class="form-control" id="requestSearchInput"
+                                        placeholder="Search by name, phone, village, track ID, loss...">
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">
                                 <select class="form-select form-select-sm" id="requestStatusFilter">
-                                    <option value="All">All Statuses</option>
-                                    <option value="Pending">Pending Verification</option>
-                                    <option value="Verified">Verified</option>
-                                    <option value="Assigned">Assigned to Volunteer</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Resolved">Resolved</option>
+                                    <option value="all">All Statuses</option>
+                                    <option value="pending">Pending Verification</option>
+                                    <option value="verified">Verified</option>
+                                    <option value="assigned">Assigned to Volunteer</option>
+                                    <option value="in progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
                                 </select>
                             </div>
                             <div class="col-6 col-md-3">
                                 <select class="form-select form-select-sm" id="requestPriorityFilter">
-                                    <option value="All">All Priorities</option>
-                                    <option value="Critical">Critical</option>
-                                    <option value="High">High</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
+                                    <option value="all">All Priorities</option>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-2 text-end">
-                                <span class="badge bg-secondary-subtle text-secondary" id="requestFilterCountBadge">Showing 0</span>
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                    id="requestFilterCountBadge">Showing 0</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- REQUESTS TABLE -->
-                    <div class="table-responsive bg-white rounded-3 shadow-sm border">
+                    <div class="table-responsive bg-white rounded-3 shadow-sm border table-wrap">
                         <table class="table table-hover align-middle mb-0" id="mandalRequestsTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>App ID</th>
-                                    <th>Citizen & Contact</th>
-                                    <th>Emergency Type</th>
-                                    <th>Priority</th>
+                                    <th>Track ID</th>
+                                    <th>Citizen Name</th>
+                                    <th>Guardian</th>
+                                    <th>Contact</th>
                                     <th>Village / Location</th>
-                                    <th>People Affected</th>
+                                    <th>Reported Losses</th>
+                                    <th>Assistance Needed</th>
+                                    <th>Proof</th>
+                                    <th>Priority</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="mandalRequestsTableBody">
-                                <tr><td colspan="8" class="text-center py-4 text-muted">No requests found.</td></tr>
+                                <tr>
+                                    <td colspan="11" class="text-center py-4 text-muted">No requests found.</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- 3. VIEW: MANDAL VOLUNTEERS -->
-                <div class="mandal-view" id="view-volunteers">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                <div class="mandal-view admin-view" id="view-volunteers">
+                    <div class="welcome-row">
                         <div>
-                            <h4 class="mb-1">Mandal Volunteer Force & ID Cards</h4>
-                            <p class="text-muted small mb-0">Volunteers registered in this mandal. View profiles and generate official dual-sided ID cards.</p>
+                            <span class="eyebrow">FIELD PERSONNEL FORCE</span>
+                            <h2>Mandal Volunteer Force & ID Cards</h2>
+                            <p>Volunteers registered for response duty. View profiles, approve applications, assign
+                                deployments, and issue official dual-sided ID cards.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-secondary" id="refreshVolunteersTableBtn" type="button"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                            <button class="primary-button" type="button" id="addNewVolunteerBtn"><i
+                                    class="bi bi-person-plus-fill"></i> Add Volunteer</button>
+                            <button class="secondary-button" type="button" id="refreshVolunteersTableBtn"><i
+                                    class="bi bi-arrow-clockwise"></i> Refresh</button>
                         </div>
                     </div>
 
                     <!-- FILTER TOOLBAR -->
                     <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
                         <div class="row g-2 align-items-center">
-                            <div class="col-12 col-md-5">
+                            <div class="col-12 col-md-4">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                    <input type="text" class="form-control" id="volSearchInput" placeholder="Search volunteer by name, ID, phone, skill...">
+                                    <input type="text" class="form-control" id="volSearchInput"
+                                        placeholder="Search volunteer by name, ID, phone, skill...">
                                 </div>
                             </div>
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-3">
                                 <select class="form-select form-select-sm" id="volStatusFilter">
-                                    <option value="All">All Availabilities</option>
-                                    <option value="Available">Available</option>
-                                    <option value="Unavailable">Unavailable / On Leave</option>
+                                    <option value="all">All Availabilities</option>
+                                    <option value="available">Available</option>
+                                    <option value="assigned">Assigned / Deployed</option>
+                                    <option value="unavailable">Unavailable / On Leave</option>
+                                    <option value="pending">Pending Approval</option>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-3 text-end">
-                                <span class="badge bg-secondary-subtle text-secondary" id="volFilterCountBadge">Showing 0</span>
+                            <div class="col-6 col-md-3">
+                                <select class="form-select form-select-sm" id="volSkillFilter">
+                                    <option value="all">All Skills</option>
+                                    <option value="rescue">Rescue Support</option>
+                                    <option value="medical">Medical / First Aid</option>
+                                    <option value="driving">Driving / Logistics</option>
+                                    <option value="food">Food & Shelter Aid</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-2 text-end">
+                                <span class="badge bg-secondary-subtle text-secondary" id="volFilterCountBadge">Showing
+                                    0</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- VOLUNTEERS TABLE -->
-                    <div class="table-responsive bg-white rounded-3 shadow-sm border">
+                    <div class="table-responsive bg-white rounded-3 shadow-sm border table-wrap">
                         <table class="table table-hover align-middle mb-0" id="mandalVolunteersTable">
                             <thead class="table-light">
                                 <tr>
@@ -327,120 +526,516 @@
                                     <th>Mobile & Blood Grp</th>
                                     <th>Mandal & District</th>
                                     <th>Skills & Capabilities</th>
-                                    <th>Availability</th>
+                                    <th>Availability / Approval</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="mandalVolunteersTableBody">
-                                <tr><td colspan="7" class="text-center py-4 text-muted">No volunteers enrolled in this mandal yet.</td></tr>
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">No volunteers enrolled in this
+                                        mandal yet.</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- 4. VIEW: ANNUAL STATEMENTS & RESOLVED ARCHIVE -->
-                <div class="mandal-view" id="view-reports">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                <!-- 3B. VIEW: ASSIGN VOLUNTEERS & MONITOR FIELD STATUS (REQUIREMENTS 3, 4, 5) -->
+                <div class="mandal-view admin-view" id="view-assign">
+                    <div class="welcome-row">
                         <div>
-                            <h4 class="mb-1">Annual Statements & Resolved Requests Archive</h4>
-                            <p class="text-muted small mb-0">Official permanent record of resolved disaster operations in this mandal for audit, accountability, and future reference.</p>
+                            <span class="eyebrow">FIELD DISPATCH & STATUS MONITORING</span>
+                            <h2>Assign Volunteers & Track Field Status</h2>
+                            <p>Assign single or multiple volunteers to emergency applications, collect family applicant
+                                documentation, trigger jurisdictional emergency department alerts, and monitor volunteer
+                                progress in real time.</p>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-success" id="exportAnnualCsvBtn" type="button"><i class="bi bi-file-earmark-spreadsheet"></i> Export CSV</button>
-                            <button class="btn btn-sm btn-outline-primary" id="printAnnualReportBtn" type="button"><i class="bi bi-printer"></i> Print Statement</button>
-                        </div>
-                    </div>
-
-                    <!-- ANNUAL SUMMARY METRICS -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-12 col-md-4">
-                            <div class="p-3 bg-white rounded-3 shadow-sm border text-center">
-                                <span class="text-muted small d-block">Total Requests Resolved</span>
-                                <h3 class="mb-0 text-success fw-bold" id="annualTotalResolvedCount">0</h3>
-                                <small class="text-muted">Across all years</small>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="p-3 bg-white rounded-3 shadow-sm border text-center">
-                                <span class="text-muted small d-block">Current Statement Year</span>
-                                <h3 class="mb-0 text-primary fw-bold" id="annualCurrentYearLabel">2026</h3>
-                                <small class="text-muted">Fiscal & Operational cycle</small>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="p-3 bg-white rounded-3 shadow-sm border text-center">
-                                <span class="text-muted small d-block">Mandal Relief Performance</span>
-                                <h3 class="mb-0 text-info fw-bold">100% Verified</h3>
-                                <small class="text-muted">Audit-ready documentation</small>
-                            </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="secondary-button" type="button" onclick="openApplicantDetailsModal()"><i
+                                    class="bi bi-file-earmark-person-fill"></i> Fill / View Application Form (Family
+                                Proofs)</button>
+                            <button class="primary-button" type="button" onclick="switchMandalView('requests')"><i
+                                    class="bi bi-clipboard2-pulse"></i> Review Help Requests</button>
                         </div>
                     </div>
 
-                    <!-- YEAR FILTER TOOLBAR -->
+                    <!-- 2-COLUMN DISPATCH & DOCUMENTATION DESK -->
+                    <div class="row g-3">
+                        <!-- COLUMN 1: SELECT REQUEST & APPLICANT DETAILS -->
+                        <div class="col-lg-6">
+                            <div class="panel h-100 bg-white p-3 rounded-3 border shadow-sm">
+                                <div
+                                    class="panel-heading pb-2 mb-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="eyebrow">STEP 1</span>
+                                        <h4 class="mb-0 fs-6 fw-bold">Select Help Request Application</h4>
+                                    </div>
+                                    <span class="badge bg-danger-subtle text-danger border"
+                                        id="assignRequestCountBadge">0 Pending</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mandalAssignSelectRequest"
+                                        class="form-label small fw-bold text-muted">Active Emergency Application</label>
+                                    <select class="form-select form-select-sm" id="mandalAssignSelectRequest"
+                                        onchange="handleAssignRequestChange()">
+                                        <option value="">-- Choose Emergency Request --</option>
+                                    </select>
+                                </div>
+                                <div id="mandalAssignSelectedRequestCard" class="p-3 bg-light rounded-3 border"
+                                    style="display: none;">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <strong class="d-block fs-6" id="assignCardApplicantName">—</strong>
+                                            <small class="text-muted"><i class="bi bi-geo-alt-fill text-danger"></i>
+                                                <span id="assignCardLocation">—</span> | <i
+                                                    class="bi bi-telephone-fill text-success"></i> <span
+                                                    id="assignCardPhone">—</span></small>
+                                        </div>
+                                        <span class="badge bg-danger" id="assignCardPriority">Priority</span>
+                                    </div>
+                                    <div class="p-2 mb-2 bg-white rounded border small">
+                                        <div><strong>Losses / Emergency: </strong><span id="assignCardLosses">—</span>
+                                        </div>
+                                        <div class="mt-1"><strong>Currently Assigned: </strong><span
+                                                id="assignCardCurrentAssigned" class="text-primary fw-bold">None</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- APPLICANT FORM & DEPARTMENT NOTIFICATION ACTION BAR -->
+                                    <div class="d-flex gap-2 flex-wrap mt-3 pt-2 border-top">
+                                        <button type="button" class="btn btn-sm btn-outline-primary fw-bold"
+                                            onclick="openApplicantDetailsForSelectedRequest()">
+                                            <i class="bi bi-file-earmark-person-fill me-1"></i> Applicant & Family
+                                            Proofs (Form 3-A)
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger fw-bold"
+                                            onclick="openDeptNotificationForSelectedRequest()">
+                                            <i class="bi bi-broadcast me-1"></i> Department Notifications
+                                            (Police/Fire/PHC)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COLUMN 2: SELECT VOLUNTEERS (ANY NUMBER CAN BE ASSIGNED) -->
+                        <div class="col-lg-6">
+                            <div class="panel h-100 bg-white p-3 rounded-3 border shadow-sm">
+                                <div
+                                    class="panel-heading pb-2 mb-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="eyebrow">STEP 2</span>
+                                        <h4 class="mb-0 fs-6 fw-bold">Select Field Volunteers (Multiple Allowed)</h4>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border"
+                                        id="selectedVolunteersCountBadge">0 Selected</span>
+                                </div>
+                                <p class="small text-muted mb-2">Select one or more available volunteers to assign to
+                                    the application:</p>
+
+                                <div class="input-group input-group-sm mb-2">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="mandalAssignVolSearch"
+                                        placeholder="Filter volunteers by name, skill, phone..."
+                                        oninput="filterAssignVolunteersList()">
+                                </div>
+
+                                <div id="mandalAssignVolunteersChecklist"
+                                    class="assign-volunteers-list p-2 bg-light rounded-3 border"
+                                    style="max-height: 240px; overflow-y: auto;">
+                                    <!-- Populated dynamically with selectable volunteer cards -->
+                                </div>
+                                <select class="d-none" id="mandalAssignSelectVolunteer"></select>
+
+                                <button type="button" class="btn btn-primary w-100 mt-3 fw-bold"
+                                    id="executeMandalAssignmentBtn" onclick="executeMandalAssignment()" disabled>
+                                    <i class="bi bi-send-check-fill me-1"></i> Confirm Dispatch & Assign Selected
+                                    Volunteers
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- TABLE 1: ASSIGNED VOLUNTEER DETAILS & STATUS MONITOR (REQUIREMENT 4) -->
+                        <div class="col-12 mt-3">
+                            <div class="panel bg-white p-3 rounded-3 border shadow-sm">
+                                <div
+                                    class="panel-heading pb-2 mb-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div>
+                                        <span class="eyebrow">FIELD PERSONNEL TRACKING</span>
+                                        <h4 class="mb-0 fs-6 fw-bold"><i
+                                                class="bi bi-person-lines-fill text-primary me-2"></i>Assigned Volunteer
+                                            Roster & Field Status Monitor</h4>
+                                        <small class="text-muted">Displays volunteer details and active mission
+                                            statuses. Update volunteer progress (Assigned &rarr; En Route &rarr; On
+                                            Scene &rarr; Completed) in real time.</small>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <select class="form-select form-select-sm" id="volAssignmentStatusFilter"
+                                            onchange="renderMandalActiveAssignmentsTable()" style="max-width: 220px;">
+                                            <option value="all">All 9 Workflow Statuses</option>
+                                            <option value="Assigned">1. Assigned</option>
+                                            <option value="Accepted">2. Accepted</option>
+                                            <option value="On the Way">3. On the Way / En Route</option>
+                                            <option value="Reached Location">4. Reached Location / On Scene</option>
+                                            <option value="Work in Progress">5. Work in Progress</option>
+                                            <option value="Assistance Required">6. Assistance Required</option>
+                                            <option value="Submitted for Verification">7. Submitted for Verification</option>
+                                            <option value="Verified / Completed">8. Verified / Completed</option>
+                                            <option value="Rejected / Rework Required">9. Rejected / Rework Required</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover align-middle mb-0"
+                                        id="mandalVolunteerTrackingTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Volunteer</th>
+                                                <th>Contact & Phone</th>
+                                                <th>Specialized Skills</th>
+                                                <th>Assigned Application</th>
+                                                <th>Assigned Since</th>
+                                                <th>Field Status</th>
+                                                <th>Update Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="mandalActiveAssignmentsTable">
+                                            <!-- Dynamically populated with volunteer-centric rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TABLE 2: JURISDICTIONAL DEPARTMENT DISPATCHES & RESPONSE TRACKER (REQUIREMENT 5) -->
+                        <div class="col-12 mt-3">
+                            <div class="panel bg-white p-3 rounded-3 border shadow-sm">
+                                <div
+                                    class="panel-heading pb-2 mb-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div>
+                                        <span class="eyebrow">INTER-AGENCY COORDINATION</span>
+                                        <h4 class="mb-0 fs-6 fw-bold"><i
+                                                class="bi bi-shield-check text-danger me-2"></i>Jurisdictional
+                                            Department Dispatches & Response Tracker</h4>
+                                        <small class="text-muted">Monitors notifications routed strictly to Police,
+                                            Fire, and Medical stations serving this mandal.</small>
+                                    </div>
+                                    <span class="badge bg-secondary-subtle text-secondary border"
+                                        id="deptDispatchesCountBadge">0 Dispatches</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Track ID</th>
+                                                <th>Beneficiary / Location</th>
+                                                <th>Department Type</th>
+                                                <th>Jurisdictional Station</th>
+                                                <th>Dispatched</th>
+                                                <th>Timestamp</th>
+                                                <th>Response Status</th>
+                                                <th>Update Response</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="mandalDepartmentDispatchesTable">
+                                            <!-- Dynamically populated -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. VIEW: SHELTERS MANAGEMENT (MATCHING ADMIN) -->
+                <div class="mandal-view admin-view" id="view-shelters">
+                    <div class="welcome-row">
+                        <div>
+                            <span class="eyebrow">SAFE REFUGE NETWORK</span>
+                            <h2>Emergency Shelters & Relief Camps</h2>
+                            <p>Real-time capacity tracking, occupancy updates, and resource allocation for safe relief
+                                camps in this region.</p>
+                        </div>
+                        <button class="primary-button" type="button" id="addNewShelterBtn"><i class="bi bi-plus-lg"></i>
+                            Add Relief Shelter</button>
+                    </div>
+
+                    <!-- SHELTERS FILTER TOOLBAR -->
                     <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
                         <div class="row g-2 align-items-center">
-                            <div class="col-12 col-sm-6 col-md-4">
-                                <label class="form-label small fw-bold mb-1">Select Statement Year</label>
-                                <select class="form-select form-select-sm" id="annualYearSelect">
+                            <div class="col-12 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="shelterSearchInput"
+                                        placeholder="Search shelter by name, location, contact...">
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <select class="form-select form-select-sm" id="shelterStatusFilter">
+                                    <option value="all">All Shelters</option>
+                                    <option value="open">Available Capacity</option>
+                                    <option value="near">Near Capacity (&ge;75%)</option>
+                                    <option value="full">Full Capacity</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3 text-end">
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                    id="shelterFilterCountBadge">Showing all</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3" id="sheltersContainer">
+                        <!-- Populated dynamically with shelter cards -->
+                    </div>
+                </div>
+
+                <!-- 5. VIEW: RELIEF INVENTORY & SUPPLIES (MATCHING ADMIN) -->
+                <div class="mandal-view admin-view" id="view-inventory">
+                    <div class="welcome-row">
+                        <div>
+                            <span class="eyebrow">SUPPLY CHAIN & LOGISTICS</span>
+                            <h2>Relief Inventory & Supplies Management</h2>
+                            <p>Track essential emergency provisions, medical supplies, and rescue equipment stockpiles
+                                available for distribution.</p>
+                        </div>
+                        <button class="secondary-button" type="button" id="restockInventoryBtn"><i
+                                class="bi bi-box-arrow-in-down"></i> Restock Supplies</button>
+                    </div>
+
+                    <!-- INVENTORY FILTER TOOLBAR -->
+                    <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="inventorySearchInput"
+                                        placeholder="Search item, category, batch...">
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <select class="form-select form-select-sm" id="inventoryCategoryFilter">
+                                    <option value="all">All Supply Categories</option>
+                                    <option value="food">Food & Drinking Water</option>
+                                    <option value="medical">Medical & First Aid Kits</option>
+                                    <option value="shelter">Tarpaulins & Blankets</option>
+                                    <option value="gear">Rescue & Safety Gear</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3 text-end">
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                    id="inventoryFilterCountBadge">Showing all</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3" id="inventoryContainer">
+                        <!-- Populated dynamically with inventory cards -->
+                    </div>
+                </div>
+
+                <!-- 6. VIEW: DONATIONS (MATCHING ADMIN) -->
+                <div class="mandal-view admin-view" id="view-donations">
+                    <div class="welcome-row">
+                        <div>
+                            <span class="eyebrow">PUBLIC CONTRIBUTIONS</span>
+                            <h2>Donations & Relief Materials</h2>
+                            <p>Manage community contributions, food packets, medical aid, and dispatch relief items.</p>
+                        </div>
+                        <button class="secondary-button" type="button" id="clearSubmissions">Clear completed
+                            records</button>
+                    </div>
+
+                    <!-- DONATIONS FILTER TOOLBAR -->
+                    <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="donationSearchInput"
+                                        placeholder="Search donor name, phone, items...">
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <select class="form-select form-select-sm" id="donationTypeFilter">
+                                    <option value="all">All Contribution Types</option>
+                                    <option value="money">Financial Donations</option>
+                                    <option value="food">Food & Rations</option>
+                                    <option value="water">Drinking Water</option>
+                                    <option value="medicine">Medicine & Medical Kits</option>
+                                    <option value="clothes">Clothes & Blankets</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3 text-end">
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                    id="donationFilterCountBadge">Showing all</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="panel submissions-panel" id="submissions">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">INCOMING CONTRIBUTIONS</span>
+                                <h3>Registered Donations</h3>
+                            </div>
+                            <span class="badge bg-success text-white" id="donationsBadgeCount">0 donations</span>
+                        </div>
+                        <div class="submission-columns">
+                            <div>
+                                <h4>Account registrations</h4>
+                                <div id="registrationSubmissions" class="submission-list"></div>
+                            </div>
+                            <div>
+                                <h4>Volunteer applications</h4>
+                                <div id="volunteerSubmissions" class="submission-list"></div>
+                            </div>
+                            <div>
+                                <h4>Donation registrations</h4>
+                                <div id="donationSubmissions" class="submission-list"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 7. VIEW: OPERATIONS REPORTS & ANNUAL STATEMENTS -->
+                <div class="mandal-view admin-view" id="view-reports">
+                    <div class="welcome-row">
+                        <div>
+                            <span class="eyebrow">OPERATIONAL AUDIT & ANALYTICS</span>
+                            <h2>Disaster Operations Reports & Annual Statements</h2>
+                            <p>Comprehensive breakdown of emergency requests, volunteer deployment, relief distribution,
+                                and archived statements.</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="secondary-button" type="button" onclick="window.print()"
+                                id="printReportBtn"><i class="bi bi-printer"></i> Print Summary</button>
+                            <button class="primary-button" type="button" id="downloadFullReportBtn"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i> Download Operations Log</button>
+                        </div>
+                    </div>
+
+                    <!-- ANALYTICS CARDS (MATCHING ADMIN) -->
+                    <div class="row g-3 mb-4" id="reportsContainer">
+                        <!-- Populated dynamically with operational metrics -->
+                    </div>
+
+                    <!-- ANNUAL STATEMENTS OF RESOLVED REQUESTS (PRESERVING TEST ASSERTIONS) -->
+                    <div class="panel mt-4">
+                        <div class="panel-heading d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <span class="eyebrow">HISTORICAL ARCHIVES & AUDIT</span>
+                                <h3>Annual Statements of Resolved Disaster Operations</h3>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="secondary-button" type="button" id="printAnnualReportBtn"><i
+                                        class="bi bi-printer"></i> Print Statement</button>
+                                <button class="primary-button" type="button" id="exportAnnualCsvBtn"><i
+                                        class="bi bi-download"></i> Export Annual Statement (CSV)</button>
+                            </div>
+                        </div>
+
+                        <!-- ANNUAL SUMMARY METRICS -->
+                        <div class="row g-3 p-3 pb-0">
+                            <div class="col-12 col-md-4">
+                                <div class="p-3 bg-light rounded-3 border text-center">
+                                    <span class="text-muted small d-block">Total Requests Resolved</span>
+                                    <h3 class="mb-0 text-success fw-bold" id="annualTotalResolvedCount">0</h3>
+                                    <small class="text-muted">Across all years</small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="p-3 bg-light rounded-3 border text-center">
+                                    <span class="text-muted small d-block">Current Statement Year</span>
+                                    <h3 class="mb-0 text-primary fw-bold" id="annualCurrentYearLabel">2026</h3>
+                                    <small class="text-muted">Fiscal & Operational cycle</small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="p-3 bg-light rounded-3 border text-center">
+                                    <span class="text-muted small d-block">Mandal Relief Performance</span>
+                                    <h3 class="mb-0 text-info fw-bold">100% Verified</h3>
+                                    <small class="text-muted">Audit-ready documentation</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- YEAR FILTER TOOLBAR -->
+                        <div class="request-toolbar flex-wrap p-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <label for="annualYearSelect" class="small fw-bold text-muted mb-0">Operational
+                                    Year:</label>
+                                <select id="annualYearSelect" class="form-select form-select-sm" style="width: auto;">
                                     <option value="All">All Years Combined</option>
                                     <option value="2026" selected>2026 Annual Statement</option>
                                     <option value="2025">2025 Annual Statement</option>
                                     <option value="2024">2024 Annual Statement</option>
                                 </select>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-4">
-                                <label class="form-label small fw-bold mb-1">Search Resolved Records</label>
-                                <input type="text" class="form-control form-control-sm" id="annualSearchInput" placeholder="Search by citizen, help type, village...">
+                            <div class="d-flex align-items-center gap-2 ms-sm-2 flex-grow-1" style="max-width: 320px;">
+                                <input type="text" class="form-control form-control-sm" id="annualSearchInput"
+                                    placeholder="Search by citizen, help type, village...">
                             </div>
-                            <div class="col-12 col-md-4 text-md-end mt-sm-auto">
-                                <span class="badge bg-success-subtle text-success border" id="annualStatementsCountBadge">0 Records Found</span>
+                            <div class="ms-auto">
+                                <span class="badge bg-success-subtle text-success border"
+                                    id="annualStatementsCountBadge">0 Records Found</span>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- ANNUAL STATEMENTS TABLE -->
-                    <div class="table-responsive bg-white rounded-3 shadow-sm border">
-                        <table class="table table-hover align-middle mb-0" id="annualStatementsTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Year</th>
-                                    <th>App ID</th>
-                                    <th>Citizen Name</th>
-                                    <th>Emergency Type</th>
-                                    <th>Village / Location</th>
-                                    <th>Resolved Date</th>
-                                    <th>Mandal / District</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="annualStatementsTableBody">
-                                <tr><td colspan="9" class="text-center py-4 text-muted">No resolved records in this statement period.</td></tr>
-                            </tbody>
-                        </table>
+                        <!-- ANNUAL STATEMENTS TABLE -->
+                        <div class="table-wrap">
+                            <table class="table table-hover align-middle mb-0" id="annualStatementsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>App ID</th>
+                                        <th>Citizen Name</th>
+                                        <th>Emergency Type</th>
+                                        <th>Village / Location</th>
+                                        <th>Resolved Date</th>
+                                        <th>Mandal / District</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="annualStatementsTableBody">
+                                    <tr>
+                                        <td colspan="9" class="text-center py-4 text-muted">No resolved records in this
+                                            statement period.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="empty-state text-center py-3" id="emptyAnnualStatements" style="display: none;">No
+                                resolved requests found for the selected year and filters.</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 5. VIEW: OFFICER PROFILE & SETTINGS -->
-                <div class="mandal-view" id="view-profile">
+                <!-- 8. VIEW: OFFICER PROFILE & SETTINGS -->
+                <div class="mandal-view admin-view" id="view-profile">
                     <div class="row g-4 justify-content-center">
                         <div class="col-12 col-lg-8">
                             <div class="mandal-card">
                                 <div class="mandal-card-header">
                                     <h5 class="mb-0">Mandal Officer Profile</h5>
-                                    <small class="text-muted">Manage your credentials, contact information, and profile picture</small>
+                                    <small class="text-muted">Manage your credentials, contact information, and official
+                                        profile photo</small>
                                 </div>
                                 <div class="mandal-card-body p-4">
                                     <form id="mandalProfileForm">
                                         <!-- PROFILE PICTURE UPLOAD WITH DELAYED SAVE RULE -->
                                         <div class="d-flex align-items-center gap-4 mb-4 p-3 bg-light rounded-3 border">
                                             <div class="officer-profile-preview-box">
-                                                <img id="mandalProfileImgPreview" src="" alt="Officer Photo" style="display: none; width: 100%; height: 100%; object-fit: cover;">
-                                                <span id="mandalProfileInitialsPreview" class="fs-4 fw-bold text-secondary">MO</span>
+                                                <img id="mandalProfileImgPreview" src="" alt="Officer Photo"
+                                                    style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                                <span id="mandalProfileInitialsPreview"
+                                                    class="fs-4 fw-bold text-secondary">MO</span>
                                             </div>
                                             <div class="flex-grow-1">
                                                 <label class="form-label fw-bold mb-1">Official Profile Picture</label>
-                                                <input class="form-control form-control-sm mb-1" type="file" id="mandalProfilePhotoInput" accept="image/*">
+                                                <input class="form-control form-control-sm mb-1" type="file"
+                                                    id="mandalProfilePhotoInput" accept="image/*">
                                                 <div class="form-text text-danger-emphasis small">
                                                     <i class="bi bi-info-circle-fill"></i>
                                                     <strong>Important:</strong> Picture preview is shown immediately, but will be saved <u>only after clicking the "Save Profile Changes"</u> button below.
@@ -451,36 +1046,47 @@
                                         <div class="row g-3">
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label small fw-bold">Officer Full Name</label>
-                                                <input type="text" class="form-control" id="profileOfficerNameInput" required>
+                                                <input type="text" class="form-control" id="profileOfficerNameInput"
+                                                    required>
                                             </div>
                                             <div class="col-12 col-md-6">
-                                                <label class="form-label small fw-bold">Employee ID (System Assigned)</label>
-                                                <input type="text" class="form-control bg-light" id="profileEmpIdInput" readonly>
+                                                <label class="form-label small fw-bold">Employee ID (System
+                                                    Assigned)</label>
+                                                <input type="text" class="form-control bg-light" id="profileEmpIdInput"
+                                                    readonly>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label small fw-bold">Assigned Mandal</label>
-                                                <input type="text" class="form-control bg-light" id="profileMandalInput" readonly>
+                                                <input type="text" class="form-control bg-light" id="profileMandalInput"
+                                                    readonly>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label small fw-bold">District Jurisdiction</label>
-                                                <input type="text" class="form-control bg-light" id="profileDistrictInput" readonly>
+                                                <input type="text" class="form-control bg-light"
+                                                    id="profileDistrictInput" readonly>
                                             </div>
                                             <div class="col-12 col-md-6">
-                                                <label class="form-label small fw-bold">Official Mobile / Helpline</label>
-                                                <input type="tel" class="form-control" id="profilePhoneInput" placeholder="+91 98765 00000" required>
+                                                <label class="form-label small fw-bold">Official Mobile /
+                                                    Helpline</label>
+                                                <input type="tel" class="form-control" id="profilePhoneInput"
+                                                    placeholder="+91 98765 00000" required>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label small fw-bold">Official Email</label>
-                                                <input type="email" class="form-control" id="profileEmailInput" placeholder="mandal.office@disaster.gov.in">
+                                                <input type="email" class="form-control" id="profileEmailInput"
+                                                    placeholder="mandal.office@disaster.gov.in">
                                             </div>
                                             <div class="col-12">
-                                                <label class="form-label small fw-bold">Office Address / Control Room Location</label>
-                                                <textarea class="form-control" id="profileAddressInput" rows="2" placeholder="Mandal Revenue Office, Main Road..."></textarea>
+                                                <label class="form-label small fw-bold">Office Address / Control Room
+                                                    Location</label>
+                                                <textarea class="form-control" id="profileAddressInput" rows="2"
+                                                    placeholder="Mandal Revenue Office, Main Road..."></textarea>
                                             </div>
                                         </div>
 
                                         <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-                                            <button type="submit" class="btn btn-primary px-4" id="saveMandalProfileBtn">
+                                            <button type="submit" class="btn btn-primary px-4"
+                                                id="saveMandalProfileBtn">
                                                 <i class="bi bi-check2-circle"></i> Save Profile Changes
                                             </button>
                                         </div>
@@ -492,112 +1098,254 @@
                 </div>
 
             </div>
+
+            <!-- =====================================================
+                 UNIVERSAL FOOTER (HOMEPAGE PARITY)
+            ===================================================== -->
+            <footer class="site-footer">
+                <div class="container-fluid px-4 py-5">
+                    <div class="row g-4 footer-main">
+                        <!-- BRAND -->
+                        <div class="col-lg-5">
+                            <a href="index.html#home"
+                                class="footer-brand text-decoration-none d-inline-flex align-items-center gap-2 mb-3">
+                                <span class="brand-logo">
+                                    <i class="bi bi-shield-fill-check"></i>
+                                </span>
+                                <span>DISASTER <strong>RELIEF</strong></span>
+                            </a>
+                            <p class="footer-description">
+                                A disaster relief coordination platform connecting citizens, volunteers and relief teams
+                                across India.
+                            </p>
+                        </div>
+
+                        <!-- PLATFORM -->
+                        <div class="col-6 col-lg-2">
+                            <h6>Platform</h6>
+                            <a href="index.html#home">Home</a>
+                            <a href="about.html">About</a>
+                            <a href="index.html#help">Request Help</a>
+                        </div>
+
+                        <!-- GET INVOLVED -->
+                        <div class="col-6 col-lg-2">
+                            <h6>Get Involved</h6>
+                            <a href="index.html#volunteer">Volunteer</a>
+                            <a href="index.html#donate">Donate</a>
+                        </div>
+
+                        <!-- EMERGENCY -->
+                        <div class="col-lg-3">
+                            <h6>Emergency</h6>
+                            <p><i class="bi bi-telephone"></i> 112 — Emergency Services</p>
+                            <p><i class="bi bi-geo-alt"></i> India</p>
+                            <div class="social-icons">
+                                <a href="#"><i class="bi bi-facebook"></i></a>
+                                <a href="#"><i class="bi bi-twitter-x"></i></a>
+                                <a href="#"><i class="bi bi-instagram"></i></a>
+                                <a href="#"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <span>© 2026 DISASTER RELIEF. All rights reserved.</span>
+                        <span>Built for safer communities across India.</span>
+                    </div>
+                </div>
+            </footer>
         </main>
     </div>
 
-    <!-- MODAL 1: APPLICATION OVERVIEW MODAL -->
-    <div class="modal fade" id="requestOverviewModal" tabindex="-1" aria-labelledby="requestOverviewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-dark text-white py-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-danger fs-6"><i class="bi bi-file-earmark-text-fill"></i></span>
+    <!-- MODAL 1: APPLICATION OVERVIEW MODAL (MATCHING ADMIN CAPABILITY) -->
+    <div class="modal fade request-overview-modal" id="requestOverviewModal" tabindex="-1"
+        aria-labelledby="requestOverviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content overview-modal-content">
+                <div class="modal-header overview-modal-header bg-dark text-white">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="overview-header-icon"><i class="bi bi-file-earmark-person-fill"></i></span>
                         <div>
-                            <h5 class="modal-title mb-0" id="requestOverviewModalLabel">Citizen Help Application Overview</h5>
-                            <small class="text-white-50" id="overviewAppSub">Routed to Mandal Operations Desk</small>
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                                <h5 class="modal-title mb-0" id="requestOverviewModalLabel">Citizen Help Application
+                                    Overview</h5>
+                                <span class="badge bg-dark font-monospace" id="modalTrackId">DR-00000000-000000</span>
+                                <span class="status-pill" id="modalPriorityBadge">Critical</span>
+                                <span class="status-pill" id="modalStatusBadge">Pending</span>
+                            </div>
+                            <small class="overview-timestamp" id="modalCreatedAt"><i class="bi bi-clock"></i> Submitted:
+                                Just now</small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4 bg-light">
-                    <!-- Status Banner -->
-                    <div class="d-flex justify-content-between align-items-center p-3 mb-3 bg-white rounded-3 border">
-                        <div>
-                            <span class="text-muted small d-block">Application ID</span>
-                            <strong class="font-monospace fs-5 text-primary" id="ovAppId">REQ-0001</strong>
-                        </div>
-                        <div class="text-end">
-                            <span class="text-muted small d-block">Current Status</span>
-                            <span class="badge bg-warning text-dark px-3 py-2 fs-6" id="ovStatusBadge">Pending</span>
-                        </div>
-                    </div>
-
+                <div class="modal-body overview-modal-body p-4 bg-light">
                     <div class="row g-3">
-                        <!-- Citizen Details -->
-                        <div class="col-12 col-md-6">
-                            <div class="p-3 bg-white rounded-3 border h-100">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-3"><i class="bi bi-person-fill text-primary"></i> Citizen Information</h6>
-                                <table class="table table-sm table-borderless mb-0">
-                                    <tr><td class="text-muted" style="width: 40%;">Name:</td><td><strong id="ovCitizenName">Applicant Name</strong></td></tr>
-                                    <tr><td class="text-muted">Contact:</td><td><a href="#" class="text-decoration-none fw-bold" id="ovCitizenPhone">+91 00000 00000</a></td></tr>
-                                    <tr><td class="text-muted">Mandal:</td><td><span id="ovCitizenMandal">Vijayawada Rural</span></td></tr>
-                                    <tr><td class="text-muted">District:</td><td><span id="ovCitizenDistrict">Krishna</span></td></tr>
-                                    <tr><td class="text-muted">State:</td><td><span id="ovCitizenState">Andhra Pradesh</span></td></tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Emergency Details -->
-                        <div class="col-12 col-md-6">
-                            <div class="p-3 bg-white rounded-3 border h-100">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-3"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Emergency Scope</h6>
-                                <table class="table table-sm table-borderless mb-0">
-                                    <tr><td class="text-muted" style="width: 40%;">Help Type:</td><td><span class="badge bg-danger-subtle text-danger border" id="ovHelpType">Flood Rescue</span></td></tr>
-                                    <tr><td class="text-muted">Priority:</td><td><span class="badge bg-danger" id="ovPriority">Critical</span></td></tr>
-                                    <tr><td class="text-muted">People Affected:</td><td><strong id="ovPeopleAffected">4 People</strong></td></tr>
-                                    <tr><td class="text-muted">Reported On:</td><td><span id="ovReportedDate">Today</span></td></tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Village & GPS Coordinates -->
-                        <div class="col-12">
-                            <div class="p-3 bg-white rounded-3 border">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-2"><i class="bi bi-geo-alt-fill text-success"></i> Location & GPS Details</h6>
-                                <div class="row g-2">
-                                    <div class="col-12 col-md-6">
-                                        <small class="text-muted d-block">Village / Street Address:</small>
-                                        <div class="fw-semibold" id="ovVillageAddress">Village Name, Near Panchayat Office</div>
+                        <!-- Applicant Details -->
+                        <div class="col-md-6">
+                            <div class="overview-card h-100">
+                                <div class="overview-card-header">
+                                    <i class="bi bi-person-fill"></i> Applicant Information
+                                </div>
+                                <div class="overview-card-body">
+                                    <div class="overview-field">
+                                        <label>Applicant Name</label>
+                                        <div class="field-val" id="modalName">—</div>
                                     </div>
-                                    <div class="col-12 col-md-6">
-                                        <small class="text-muted d-block">GPS Coordinates / Landmark:</small>
-                                        <div class="font-monospace" id="ovGpsCoords">16.5062° N, 80.6480° E</div>
+                                    <div class="overview-field">
+                                        <label>Father / Guardian Name</label>
+                                        <div class="field-val" id="modalFatherName">—</div>
+                                    </div>
+                                    <div class="overview-field">
+                                        <label>Mobile Number</label>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap mt-1">
+                                            <span class="field-val font-monospace" id="modalPhone">—</span>
+                                            <a href="#" class="btn btn-sm btn-outline-success py-1 px-2 modal-comm-btn"
+                                                id="modalCallBtn"><i class="bi bi-telephone-fill"></i> Call</a>
+                                            <a href="#" target="_blank" rel="noopener"
+                                                class="btn btn-sm btn-outline-success py-1 px-2 modal-comm-btn"
+                                                id="modalWhatsAppBtn"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Specific Needs -->
-                        <div class="col-12">
-                            <div class="p-3 bg-white rounded-3 border">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-2"><i class="bi bi-card-text text-secondary"></i> Requested Assistance & Description</h6>
-                                <p class="mb-0 text-secondary" id="ovDescription">Details of citizen emergency.</p>
+                        <!-- Location & GPS -->
+                        <div class="col-md-6">
+                            <div class="overview-card h-100">
+                                <div class="overview-card-header">
+                                    <i class="bi bi-geo-alt-fill"></i> Location & GPS
+                                </div>
+                                <div class="overview-card-body">
+                                    <div class="overview-field">
+                                        <label>Village / Town / Location</label>
+                                        <div class="field-val" id="modalVillage">—</div>
+                                    </div>
+                                    <div class="overview-field">
+                                        <label>Mandal / Taluk</label>
+                                        <div class="field-val" id="modalMandal">—</div>
+                                    </div>
+                                    <div class="overview-field">
+                                        <label>District & State</label>
+                                        <div class="field-val" id="modalDistrictState">—</div>
+                                    </div>
+                                    <div class="overview-field">
+                                        <label>GPS Coordinates</label>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap mt-1">
+                                            <span class="field-val font-monospace small" id="modalGps">—</span>
+                                            <a href="#" target="_blank" rel="noopener"
+                                                class="btn btn-sm btn-outline-danger py-1 px-2 modal-comm-btn"
+                                                id="modalGpsLink"><i class="bi bi-pin-map-fill"></i> Open Maps</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Action Workflow -->
+                        <!-- Disaster & Relief Requirements -->
                         <div class="col-12">
-                            <div class="p-3 bg-white rounded-3 border">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-3"><i class="bi bi-gear-fill text-primary"></i> Mandal Response Actions</h6>
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-12 col-md-5">
-                                        <label class="form-label small fw-bold mb-1">Update Status</label>
-                                        <select class="form-select" id="ovUpdateStatusSelect">
-                                            <option value="Pending">Pending Verification</option>
-                                            <option value="Verified">Verified by Mandal Officer</option>
-                                            <option value="Assigned">Assigned to Volunteer Team</option>
-                                            <option value="In Progress">In Progress (Field Team Active)</option>
-                                            <option value="Resolved">Resolved (Archive to Annual Statement)</option>
-                                        </select>
+                            <div class="overview-card">
+                                <div class="overview-card-header">
+                                    <i class="bi bi-exclamation-triangle-fill"></i> Emergency & Relief Requirements
+                                </div>
+                                <div class="overview-card-body">
+                                    <div class="row g-3">
+                                        <div class="col-sm-4">
+                                            <div class="overview-field">
+                                                <label>Disaster Type</label>
+                                                <div class="field-val text-danger fw-bold" id="modalDisasterType">—
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="overview-field">
+                                                <label>Priority Level</label>
+                                                <div class="field-val" id="modalPriorityText">—</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="overview-field">
+                                                <label>Application Track ID</label>
+                                                <div class="field-val font-monospace text-primary"
+                                                    id="modalTrackIdText">—</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" id="modalLossesSection">
+                                            <div class="overview-field">
+                                                <label>Losses & Damage Reported by Citizen</label>
+                                                <div class="overview-chips mt-1" id="modalLossesReported">
+                                                    <!-- Losses badges rendered dynamically -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="overview-field">
+                                                <label>Help Required Categories</label>
+                                                <div class="overview-chips mt-1" id="modalHelpCategories">
+                                                    <!-- Chips dynamically rendered -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="overview-field">
+                                                <label>Emergency Need Description (Submitted by Applicant)</label>
+                                                <div class="overview-details-box mt-1" id="modalDetails">—</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-md-4">
-                                        <label class="form-label small fw-bold mb-1">Assign Mandal Volunteer</label>
-                                        <select class="form-select" id="ovAssignVolunteerSelect">
-                                            <option value="">-- Select Volunteer --</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-3 mt-md-auto">
-                                        <button type="button" class="btn btn-primary w-100" id="saveRequestActionBtn">Apply Update</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Proof Document / Image -->
+                        <div class="col-12">
+                            <div class="overview-card">
+                                <div class="overview-card-header">
+                                    <i class="bi bi-file-earmark-check-fill"></i> Attached Verification Proof / Photo
+                                </div>
+                                <div class="overview-card-body" id="modalProofContainer">
+                                    <!-- Dynamic proof container -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dispatch & Action Panel -->
+                        <div class="col-12">
+                            <div class="overview-card border-primary">
+                                <div
+                                    class="overview-card-header bg-navy text-white d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-gear-fill text-warning"></i> Mandal Operations & Dispatch
+                                        Control</span>
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-shield-check"></i> Action
+                                        Required</span>
+                                </div>
+                                <div class="overview-card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-5">
+                                            <label for="modalStatusSelect" class="form-label fw-bold small">Update
+                                                Application Status</label>
+                                            <select class="form-select form-select-sm" id="modalStatusSelect">
+                                                <option value="Pending">Pending Verification</option>
+                                                <option value="Verified">Verified by Mandal Officer</option>
+                                                <option value="Assigned">Assigned to Volunteer Responder</option>
+                                                <option value="In Progress">In Progress (Field Team Active)</option>
+                                                <option value="Resolved">Resolved (Archive to Annual Statement)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="modalVolunteerSelect" class="form-label fw-bold small">Assign
+                                                Volunteer Responder</label>
+                                            <select class="form-select form-select-sm" id="modalVolunteerSelect">
+                                                <option value="">-- Select Volunteer --</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-primary w-100"
+                                                id="saveRequestActionBtn">Apply Update</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -612,57 +1360,112 @@
     </div>
 
     <!-- MODAL 2: VOLUNTEER OVERVIEW MODAL -->
-    <div class="modal fade" id="volunteerOverviewModal" tabindex="-1" aria-labelledby="volunteerOverviewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-dark text-white py-3">
-                    <h5 class="modal-title mb-0" id="volunteerOverviewModalLabel">Volunteer Application Overview</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4 bg-light">
-                    <div class="text-center mb-3">
-                        <div class="vol-ov-avatar-wrap mx-auto mb-2">
-                            <img id="volOvImg" src="" alt="Volunteer Photo" style="display: none; width: 100%; height: 100%; object-fit: cover;">
-                            <span id="volOvInitials" class="fs-2 fw-bold text-secondary">VO</span>
+    <div class="modal fade request-overview-modal" id="volunteerOverviewModal" tabindex="-1"
+        aria-labelledby="volunteerOverviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content overview-modal-content">
+                <div class="modal-header overview-modal-header bg-dark text-white">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="overview-header-icon"
+                            style="background: rgba(37, 99, 235, 0.2); color: #3b82f6;"><i
+                                class="bi bi-person-badge-fill"></i></span>
+                        <div>
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                                <h5 class="modal-title mb-0" id="volunteerOverviewModalLabel">Volunteer Personnel
+                                    Profile</h5>
+                                <span class="badge bg-primary font-monospace" id="volOvId">DRVOL-0001</span>
+                                <span class="status-pill available" id="volOvStatusBadge">Available</span>
+                            </div>
+                            <small class="overview-timestamp"><i class="bi bi-patch-check-fill text-success"></i>
+                                Registered Disaster Relief Volunteer</small>
                         </div>
-                        <h5 class="mb-0" id="volOvName">Volunteer Name</h5>
-                        <div class="text-muted small font-monospace" id="volOvId">DRVOL-0001</div>
-                        <span class="badge bg-success-subtle text-success border mt-1" id="volOvStatusBadge">Available</span>
                     </div>
-
-                    <div class="p-3 bg-white rounded-3 border mb-3">
-                        <table class="table table-sm table-borderless mb-0">
-                            <tr><td class="text-muted" style="width: 40%;">District:</td><td><strong id="volOvDistrict">Krishna</strong></td></tr>
-                            <tr><td class="text-muted">Mandal:</td><td><strong id="volOvMandal">Vijayawada Rural</strong></td></tr>
-                            <tr><td class="text-muted">Mobile:</td><td><span class="font-monospace fw-bold" id="volOvMobile">+91 00000 00000</span></td></tr>
-                            <tr><td class="text-muted">Blood Group:</td><td><span class="badge bg-danger" id="volOvBloodGroup">O+</span></td></tr>
-                            <tr><td class="text-muted">Skills:</td><td><span id="volOvSkills">First Aid, Rescue</span></td></tr>
-                        </table>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body overview-modal-body p-4 bg-light">
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <div class="overview-card h-100 text-center p-3">
+                                <div class="vol-ov-avatar-wrap mx-auto mb-2"
+                                    style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: #e2e8f0; display: flex; align-items: center; justify-content: center;">
+                                    <img id="volOvImg" src="" alt="Volunteer Photo"
+                                        style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                    <span id="volOvInitials" class="fs-2 fw-bold text-secondary">VO</span>
+                                </div>
+                                <h5 class="mb-1" id="volOvName">Volunteer Name</h5>
+                                <p class="text-muted small mb-2" id="volOvRole">Disaster Relief Responder</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="btn btn-sm btn-outline-success py-1 px-3" id="volCallBtn"><i
+                                            class="bi bi-telephone-fill"></i> Call</a>
+                                    <a href="#" target="_blank" rel="noopener"
+                                        class="btn btn-sm btn-outline-success py-1 px-3" id="volWhatsAppBtn"><i
+                                            class="bi bi-whatsapp"></i> WhatsApp</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="overview-card h-100 p-3">
+                                <h6 class="text-uppercase text-muted small fw-bold mb-3"><i
+                                        class="bi bi-info-circle-fill text-primary"></i> Personnel Details</h6>
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tr>
+                                        <td class="text-muted" style="width: 40%;">District:</td>
+                                        <td><strong id="volOvDistrict">Krishna</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">Mandal:</td>
+                                        <td><strong id="volOvMandal">Vijayawada Rural</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">Mobile Number:</td>
+                                        <td><span class="font-monospace fw-bold" id="volOvMobile">+91 00000 00000</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">Blood Group:</td>
+                                        <td><span class="badge bg-danger" id="volOvBloodGroup">O+</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">Primary Skills:</td>
+                                        <td><span id="volOvSkills">First Aid, Search & Rescue</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="volOvOpenIdCardBtn"><i class="bi bi-person-vcard"></i> View ID Card</button>
+                    <button type="button" class="btn btn-success" id="volOvApproveBtn" style="display:none;"><i
+                            class="bi bi-check-circle-fill me-1"></i> Approve Volunteer Application</button>
+                    <button type="button" class="btn btn-primary" id="volOvOpenIdCardBtn"><i
+                            class="bi bi-person-vcard"></i> View ID Card</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- MODAL 3: DUAL-SIDED VOLUNTEER ID CARD (FRONT & BACK) -->
-    <div class="modal fade id-card-modal" id="volunteerIdCardModal" tabindex="-1" aria-labelledby="volunteerIdCardModalLabel" aria-hidden="true">
+    <div class="modal fade id-card-modal" id="volunteerIdCardModal" tabindex="-1"
+        aria-labelledby="volunteerIdCardModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content id-card-modal-content border-0 shadow-lg">
                 <div class="modal-header bg-dark text-white border-0 py-3">
                     <div class="d-flex align-items-center gap-2">
                         <span class="badge bg-danger fs-6"><i class="bi bi-person-vcard-fill"></i></span>
-                        <h5 class="modal-title mb-0" id="volunteerIdCardModalLabel">Official Disaster Relief Volunteer ID Card</h5>
+                        <h5 class="modal-title mb-0" id="volunteerIdCardModalLabel">Official Disaster Relief Volunteer
+                            ID Card</h5>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4 bg-light">
                     <div class="text-center mb-3 d-print-none">
-                        <p class="text-muted small mb-2">Government of India · Disaster Management Authority Authorized Identification Card</p>
-                        <span class="badge bg-secondary-subtle text-secondary border">Physical Standard PVC Specification · Front & Back</span>
+                        <p class="text-muted small mb-2">Government of India · Disaster Management Authority Authorized
+                            Identification Card</p>
+                        <span class="badge bg-secondary-subtle text-secondary border">Physical Standard PVC
+                            Specification · Front & Back</span>
                     </div>
 
                     <div class="id-cards-wrapper" id="idCardsPrintArea">
@@ -678,7 +1481,8 @@
 
                             <div class="id-card-front-body">
                                 <div class="id-card-photo-box">
-                                    <img id="idCardPhotoImg" class="id-card-photo" src="" alt="Volunteer Photo" style="display: none;">
+                                    <img id="idCardPhotoImg" class="id-card-photo" src="" alt="Volunteer Photo"
+                                        style="display: none;">
                                     <div id="idCardPhotoInitials" class="id-card-initials">VK</div>
                                     <span class="id-card-role-pill">VOLUNTEER</span>
                                 </div>
@@ -690,7 +1494,8 @@
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Volunteer ID:</span>
-                                        <strong class="id-val font-monospace text-primary" id="idCardVolId">DRVOL-0001</strong>
+                                        <strong class="id-val font-monospace text-primary"
+                                            id="idCardVolId">DRVOL-0001</strong>
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">District:</span>
@@ -702,7 +1507,8 @@
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Role:</span>
-                                        <span class="id-val fw-bold text-dark" id="idCardRole">Disaster Relief Volunteer</span>
+                                        <span class="id-val fw-bold text-dark" id="idCardRole">Disaster Relief
+                                            Volunteer</span>
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Blood Group:</span>
@@ -720,7 +1526,8 @@
                             </div>
 
                             <div class="id-card-footer">
-                                <div class="id-card-watermark"><i class="bi bi-patch-check-fill text-success me-1"></i> Authorized Personnel</div>
+                                <div class="id-card-watermark"><i class="bi bi-patch-check-fill text-success me-1"></i>
+                                    Authorized Personnel</div>
                                 <div class="id-card-signature-box">
                                     <div class="signature-line" id="idCardSignatureScript">District Collector & DM</div>
                                     <span class="id-card-sign-label">Authorized Signature</span>
@@ -737,12 +1544,18 @@
 
                             <div class="id-card-back-body">
                                 <ul class="id-responsibilities-list">
-                                    <li><span class="resp-icon">🚨</span> <span>Assist during disaster emergencies</span></li>
-                                    <li><span class="resp-icon">🏥</span> <span>Help affected people reach emergency services</span></li>
-                                    <li><span class="resp-icon">🏠</span> <span>Support shelter and relief activities</span></li>
-                                    <li><span class="resp-icon">📦</span> <span>Assist with distribution of relief materials</span></li>
-                                    <li><span class="resp-icon">📢</span> <span>Report emergency situations to the Mandal/Employee</span></li>
-                                    <li><span class="resp-icon">🤝</span> <span>Coordinate with the disaster management team</span></li>
+                                    <li><span class="resp-icon">🚨</span> <span>Assist during disaster
+                                            emergencies</span></li>
+                                    <li><span class="resp-icon">🏥</span> <span>Help affected people reach emergency
+                                            services</span></li>
+                                    <li><span class="resp-icon">🏠</span> <span>Support shelter and relief
+                                            activities</span></li>
+                                    <li><span class="resp-icon">📦</span> <span>Assist with distribution of relief
+                                            materials</span></li>
+                                    <li><span class="resp-icon">📢</span> <span>Report emergency situations to the
+                                            Mandal/Employee</span></li>
+                                    <li><span class="resp-icon">🤝</span> <span>Coordinate with the disaster management
+                                            team</span></li>
                                 </ul>
 
                                 <div class="emergency-contact-box">
@@ -766,7 +1579,8 @@
                                 </div>
 
                                 <p class="id-disclaimer">
-                                    This ID card is issued by DISASTER RELIEF MANAGEMENT and is valid only for authorized disaster-relief volunteer activities.
+                                    This ID card is issued by DISASTER RELIEF MANAGEMENT and is valid only for
+                                    authorized disaster-relief volunteer activities.
                                 </p>
                             </div>
                         </div>
@@ -774,7 +1588,461 @@
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="idCardPrintTriggerBtn"><i class="bi bi-printer"></i> Print ID Card (Front & Back)</button>
+                    <button type="button" class="btn btn-primary" id="idCardPrintTriggerBtn"><i
+                            class="bi bi-printer"></i> Print ID Card (Front & Back)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: ADD VOLUNTEER MODAL (EXACT PARITY WITH ADMIN LOGIN - REQUIREMENT 2) -->
+    <div class="modal fade" id="mandalAddVolunteerModal" tabindex="-1" aria-labelledby="mandalAddVolTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content login-modal border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0">
+                    <div>
+                        <span class="section-tag text-warning">PERSONNEL ONBOARDING</span>
+                        <h4 class="modal-title fs-5" id="mandalAddVolTitle"><i class="bi bi-person-plus-fill me-1"></i>
+                            Register New Volunteer</h4>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="mandalAddVolunteerForm" onsubmit="handleMandalAddVolunteer(event)">
+                        <!-- MANDATORY LOGIN CREDENTIALS SECTION -->
+                        <div class="p-3 mb-3 bg-light rounded-3 border">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-danger fw-bold small">
+                                <i class="bi bi-shield-lock-fill"></i> VOLUNTEER LOGIN CREDENTIALS
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label for="mandalVolUsername" class="form-label small fw-bold">Username <span
+                                            class="text-danger">*</span></label>
+                                    <input id="mandalVolUsername" name="volUsername" type="text"
+                                        class="form-control form-control-sm" placeholder="e.g. vol_mandal01" required
+                                        autocomplete="username">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="mandalVolPassword" class="form-label small fw-bold">Password <span
+                                            class="text-danger">*</span></label>
+                                    <input id="mandalVolPassword" name="volPassword" type="password"
+                                        class="form-control form-control-sm" placeholder="e.g. volpass123" required
+                                        autocomplete="new-password">
+                                </div>
+                                <div class="col-12">
+                                    <label for="mandalVolEmail" class="form-label small fw-bold">Email Address <span
+                                            class="text-danger">*</span></label>
+                                    <input id="mandalVolEmail" name="volEmail" type="email"
+                                        class="form-control form-control-sm"
+                                        placeholder="e.g. volunteer@disasterrelief.gov.in" required
+                                        autocomplete="email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mandalAddVolName" class="form-label small fw-bold">Full Name <span
+                                    class="text-danger">*</span></label>
+                            <input id="mandalAddVolName" type="text" class="form-control"
+                                placeholder="Enter volunteer's full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolFatherName" class="form-label small fw-bold">Father / Guardian
+                                Name</label>
+                            <input id="mandalAddVolFatherName" type="text" class="form-control"
+                                placeholder="Enter guardian name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolPhone" class="form-label small fw-bold">10-Digit Mobile Contact
+                                <span class="text-danger">*</span></label>
+                            <input id="mandalAddVolPhone" type="tel" maxlength="10" class="form-control"
+                                placeholder="e.g. 9876543210" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolState" class="form-label small fw-bold">State / Union
+                                Territory</label>
+                            <select id="mandalAddVolState" class="form-select india-state-select" required>
+                                <option value="Andhra Pradesh" selected>Andhra Pradesh</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolDistrict" class="form-label small fw-bold">District</label>
+                            <select id="mandalAddVolDistrict" class="form-select" required>
+                                <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+                                <option value="Krishna" selected>Krishna</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolMandal" class="form-label small fw-bold">Mandal / Taluk</label>
+                            <select id="mandalAddVolMandal" class="form-select" required>
+                                <option value="Vijayawada Rural" selected>Vijayawada Rural</option>
+                            </select>
+                            <small class="form-text text-muted">Fixed & authorized for current mandal
+                                operations.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolSkills" class="form-label small fw-bold">Specialized Skills &
+                                Qualifications</label>
+                            <input id="mandalAddVolSkills" type="text" class="form-control"
+                                placeholder="e.g. First Aid, Water Rescue, Food Logistics, Heavy Vehicle Driving"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolPhoto" class="form-label small fw-bold">Volunteer Profile Picture
+                                (Optional)</label>
+                            <input id="mandalAddVolPhoto" type="file" class="form-control" accept="image/*">
+                            <small class="form-text text-muted">Upload an authentic photo badge for field
+                                identification.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mandalAddVolStatus" class="form-label small fw-bold">Deployment
+                                Availability</label>
+                            <select id="mandalAddVolStatus" class="form-select">
+                                <option value="Available" selected>Available (Ready for Immediate Duty)</option>
+                                <option value="Assigned">Assigned (Active Field Mission)</option>
+                                <option value="Unavailable">Unavailable / On Leave</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 pt-2">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">
+                                <i class="bi bi-person-check-fill me-1"></i> Register Volunteer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         MODAL 5: APPLICANT DETAILS & FAMILY PROOFS (FORM 3-A)
+         Requirement 3: Detailed application form with family members
+         (Name, Relationship, Gender, Phone, Aadhaar, Bank A/C, Ration Card, Photo/Document proofs)
+    ===================================================== -->
+    <div class="modal fade" id="applicantDetailsFormModal" tabindex="-1" aria-labelledby="applicantDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="modal-icon-badge bg-primary text-white"><i
+                                class="bi bi-file-earmark-person-fill"></i></div>
+                        <div>
+                            <span class="section-tag text-warning">DISASTER RELIEF FORM 3-A</span>
+                            <h4 class="modal-title fs-5 mb-0" id="applicantDetailsModalLabel">Applicant Verification &
+                                Family Proofs Documentation</h4>
+                            <small class="text-white-50">Collect and verify applicant household details, family member
+                                records, and identity proof documents</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <form id="applicantDetailsForm" onsubmit="handleSaveApplicantDetails(event)">
+                        <input type="hidden" id="appDetailsRequestId">
+
+                        <!-- SECTION 1: APPLICANT PRIMARY DETAILS & EMERGENCY INCIDENT -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-4">
+                            <div class="card-header bg-white py-3 border-bottom">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <h5 class="mb-0 fs-6 fw-bold text-primary"><i
+                                            class="bi bi-person-badge-fill me-2"></i>Primary Applicant (Head of
+                                        Household)</h5>
+                                    <span class="badge bg-primary-subtle text-primary border"
+                                        id="appDetailsTrackIdBadge">TRACK ID: —</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-3">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="appApplicantName" class="form-label small fw-bold">Full Name of
+                                            Applicant <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm" id="appApplicantName"
+                                            required placeholder="Full legal name">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="appApplicantPhone" class="form-label small fw-bold">Primary Contact
+                                            Phone <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control form-control-sm" id="appApplicantPhone"
+                                            maxlength="10" required placeholder="10-digit mobile number">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="appApplicantGender" class="form-label small fw-bold">Gender</label>
+                                        <select class="form-select form-select-sm" id="appApplicantGender">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="appApplicantAadhaar" class="form-label small fw-bold">Aadhaar UID
+                                            Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm font-monospace"
+                                            id="appApplicantAadhaar" maxlength="14" placeholder="XXXX-XXXX-XXXX"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="appApplicantBank" class="form-label small fw-bold">Bank Account
+                                            Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm font-monospace"
+                                            id="appApplicantBank" placeholder="e.g. 38481029384" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="appApplicantRation" class="form-label small fw-bold">Ration Card
+                                            Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm font-monospace"
+                                            id="appApplicantRation" placeholder="e.g. WAP12345678" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="appApplicantAddress" class="form-label small fw-bold">Village /
+                                            Hamlet / House Location</label>
+                                        <input type="text" class="form-control form-control-sm" id="appApplicantAddress"
+                                            placeholder="Street / Door No / Landmark in Mandal">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="appApplicantMandal" class="form-label small fw-bold">Jurisdictional
+                                            Mandal</label>
+                                        <input type="text" class="form-control form-control-sm bg-light"
+                                            id="appApplicantMandal" readonly>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="appApplicantDistrict"
+                                            class="form-label small fw-bold">District</label>
+                                        <input type="text" class="form-control form-control-sm bg-light"
+                                            id="appApplicantDistrict" readonly>
+                                    </div>
+                                </div>
+
+                                <!-- SUPPORTING DOCUMENT UPLOADS -->
+                                <div class="mt-3 pt-3 border-top">
+                                    <h6 class="small fw-bold text-dark mb-2"><i
+                                            class="bi bi-file-earmark-arrow-up-fill text-danger me-1"></i>Applicant
+                                        Supporting Documents Proof Upload</h6>
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-muted">Aadhaar Card Copy (Proof)</label>
+                                            <input type="file" class="form-control form-control-sm" id="appDocAadhaar"
+                                                accept="image/*,.pdf">
+                                            <small class="text-success small d-block mt-1"
+                                                id="appDocAadhaarStatus">Official identity verification</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-muted">Ration Card Copy (Proof)</label>
+                                            <input type="file" class="form-control form-control-sm" id="appDocRation"
+                                                accept="image/*,.pdf">
+                                            <small class="text-success small d-block mt-1" id="appDocRationStatus">Civil
+                                                supplies beneficiary verification</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-muted">Disaster Damage / Photo
+                                                Proof</label>
+                                            <input type="file" class="form-control form-control-sm" id="appDocDamage"
+                                                accept="image/*,.pdf">
+                                            <small class="text-success small d-block mt-1"
+                                                id="appDocDamageStatus">Damage / relief requirement evidence</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: FAMILY MEMBERS ROSTER -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-3">
+                            <div
+                                class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <h5 class="mb-0 fs-6 fw-bold text-success"><i
+                                            class="bi bi-people-fill me-2"></i>Household Family Members Roster</h5>
+                                    <small class="text-muted">Mandatory details for all family members residing with the
+                                        applicant</small>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-success fw-bold"
+                                    onclick="addNewFamilyMemberRow()">
+                                    <i class="bi bi-plus-circle-fill me-1"></i> + Add Family Member
+                                </button>
+                            </div>
+                            <div class="card-body p-3">
+                                <div id="familyMembersContainer" class="d-flex flex-column gap-3">
+                                    <!-- Dynamic Family Member Cards -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-2">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">
+                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Save Application Details & Supporting
+                                Documents
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         MODAL 6: JURISDICTIONAL DEPARTMENT NOTIFICATIONS
+         Requirement 5: Sequential interactive questions
+         A. Notify Police Station (Yes/No)
+         B. Notify Fire Station (Yes/No)
+         C. Notify Hospital / PHC (Yes/No)
+         Strictly routed by mandal incident jurisdiction.
+    ===================================================== -->
+    <div class="modal fade" id="departmentNotificationModal" tabindex="-1" aria-labelledby="deptNotifyModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="modal-icon-badge bg-danger text-white"><i class="bi bi-broadcast"></i></div>
+                        <div>
+                            <span class="section-tag text-warning">EMERGENCY PROTOCOL</span>
+                            <h4 class="modal-title fs-5 mb-0" id="deptNotifyModalLabel">Jurisdictional Emergency
+                                Department Notification</h4>
+                            <small class="text-white-50">Sequential dispatch protocol to local Police, Fire, and Medical
+                                stations based on mandal incident jurisdiction</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <input type="hidden" id="deptNotifyRequestId">
+
+                    <!-- INCIDENT BRIEF CARD -->
+                    <div class="p-3 mb-4 bg-white rounded-3 border shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                            <span class="badge bg-danger-subtle text-danger fw-bold border"
+                                id="deptNotifyPriority">CRITICAL PRIORITY</span>
+                            <span class="font-monospace text-muted small" id="deptNotifyTrackId">TRACK ID: —</span>
+                        </div>
+                        <h6 class="fw-bold mb-1" id="deptNotifyCitizenName">—</h6>
+                        <p class="small text-muted mb-0"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Location:
+                            <span id="deptNotifyLocation">—</span> | Loss/Needs: <span id="deptNotifyLosses">—</span>
+                        </p>
+                    </div>
+
+                    <!-- STEP WIZARD CONTAINER -->
+                    <div id="deptWizardContainer">
+                        <!-- STEP A: POLICE STATION QUESTION -->
+                        <div class="dept-step-card p-4 bg-white rounded-3 border shadow-sm mb-3" id="deptStepPolice">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-primary fw-bold">
+                                <span class="badge bg-primary text-white rounded-pill px-2">STEP A</span>
+                                <span>POLICE STATION DISPATCH</span>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-2">“Do you want to inform the nearest or jurisdictional Police Station about this help request?”</h5>
+                            <div class="p-2 mb-3 bg-light rounded-2 border small">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-shield-shaded text-primary fs-5"></i>
+                                    <div>
+                                        <strong>Jurisdictional Station: </strong><span
+                                            id="deptJurisdictionalPolice">—</span><br>
+                                        <small class="text-muted" id="deptPoliceJurisdictionInfo">Responsible for law &
+                                            order, search perimeter & rescue cordon in this mandal.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-success fw-bold px-4"
+                                    onclick="handleDeptChoice('police', true)">
+                                    <i class="bi bi-check-lg me-1"></i> Yes – Inform Police Station
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary px-4"
+                                    onclick="handleDeptChoice('police', false)">
+                                    <i class="bi bi-x-lg me-1"></i> No
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- STEP B: FIRE STATION QUESTION -->
+                        <div class="dept-step-card p-4 bg-white rounded-3 border shadow-sm mb-3" id="deptStepFire"
+                            style="display: none;">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-danger fw-bold">
+                                <span class="badge bg-danger text-white rounded-pill px-2">STEP B</span>
+                                <span>FIRE & EMERGENCY SERVICES DISPATCH</span>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-2">“Do you want to inform the Fire Station?”</h5>
+                            <div class="p-2 mb-3 bg-light rounded-2 border small">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-fire text-danger fs-5"></i>
+                                    <div>
+                                        <strong>Jurisdictional Station: </strong><span
+                                            id="deptJurisdictionalFire">—</span><br>
+                                        <small class="text-muted" id="deptFireJurisdictionInfo">Responsible for flood
+                                            water evacuation, collapse rescue & hazard mitigation.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-danger fw-bold px-4"
+                                    onclick="handleDeptChoice('fire', true)">
+                                    <i class="bi bi-check-lg me-1"></i> Yes – Inform Fire Station
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary px-4"
+                                    onclick="handleDeptChoice('fire', false)">
+                                    <i class="bi bi-x-lg me-1"></i> No
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- STEP C: HOSPITAL / MEDICAL CENTRE QUESTION -->
+                        <div class="dept-step-card p-4 bg-white rounded-3 border shadow-sm mb-3" id="deptStepHospital"
+                            style="display: none;">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-success fw-bold">
+                                <span class="badge bg-success text-white rounded-pill px-2">STEP C</span>
+                                <span>HOSPITAL / MEDICAL CENTRE (PHC) DISPATCH</span>
+                            </div>
+                            <h5 class="fw-bold fs-6 mb-2">“Do you want to inform the relevant hospital, regional hospital, or Primary Health Centre (PHC)?”</h5>
+                            <div class="p-2 mb-3 bg-light rounded-2 border small">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-hospital text-success fs-5"></i>
+                                    <div>
+                                        <strong>Jurisdictional Medical Facility: </strong><span
+                                            id="deptJurisdictionalHospital">—</span><br>
+                                        <small class="text-muted" id="deptHospitalJurisdictionInfo">Responsible for
+                                            trauma triage, ambulance readiness & emergency medical relief in this
+                                            mandal.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-success fw-bold px-4"
+                                    onclick="handleDeptChoice('hospital', true)">
+                                    <i class="bi bi-check-lg me-1"></i> Yes – Inform Hospital / PHC
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary px-4"
+                                    onclick="handleDeptChoice('hospital', false)">
+                                    <i class="bi bi-x-lg me-1"></i> No
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SUMMARY & CONFIRMATION VIEW -->
+                        <div class="dept-step-card p-4 bg-white rounded-3 border shadow-sm" id="deptStepSummary"
+                            style="display: none;">
+                            <div class="text-center py-2 mb-3">
+                                <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                                <h5 class="fw-bold mt-2">Department Dispatch Record Completed</h5>
+                                <p class="text-muted small">Notifications have been recorded according to the mandal's
+                                    jurisdictional authority.</p>
+                            </div>
+                            <div class="list-group mb-3" id="deptSummaryList">
+                                <!-- Dynamically generated summary items -->
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary px-4 fw-bold" data-bs-dismiss="modal">
+                                    <i class="bi bi-check2-circle me-1"></i> Done & Return to Dispatch Desk
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -786,7 +2054,353 @@
         <span id="mandalToastMsg">Operation completed successfully.</span>
     </div>
 
+    <!-- PRE-DISASTER MOBILE SMS BROADCAST MODAL -->
+    <div class="modal fade" id="preDisasterSmsModal" tabindex="-1" aria-labelledby="preDisasterSmsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-broadcast fs-5"></i>
+                        <h5 class="modal-title mb-0" id="preDisasterSmsModalLabel">Broadcast Pre-Disaster Mobile SMS
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-3">
+                        Broadcast an early emergency text message alert to <strong>all registered citizens and
+                            volunteers' mobile phones</strong> before disaster impact.
+                    </p>
+                    <form id="preDisasterSmsForm" onsubmit="handleSendPreDisasterSms(event)">
+                        <div class="mb-3">
+                            <label for="smsDisasterType" class="form-label small fw-bold">Disaster Impending
+                                Event</label>
+                            <select class="form-select form-select-sm" id="smsDisasterType" required>
+                                <option value="Severe Cyclone Warning">🌀 Severe Cyclone Warning</option>
+                                <option value="Flash Flood Alert">🌊 Flash Flood Inundation Alert</option>
+                                <option value="Heavy Rainfall & Storm Watch">🌧️ Heavy Rainfall & Storm Watch</option>
+                                <option value="Tsunami & Coastal Surge Advisory">🌊 Tsunami & Coastal Surge Advisory
+                                </option>
+                                <option value="Severe Heatwave Warning">☀️ Severe Heatwave Warning</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="smsWarningLevel" class="form-label small fw-bold">Warning Level</label>
+                            <select class="form-select form-select-sm" id="smsWarningLevel" required>
+                                <option value="RED ALERT - Immediate Evacuation">🚨 RED ALERT - Immediate Evacuation &
+                                    Shelter</option>
+                                <option value="ORANGE ALERT - Prepare to Move">⚠️ ORANGE ALERT - High Preparedness
+                                </option>
+                                <option value="YELLOW ALERT - Weather Watch">🟡 YELLOW ALERT - Advisory Watch</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="smsMessageText" class="form-label small fw-bold">Mobile SMS Text (Dispatched to
+                                Registered Mobiles)</label>
+                            <textarea class="form-control" id="smsMessageText" rows="3"
+                                required>⚠️ URGENT GOVT DISASTER ALERT: Severe weather & flood warning issued for this area. Heavy rainfall expected within 6 hrs. Relocate to designated relief shelters immediately. Helpline: 112 / 1077.</textarea>
+                            <small class="form-text text-muted">Simulates official SMS broadcast gateway to cell numbers
+                                in jurisdiction.</small>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                            <i class="bi bi-send-fill me-1"></i> Send Emergency SMS to All Registered Mobiles
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INCOMING SMARTPHONE MOBILE SMS MODAL POPUP -->
+    <div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent shadow-none">
+                <div class="sms-phone-frame">
+                    <div class="sms-phone-header">
+                        <span><i class="bi bi-reception-4"></i> EMERGENCY SMS BROADCAST</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="sms-bubble">
+                        <div class="sms-sender">
+                            <i class="bi bi-shield-fill-exclamation"></i>
+                            <span id="modalSmsSender">MANDAL DISASTER CONTROL ROOM</span>
+                        </div>
+                        <div class="sms-body-text" id="modalSmsBody">
+                            ⚠️ URGENT PRE-DISASTER WARNING: Cyclone & Heavy Inundation warning issued. All residents in
+                            low-lying zones must relocate to designated emergency shelters immediately. Follow volunteer
+                            guidance. Call 112 for rescue dispatch.
+                        </div>
+                        <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
+                    </div>
+                    <div
+                        class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                        <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast
+                            Delivered</small>
+                        <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i
+                                class="bi bi-telephone-fill"></i> Dial 112</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANDAL OFFICER EVIDENCE REVIEW & VERIFICATION MODAL -->
+    <div class="modal fade" id="mandalReviewEvidenceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-shield-check text-success fs-4"></i>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0">Review Volunteer Field Evidence & Sign-off</h5>
+                            <small class="text-white-50">Incident Commander Verification & Quality Audit</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <!-- Target Request & Volunteer Details -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                            <div>
+                                <span class="badge bg-primary font-monospace" id="mandalReviewTrackId">#REQ-000000</span>
+                                <strong class="ms-2 text-dark" id="mandalReviewCitizenName">Affected Citizen</strong>
+                            </div>
+                            <span class="badge bg-info text-dark" id="mandalReviewStatusBadge">Submitted for Verification</span>
+                        </div>
+                        <div class="row g-2 small text-muted">
+                            <div class="col-md-6">
+                                <i class="bi bi-person-badge text-primary"></i> <strong>Volunteer:</strong> <span id="mandalReviewVolunteerName">—</span> (<span id="mandalReviewVolunteerId" class="font-monospace text-primary">—</span>)
+                            </div>
+                            <div class="col-md-6">
+                                <i class="bi bi-geo-alt-fill text-danger"></i> <strong>Location:</strong> <span id="mandalReviewLocation">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submitted Field Report Notes -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <h6 class="fw-bold text-dark mb-2 small"><i class="bi bi-file-earmark-text text-primary me-1"></i>Volunteer Field Report & Ground Observations</h6>
+                        <p class="mb-2 p-2 bg-light rounded border small fst-italic" id="mandalReviewNotes">"No remarks"</p>
+                        <div class="row g-2 small">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded border">
+                                    <span class="text-muted d-block" style="font-size: 11px;">People Assisted</span>
+                                    <strong class="fs-6 text-dark" id="mandalReviewPeopleCount">0</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded border">
+                                    <span class="text-muted d-block" style="font-size: 11px;">Supplies Distributed</span>
+                                    <strong class="fs-6 text-dark" id="mandalReviewSuppliesCount">—</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Photo Evidence Gallery -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold text-dark mb-0 small"><i class="bi bi-camera-fill text-primary me-1"></i>Supporting Photographic Evidence</h6>
+                            <span class="badge bg-secondary" id="mandalReviewPhotoCount">0 Photos</span>
+                        </div>
+                        <div class="evidence-gallery-grid" id="mandalReviewPhotoGallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;">
+                            <!-- Evidence photos rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Officer Decision Remarks -->
+                    <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
+                        <label class="form-label small fw-bold mb-1">Incident Commander / Mandal Officer Remarks</label>
+                        <textarea class="form-control form-control-sm" id="mandalReviewOfficerRemarks" rows="2" placeholder="Enter remarks or rework instructions for the volunteer..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2 d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-danger" id="btnMandalRejectRework">
+                        <i class="bi bi-exclamation-octagon-fill me-1"></i> Reject / Request Rework
+                    </button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success fw-bold px-4" id="btnMandalVerifyComplete">
+                            <i class="bi bi-check-circle-fill me-1"></i> Verify / Completed
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCATION WEATHER REPORT & WARNING MODAL -->
+    <div class="modal fade" id="weatherDetailModal" tabindex="-1" aria-labelledby="weatherModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-cloud-sun-fill fs-4 text-warning"></i>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0" id="weatherModalTitle">Live Weather Intelligence & Early Warning</h5>
+                            <small class="text-white-50">Location-specific weather report & disaster alerts</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- DISTRICT SELECTOR FOR STATE-WIDE FORECAST -->
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 p-2 bg-white rounded-2 border">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small fw-bold text-muted"><i class="bi bi-geo-alt-fill text-danger"></i> Target Location:</span>
+                            <select class="form-select form-select-sm" id="weatherDistrictSelect" style="width: auto; min-width: 200px;">
+                                <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+                                <option value="Anakapalli">Anakapalli</option>
+                                <option value="Ananthapuramu">Ananthapuramu</option>
+                                <option value="Annamayya">Annamayya</option>
+                                <option value="Bapatla">Bapatla</option>
+                                <option value="Chittoor">Chittoor</option>
+                                <option value="East Godavari">East Godavari</option>
+                                <option value="Eluru">Eluru</option>
+                                <option value="Guntur">Guntur</option>
+                                <option value="Kakinada">Kakinada</option>
+                                <option value="Konaseema">Konaseema</option>
+                                <option value="Krishna" selected>Krishna (Vijayawada)</option>
+                                <option value="Kurnool">Kurnool</option>
+                                <option value="Nandyal">Nandyal</option>
+                                <option value="NTR">NTR District</option>
+                                <option value="Palnadu">Palnadu</option>
+                                <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+                                <option value="Prakasam">Prakasam</option>
+                                <option value="Srikakulam">Srikakulam</option>
+                                <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+                                <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+                                <option value="Tirupati">Tirupati</option>
+                                <option value="Visakhapatnam">Visakhapatnam</option>
+                                <option value="Vizianagaram">Vizianagaram</option>
+                                <option value="West Godavari">West Godavari</option>
+                                <option value="YSR Kadapa">YSR Kadapa</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnRefreshWeatherModal">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Data
+                        </button>
+                    </div>
+
+                    <!-- CURRENT CONDITIONS HERO CARD -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 text-center text-sm-start mb-3 mb-sm-0">
+                                <div class="d-flex align-items-center justify-content-center justify-content-sm-start gap-3">
+                                    <div id="weatherModalHeroIcon" style="font-size: 48px;">
+                                        <i class="bi bi-cloud-rain-fill text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="display-5 fw-bold text-dark mb-0" id="weatherModalHeroTemp">29°C</div>
+                                        <div class="fw-semibold text-secondary" id="weatherModalHeroCondition">Scattered Rain</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-muted small">
+                                    <i class="bi bi-geo-alt"></i> <span id="weatherModalHeroLocation">Vijayawada Rural, Krishna, Andhra Pradesh</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row g-2 text-center">
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Humidity</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalHumidity">78%</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Wind Speed</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalWind">18 km/h</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Visibility</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalVisibility">8.5 km</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Pressure</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalPressure">1008 hPa</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2-COLUMN SECTION: RAINFALL FORECAST & STRONG WIND WARNING -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-cloud-drizzle-fill text-primary me-2"></i>Rainfall Forecast
+                                </h6>
+                                <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">24-Hr Precipitation:</span>
+                                    <strong class="text-primary font-monospace" id="weatherModalRainVolume">14.2 mm</strong>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Rain Probability:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalRainProb">75%</strong>
+                                </div>
+                                <div class="p-2 rounded border bg-primary-subtle border-primary-subtle small text-primary-emphasis" id="weatherModalRainRiskText">
+                                    Moderate scattered rainfall expected in coastal mandals. Keep emergency tarpaulins ready.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-wind text-warning me-2"></i>Strong Wind Warning
+                                </h6>
+                                <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Current Wind Speed:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalWindSpeed">18 km/h</strong>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Wind Category:</span>
+                                    <span class="badge bg-success" id="weatherModalWindCategory">Moderate Breeze</span>
+                                </div>
+                                <div class="p-2 rounded border small" id="weatherModalWindWarningBox" style="background: #f0fdf4; border-color: #bbf7d0; color: #166534;">
+                                    Wind conditions within safe operational limits for field volunteers and boats.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WEATHER ALERTS & OFFICIAL ADVISORIES -->
+                    <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster Weather Alerts
+                            </h6>
+                            <span class="badge bg-danger" id="weatherModalAlertLevelBadge">ADVISORY ACTIVE</span>
+                        </div>
+                        <div class="alert alert-warning mb-0 p-2 small border" id="weatherModalOfficialAlertText">
+                            ⚠️ <strong>IMD & AP Disaster Management Advisory:</strong> Monsoon low-pressure system active over Bay of Bengal. Field operations desk in 24/7 readiness.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2">
+                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Data Source: Open-Meteo & AP Disaster Management</small>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="mandal.js"></script>
 </body>
+
 </html>

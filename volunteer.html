@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,82 +9,341 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="volunteer.css">
     <link rel="stylesheet" href="admin.css">
 </head>
-<body>
-    <div class="volunteer-shell">
-        <aside class="volunteer-sidebar" id="volunteerSidebar">
-            <div class="volunteer-brand"><span class="brand-logo"><i class="bi bi-shield-fill-check"></i></span><span>DISASTER <strong>RELIEF</strong></span></div>
-            <div class="side-caption">VOLUNTEER NETWORK</div>
-            <nav class="volunteer-nav" aria-label="Volunteer navigation">
-                <a class="volunteer-link active" href="#dashboard"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
-                <a class="volunteer-link" href="#idcard" id="navMyIdCardLink"><i class="bi bi-person-vcard"></i> My ID Card (Front & Back)</a>
-                <a class="volunteer-link" href="#profile"><i class="bi bi-person"></i> My Profile</a>
-                <a class="volunteer-link" href="#skills"><i class="bi bi-tools"></i> My Skills</a>
-                <a class="volunteer-link" href="#alerts"><i class="bi bi-megaphone"></i> Emergency Alerts <span id="alertCount" class="link-count">0</span></a>
-                <a class="volunteer-link" href="#tasks"><i class="bi bi-clipboard2-check"></i> Available Tasks</a>
-                <a class="volunteer-link" href="#history"><i class="bi bi-clock-history"></i> Activity / History</a>
-                <a class="volunteer-link" href="#safety"><i class="bi bi-shield-check"></i> Safety Guidelines</a>
-                <a class="volunteer-link" href="#certificate"><i class="bi bi-award"></i> Certificates</a>
+
+<body class="volunteer-body">
+    <div class="admin-shell volunteer-shell">
+        <!-- SIDEBAR (EXACT ADMIN ALIGNMENT) -->
+        <aside class="admin-sidebar volunteer-sidebar" id="volunteerSidebar">
+            <div class="sidebar-brand volunteer-brand">
+                <span class="brand-logo"><i class="bi bi-shield-fill-check"></i></span>
+                <span>DISASTER <strong>RELIEF</strong></span>
+            </div>
+
+            <div class="sidebar-label side-caption">VOLUNTEER NETWORK</div>
+            <nav class="sidebar-nav volunteer-nav" aria-label="Volunteer navigation">
+                <a class="sidebar-link volunteer-link active" href="#dashboard" data-view="dashboard"><i
+                        class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span></a>
+                <a class="sidebar-link volunteer-link" href="#accepted-tasks" data-view="accepted-tasks"
+                    id="navAcceptedTasksLink"><i class="bi bi-pin-map-fill"></i> <span>Accepted Tasks Tracker</span>
+                    <span id="acceptedTrackCount" class="nav-count ms-auto">0</span></a>
+                <a class="sidebar-link volunteer-link" href="#idcard" id="navMyIdCardLink"><i
+                        class="bi bi-person-vcard"></i> <span>My ID Card (Front & Back)</span></a>
+                <a class="sidebar-link volunteer-link" href="#profile" data-view="profile"><i class="bi bi-person"></i>
+                    <span>My Profile</span></a>
+                <a class="sidebar-link volunteer-link" href="#skills" data-view="skills"><i class="bi bi-tools"></i>
+                    <span>My Skills</span></a>
+                <a class="sidebar-link volunteer-link" href="#alerts" data-view="alerts"><i class="bi bi-megaphone"></i>
+                    <span>Emergency Alerts</span> <span id="alertCount"
+                        class="nav-count ms-auto link-count">0</span></a>
+                <a class="sidebar-link volunteer-link" href="#tasks" data-view="tasks"><i
+                        class="bi bi-clipboard2-check"></i> <span>Available Tasks</span></a>
+                <a class="sidebar-link volunteer-link" href="#history" data-view="history"><i
+                        class="bi bi-clock-history"></i> <span>Activity / History</span></a>
+                <a class="sidebar-link volunteer-link" href="#safety" data-view="safety"><i
+                        class="bi bi-shield-check"></i> <span>Safety Guidelines</span></a>
+                <a class="sidebar-link volunteer-link" href="#certificate" data-view="certificate"><i
+                        class="bi bi-award"></i> <span>Certificates</span></a>
             </nav>
-            <div class="sidebar-bottom">
-                <a class="volunteer-link" href="index.html"><i class="bi bi-arrow-left"></i> Back to website</a>
-                <a class="volunteer-link" href="admin.html"><i class="bi bi-chat-left-text"></i> Contact Admin</a>
-                <button class="volunteer-link" type="button" id="volunteerLogout"><i class="bi bi-box-arrow-right"></i> Logout</button>
+
+            <div class="sidebar-footer sidebar-bottom">
+                <button class="sidebar-link logout-link volunteer-link text-danger w-100 text-start" type="button"
+                    id="volunteerLogout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></button>
             </div>
         </aside>
 
-        <main class="volunteer-main" id="dashboard">
-            <header class="volunteer-topbar">
-                <button class="mobile-menu" id="volunteerMenu" type="button" aria-label="Open volunteer menu"><i class="bi bi-list"></i></button>
+        <main class="admin-main volunteer-main" id="dashboard">
+            <!-- TOPBAR (EXACT ADMIN ALIGNMENT) -->
+            <header class="admin-topbar volunteer-topbar">
+                <button class="mobile-menu" id="volunteerMenu" type="button" aria-label="Open volunteer menu"><i
+                        class="bi bi-list"></i></button>
                 <div>
-                    <span class="side-caption">VOLUNTEER PORTAL / OVERVIEW</span>
+                    <p class="breadcrumb-label side-caption" id="volBreadcrumb">VOLUNTEER NETWORK / FIELD OVERVIEW</p>
                     <h1>Volunteer Dashboard</h1>
                 </div>
-                <div class="top-actions">
-                    <!-- LIVE WEATHER REPORT WIDGET -->
-                    <div class="weather-topbar-widget" id="volWeatherWidget" title="Live Weather for Field Operations" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 4px 10px; color: #fff;">
-                        <div id="volWeatherIcon"><i class="bi bi-cloud-rain-fill text-info"></i></div>
-                        <div>
-                            <strong id="volWeatherTemp" style="font-size: 13px;">29°C</strong>
-                            <span class="badge bg-danger text-white py-0 px-1" id="volWeatherBadge" style="font-size: 8px;">Rain Watch</span>
-                            <br><small id="volWeatherCondition" style="font-size: 10px; color: rgba(255,255,255,0.7);">Live Weather</small>
+
+                <div class="topbar-actions top-actions">
+                    <!-- 1. LIVE WEATHER REPORT WIDGET (EXACT ADMIN ALIGNMENT) -->
+                    <div class="weather-topbar-widget" id="volWeatherWidget" title="Live Weather for Field Operations">
+                        <div class="weather-topbar-icon" id="volWeatherIcon"><i
+                                class="bi bi-cloud-rain-fill text-info"></i></div>
+                        <div class="weather-topbar-info">
+                            <div class="weather-temp-row">
+                                <strong id="volWeatherTemp">29°C</strong>
+                                <span class="badge bg-danger text-white py-0 px-1" id="volWeatherBadge"
+                                    style="font-size: 8.5px;">Rain Watch</span>
+                            </div>
+                            <small id="volWeatherCondition">Live Weather</small>
                         </div>
-                        <button type="button" class="btn btn-sm btn-link text-white-50 p-0 ms-1" id="refreshVolWeatherBtn" title="Refresh Live Weather"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button type="button" class="btn btn-sm btn-link text-white-50 p-0 ms-1"
+                            id="refreshVolWeatherBtn" title="Refresh Live Weather"><i
+                                class="bi bi-arrow-clockwise"></i></button>
                     </div>
 
-                    <button class="bell-button" type="button" aria-label="Notifications"><i class="bi bi-bell"></i><span></span></button>
-                    <button class="profile-shortcut" id="profileShortcut" type="button">
-                        <span class="avatar" id="volunteerAvatar">V</span>
-                        <span><strong id="volunteerName">Volunteer</strong><small id="volunteerArea">India</small></span>
+                    <!-- 2. NOTIFICATIONS BUTTON (EXACT ADMIN ALIGNMENT) -->
+                    <button class="icon-button bell-button" type="button" aria-label="Notifications"
+                        id="volunteerNotificationBtn">
+                        <i class="bi bi-bell"></i><span class="notification-dot" id="volunteerNotifDot"></span>
+                    </button>
+
+                    <!-- 3. FIXED JURISDICTION BADGE (EXACT ADMIN ALIGNMENT) -->
+                    <div class="fixed-jurisdiction-box"
+                        title="Assigned Volunteer Field Jurisdiction (Fixed & Authorized)">
+                        <div class="jurisdiction-pill">
+                            <span class="jurisdiction-shield"><i class="bi bi-shield-lock-fill text-warning"></i></span>
+                            <div class="jurisdiction-text-wrap">
+                                <span class="jurisdiction-tag">ASSIGNED JURISDICTION</span>
+                                <span class="jurisdiction-display" id="volJurisdictionDisplay">Andhra Pradesh / Alluri
+                                    Sitharama Raju</span>
+                            </div>
+                            <span class="jurisdiction-lock-icon"
+                                title="Fixed Jurisdiction - Cannot be edited manually"><i
+                                    class="bi bi-lock-fill"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- 4. PROFILE BUTTON (EXACT ADMIN ALIGNMENT) -->
+                    <button class="admin-profile profile-shortcut" id="profileShortcut" type="button"
+                        title="Click to view My Profile">
+                        <div class="admin-topbar-avatar-wrap">
+                            <span class="profile-avatar avatar" id="volunteerAvatar">V</span>
+                            <span class="admin-online-badge" title="Active On Duty"></span>
+                        </div>
+                        <div class="admin-profile-text">
+                            <strong id="volunteerName">Volunteer</strong>
+                            <small id="volunteerArea">India</small>
+                        </div>
+                        <i class="bi bi-chevron-down admin-profile-chevron"></i>
                     </button>
                 </div>
             </header>
 
             <section class="volunteer-content">
-                <div class="welcome-line"><div><span class="eyebrow">JEEVANSETU RESPONSE NETWORK</span><h2>Ready to make an impact?</h2><p id="areaMessage">Your district response tasks will appear here.</p></div><button class="availability-button available" id="availabilityButton" type="button"><span></span> Available</button></div>
+                <!-- VIEW 1: DASHBOARD OVERVIEW (SHOWS ONLY WHEN DASHBOARD IS ACTIVE) -->
+                <div class="volunteer-view active-view" id="view-dashboard">
+                    <!-- PRE-DISASTER MOBILE SMS ALERT BANNER -->
+                    <div class="pre-disaster-sms-bar mb-3 p-3 rounded-3 shadow-sm border" id="preDisasterSmsBar">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="sms-pulse-badge"><i class="bi bi-broadcast"></i> PRE-DISASTER MOBILE TEXT
+                                    ALERT</span>
+                                <span class="sms-text-preview" id="latestSmsText">
+                                    ⚠️ URGENT PRE-DISASTER WARNING: Severe cyclone & flood warning issued. Relocate to
+                                    designated shelters immediately.
+                                </span>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-danger fw-bold"
+                                onclick="viewLatestSmsAlert()">
+                                <i class="bi bi-phone-fill me-1"></i> View Mobile Text SMS
+                            </button>
+                        </div>
+                    </div>
 
-                <div class="volunteer-stats"><article><i class="bi bi-broadcast-pin"></i><span>Active Emergencies</span><strong id="emergencyCount">0</strong></article><article><i class="bi bi-clipboard2-check"></i><span>Assigned Tasks</span><strong id="assignedCount">0</strong></article><article><i class="bi bi-check2-circle"></i><span>Completed Tasks</span><strong id="completedCount">0</strong></article><article><i class="bi bi-trophy"></i><span>Volunteer Hours</span><strong id="hoursCount">0</strong></article></div>
+                    <div class="welcome-line">
+                        <div>
+                            <span class="eyebrow">JEEVANSETU RESPONSE NETWORK</span>
+                            <h2>Ready to make an impact?</h2>
+                            <p id="areaMessage">Your district response tasks will appear here.</p>
+                        </div>
+                        <button class="availability-button available" id="availabilityButton"
+                            type="button"><span></span> Available</button>
+                    </div>
 
-                <div class="volunteer-grid">
-                    <section class="panel task-panel" id="tasks"><div class="panel-head"><div><span class="eyebrow">FIELD WORK</span><h3>Emergency tasks</h3></div><button class="outline-button" type="button" id="refreshTasks"><i class="bi bi-arrow-clockwise"></i> Refresh</button></div><div id="taskList"></div></section>
-                    <section class="panel alert-panel" id="alerts"><div class="panel-head"><div><span class="eyebrow">SAFETY FIRST</span><h3>Emergency alerts</h3></div><i class="bi bi-broadcast alert-icon"></i></div><div id="volunteerAlerts"></div></section>
+                    <div class="volunteer-stats">
+                        <article><i class="bi bi-broadcast-pin"></i><span>Active Emergencies</span><strong
+                                id="emergencyCount">0</strong></article>
+                        <article><i class="bi bi-clipboard2-check"></i><span>Assigned Tasks</span><strong
+                                id="assignedCount">0</strong></article>
+                        <article><i class="bi bi-check2-circle"></i><span>Completed Tasks</span><strong
+                                id="completedCount">0</strong></article>
+                        <article><i class="bi bi-trophy"></i><span>Volunteer Hours</span><strong
+                                id="hoursCount">0</strong></article>
+                    </div>
+
+                    <!-- DASHBOARD MISSION & DISPATCH SNAPSHOT -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-lg-7">
+                            <div class="card p-3 border rounded-3 shadow-sm h-100 bg-white">
+                                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                    <h5 class="fs-6 fw-bold mb-0 text-dark"><i
+                                            class="bi bi-pin-map-fill text-danger me-1"></i> Active Missions Tracking
+                                    </h5>
+                                    <button class="btn btn-sm btn-outline-danger py-0 px-2 fw-semibold"
+                                        onclick="switchVolunteerView('accepted-tasks')">View Full Tracker <i
+                                            class="bi bi-arrow-right"></i></button>
+                                </div>
+                                <div id="dashboardAcceptedSnapshot">
+                                    <p class="text-muted small py-2 mb-0">Loading assigned missions...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-5">
+                            <div class="card p-3 border rounded-3 shadow-sm h-100 bg-white">
+                                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                    <h5 class="fs-6 fw-bold mb-0 text-dark"><i
+                                            class="bi bi-clipboard2-pulse text-primary me-1"></i> Available Urgent Tasks
+                                    </h5>
+                                    <button class="btn btn-sm btn-outline-primary py-0 px-2 fw-semibold"
+                                        onclick="switchVolunteerView('tasks')">Browse All Tasks <i
+                                            class="bi bi-arrow-right"></i></button>
+                                </div>
+                                <div id="dashboardTasksSnapshot">
+                                    <p class="text-muted small py-2 mb-0">Loading available tasks...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="volunteer-grid lower-grid">
+                <!-- VIEW 2: ACCEPTED TASKS TRACKER ONLY -->
+                <div class="volunteer-view" id="view-accepted-tasks">
+                    <section class="panel accepted-tasks-panel mb-4 p-3 bg-white rounded-3 shadow-sm border"
+                        id="accepted-tasks">
+                        <div
+                            class="panel-head d-flex justify-content-between align-items-center flex-wrap gap-2 pb-2 border-bottom">
+                            <div>
+                                <span class="eyebrow">MISSION TIMELINE & TRACKING</span>
+                                <h3 class="mb-1"><i class="bi bi-pin-map-fill text-danger me-1"></i> Accepted Tasks &
+                                    Mission Tracking</h3>
+                                <p class="small text-muted mb-0">Click any assigned task to view citizen request
+                                    application, Mandal Officer guidance letter, and submit field evidence.</p>
+                            </div>
+                            <span class="badge bg-danger px-3 py-2 fw-bold" id="acceptedTasksSummaryBadge">0 Missions
+                                Active</span>
+                        </div>
+
+                        <!-- ACCEPTED TASKS FILTER TOOLBAR -->
+                        <div class="table-filter-card my-3 p-2 bg-light rounded-2 border">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="acceptedTaskSearchInput"
+                                            placeholder="Search accepted mission by citizen, track ID, location...">
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <select class="form-select form-select-sm" id="acceptedTaskStatusFilter">
+                                        <option value="all">All Mission Stages</option>
+                                        <option value="Assigned">1. Assigned</option>
+                                        <option value="Accepted">2. Accepted</option>
+                                        <option value="On the Way">3. On the Way</option>
+                                        <option value="Reached Location">4. Reached Location</option>
+                                        <option value="Work in Progress">5. Work in Progress</option>
+                                        <option value="Assistance Required">6. Assistance Required</option>
+                                        <option value="Submitted for Verification">7. Submitted for Verification
+                                        </option>
+                                        <option value="Verified / Completed">8. Verified / Completed</option>
+                                        <option value="Rejected / Rework Required">9. Rework Required</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-md-2 text-end">
+                                    <span class="badge bg-secondary-subtle text-secondary"
+                                        id="acceptedTaskFilterBadge">Showing 0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="acceptedTaskList" class="row g-3">
+                            <!-- Populated dynamically with accepted task mission cards -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- VIEW 3: AVAILABLE TASKS ONLY -->
+                <div class="volunteer-view" id="view-tasks">
+                    <section class="panel task-panel" id="tasks">
+                        <div class="panel-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div><span class="eyebrow">FIELD WORK</span>
+                                <h3>Available Emergency Tasks</h3>
+                            </div>
+                            <button class="outline-button" type="button" id="refreshTasks"><i
+                                    class="bi bi-arrow-clockwise"></i> Refresh</button>
+                        </div>
+
+                        <!-- TASKS FILTER TOOLBAR -->
+                        <div class="table-filter-card my-2 p-2 bg-light rounded border">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12 col-md-7">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="taskSearchInput"
+                                            placeholder="Search task location, help type...">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <select class="form-select form-select-sm" id="taskPriorityFilter">
+                                        <option value="all">All Priorities</option>
+                                        <option value="critical">Critical</option>
+                                        <option value="high">High</option>
+                                        <option value="medium">Medium</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="taskList"></div>
+                    </section>
+                </div>
+
+                <!-- VIEW 4: EMERGENCY ALERTS ONLY -->
+                <div class="volunteer-view" id="view-alerts">
+                    <section class="panel alert-panel" id="alerts">
+                        <div class="panel-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div><span class="eyebrow">SAFETY FIRST</span>
+                                <h3>Emergency Alerts</h3>
+                            </div>
+                            <i class="bi bi-broadcast alert-icon"></i>
+                        </div>
+
+                        <!-- ALERTS FILTER TOOLBAR -->
+                        <div class="table-filter-card my-2 p-2 bg-light rounded border">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12 col-md-7">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="alertSearchInput"
+                                            placeholder="Search alerts...">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <select class="form-select form-select-sm" id="alertTypeFilter">
+                                        <option value="all">All Alerts</option>
+                                        <option value="sms">Mobile SMS Alerts</option>
+                                        <option value="critical">Critical / Warnings</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="volunteerAlerts"></div>
+                    </section>
+                </div>
+
+                <!-- VIEW 5: VOLUNTEER PROFILE ONLY -->
+                <div class="volunteer-view" id="view-profile">
                     <section class="panel profile-panel" id="profile">
                         <div class="panel-head">
-                            <div><span class="eyebrow">YOUR INFORMATION</span><h3>Volunteer profile</h3></div>
+                            <div><span class="eyebrow">YOUR INFORMATION</span>
+                                <h3>Volunteer profile</h3>
+                            </div>
                             <div class="d-flex gap-2">
-                                <button class="outline-button" id="openMyIdCardBtn" type="button"><i class="bi bi-person-vcard"></i> View ID Card</button>
-                                <button class="outline-button" id="editProfile" type="button"><i class="bi bi-pencil"></i> Edit profile</button>
+                                <button class="outline-button" id="openMyIdCardBtn" type="button"><i
+                                        class="bi bi-person-vcard"></i> View ID Card</button>
+                                <button class="outline-button" id="editProfile" type="button"><i
+                                        class="bi bi-pencil"></i> Edit profile</button>
                             </div>
                         </div>
                         <div class="profile-details">
-                            <div class="large-avatar" id="largeAvatar" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                                <img id="volProfileImgDisplay" src="" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <div class="large-avatar" id="largeAvatar"
+                                style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                <img id="volProfileImgDisplay" src="" alt="Profile Photo"
+                                    style="width: 100%; height: 100%; object-fit: cover; display: none;">
                                 <span id="volProfileInitialsDisplay">V</span>
                             </div>
                             <div>
@@ -92,29 +352,153 @@
                                 <div class="profile-tags" id="profileTags"></div>
                             </div>
                         </div>
-                        <div class="skill-section" id="skills"><h4>Skills & expertise</h4><div id="skillList" class="skill-list"></div></div>
                     </section>
-                    <section class="panel safety-panel" id="safety"><div class="panel-head"><div><span class="eyebrow">BEFORE YOU RESPOND</span><h3>Safety guidelines</h3></div><i class="bi bi-shield-check safety-icon"></i></div><ul><li>Wear protective equipment and carry identification.</li><li>Check in with the Admin team before starting work.</li><li>Never enter unsafe areas without trained support.</li><li>Keep emergency contacts available at all times.</li></ul><button class="secondary-button" id="safetyButton" type="button">View emergency contacts <i class="bi bi-arrow-right"></i></button></section>
                 </div>
 
-                <section class="panel history-panel" id="history"><div class="panel-head"><div><span class="eyebrow">YOUR CONTRIBUTION</span><h3>Activity history</h3></div><span class="history-badge"><i class="bi bi-clock"></i> Live record</span></div><div id="historyList" class="history-list"></div></section>
-                <section class="certificate-panel" id="certificate"><div><span class="eyebrow">RECOGNITION</span><h3>Earn your certificate of appreciation</h3><p>Complete response tasks and submit reports to unlock your volunteer certificate.</p></div><button class="primary-button" id="certificateButton" type="button"><i class="bi bi-award"></i> Check certificate</button></section>
+                <!-- VIEW 6: SKILLS & EXPERTISE ONLY -->
+                <div class="volunteer-view" id="view-skills">
+                    <section class="panel skills-panel p-4 bg-white rounded-3 shadow-sm border" id="skills">
+                        <div class="panel-head d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="eyebrow">CAPABILITIES</span>
+                                <h3 class="mb-0">My Skills & Field Expertise</h3>
+                            </div>
+                            <button class="outline-button" type="button"
+                                onclick="document.getElementById('editProfile').click()"><i
+                                    class="bi bi-plus-circle"></i> Update Skills</button>
+                        </div>
+                        <p class="text-muted small">Your registered disaster response specializations are utilized by
+                            Mandal Officers when routing emergency dispatch tasks.</p>
+                        <div class="skill-section">
+                            <div id="skillList" class="skill-list"></div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- VIEW 7: ACTIVITY / HISTORY ONLY -->
+                <div class="volunteer-view" id="view-history">
+                    <section class="panel history-panel" id="history">
+                        <div class="panel-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div><span class="eyebrow">YOUR CONTRIBUTION</span>
+                                <h3>Activity history</h3>
+                            </div>
+                            <span class="history-badge"><i class="bi bi-clock"></i> Live record</span>
+                        </div>
+
+                        <!-- HISTORY FILTER TOOLBAR -->
+                        <div class="table-filter-card my-2 p-2 bg-light rounded border">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" id="historySearchInput"
+                                    placeholder="Search past activities, tasks, locations...">
+                            </div>
+                        </div>
+
+                        <div id="historyList" class="history-list"></div>
+                    </section>
+                </div>
+
+                <!-- VIEW 8: SAFETY GUIDELINES ONLY -->
+                <div class="volunteer-view" id="view-safety">
+                    <section class="panel safety-panel" id="safety">
+                        <div class="panel-head">
+                            <div><span class="eyebrow">BEFORE YOU RESPOND</span>
+                                <h3>Safety guidelines</h3>
+                            </div>
+                            <i class="bi bi-shield-check safety-icon"></i>
+                        </div>
+                        <ul>
+                            <li>Wear protective equipment and carry identification at all times.</li>
+                            <li>Check in with the Mandal Officer before starting work and record field status.</li>
+                            <li>Never enter unsafe floodwaters or structural collapse zones without trained support.
+                            </li>
+                            <li>Keep emergency helpline 112 and Mandal Officer direct contacts on rapid dial.</li>
+                            <li>Photograph field situation and relief distribution before filing completion report.</li>
+                        </ul>
+                        <button class="secondary-button" id="safetyButton" type="button">View emergency contacts <i
+                                class="bi bi-arrow-right"></i></button>
+                    </section>
+                </div>
+
+                <!-- VIEW 9: CERTIFICATES ONLY -->
+                <div class="volunteer-view" id="view-certificate">
+                    <section class="certificate-panel" id="certificate">
+                        <div>
+                            <span class="eyebrow">RECOGNITION</span>
+                            <h3>Earn your certificate of appreciation</h3>
+                            <p>Complete response tasks and submit reports to unlock your official volunteer certificate
+                                signed by District Administration.</p>
+                        </div>
+                        <button class="primary-button" id="certificateButton" type="button"><i class="bi bi-award"></i>
+                            Check certificate</button>
+                    </section>
+                </div>
             </section>
+
+            <!-- UNIVERSAL HOMEPAGE FOOTER (MATCHING HOMEPAGE) -->
+            <footer class="site-footer mt-5 pt-4 border-top">
+                <div class="container-fluid px-4 py-3">
+                    <div class="row g-4 footer-main">
+                        <div class="col-lg-5">
+                            <a href="index.html"
+                                class="footer-brand text-decoration-none d-flex align-items-center gap-2 mb-2">
+                                <span class="brand-logo"><i class="bi bi-shield-fill-check"></i></span>
+                                <span class="text-white fs-5">DISASTER <strong class="text-white">RELIEF</strong></span>
+                            </a>
+                            <p class="footer-description text-white-50 small mb-0">
+                                National disaster relief coordination platform connecting citizens, volunteers, mandal
+                                officers, and emergency response teams across India.
+                            </p>
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <h6 class="text-white fw-bold mb-3 small text-uppercase">Platform</h6>
+                            <div class="d-flex flex-column gap-2 small">
+                                <a href="index.html#home" class="text-white-50 text-decoration-none">Home</a>
+                                <a href="index.html#overview" class="text-white-50 text-decoration-none">Overview</a>
+                                <a href="index.html#help" class="text-white-50 text-decoration-none">Request Help</a>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <h6 class="text-white fw-bold mb-3 small text-uppercase">Get Involved</h6>
+                            <div class="d-flex flex-column gap-2 small">
+                                <a href="index.html#volunteer" class="text-white-50 text-decoration-none">Volunteer</a>
+                                <a href="index.html#donate" class="text-white-50 text-decoration-none">Donate</a>
+                                <a href="about.html" class="text-white-50 text-decoration-none">About Us</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <h6 class="text-white fw-bold mb-3 small text-uppercase">Emergency Contact</h6>
+                            <p class="small text-white-50 mb-1"><i class="bi bi-telephone-fill text-danger me-1"></i>
+                                112 — National Emergency</p>
+                            <p class="small text-white-50 mb-2"><i class="bi bi-geo-alt-fill text-primary me-1"></i>
+                                India Emergency Operations Center</p>
+                        </div>
+                    </div>
+                    <div
+                        class="footer-bottom d-flex justify-content-between align-items-center pt-3 mt-3 border-top border-secondary-subtle small text-white-50">
+                        <span>© 2026 DISASTER RELIEF. All rights reserved.</span>
+                        <span>Built for safer communities.</span>
+                    </div>
+                </div>
+            </footer>
         </main>
     </div>
 
-    <div class="volunteer-toast" id="volunteerToast" role="status"><i class="bi bi-check-circle-fill"></i><span></span></div>
+    <div class="volunteer-toast" id="volunteerToast" role="status"><i class="bi bi-check-circle-fill"></i><span></span>
+    </div>
 
     <!-- REPORT MODAL -->
     <div class="volunteer-modal" id="reportModal" aria-hidden="true">
         <div class="modal-card">
-            <button class="close-modal" type="button" data-close-modal="reportModal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+            <button class="close-modal" type="button" data-close-modal="reportModal" aria-label="Close"><i
+                    class="bi bi-x-lg"></i></button>
             <span class="eyebrow">TASK COMPLETION</span>
             <h3>Submit activity report</h3>
             <p>Tell the Admin team what you achieved in the field.</p>
             <form id="reportForm">
                 <label>People assisted<input id="peopleAssisted" type="number" min="0" required></label>
-                <label>Supplies distributed<input id="suppliesDistributed" type="text" placeholder="Example: 150 food packets" required></label>
+                <label>Supplies distributed<input id="suppliesDistributed" type="text"
+                        placeholder="Example: 150 food packets" required></label>
                 <label>Description<textarea id="reportDescription" rows="3" required></textarea></label>
                 <button class="primary-button" type="submit">Submit report <i class="bi bi-arrow-right"></i></button>
             </form>
@@ -124,17 +508,21 @@
     <!-- PROFILE MODAL WITH DELAYED SAVE RULE -->
     <div class="volunteer-modal" id="profileModal" aria-hidden="true">
         <div class="modal-card">
-            <button class="close-modal" type="button" data-close-modal="profileModal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+            <button class="close-modal" type="button" data-close-modal="profileModal" aria-label="Close"><i
+                    class="bi bi-x-lg"></i></button>
             <span class="eyebrow">VOLUNTEER PROFILE</span>
             <h3>Update your profile</h3>
             <form id="profileForm">
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div style="width: 55px; height: 55px; border-radius: 50%; overflow: hidden; background: #e2e8f0; display: flex; align-items: center; justify-content: center; border: 2px solid #cbd5e1;">
-                        <img id="editPhotoPreviewImg" src="" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    <div
+                        style="width: 55px; height: 55px; border-radius: 50%; overflow: hidden; background: #e2e8f0; display: flex; align-items: center; justify-content: center; border: 2px solid #cbd5e1;">
+                        <img id="editPhotoPreviewImg" src="" alt="Preview"
+                            style="width: 100%; height: 100%; object-fit: cover; display: none;">
                         <span id="editPhotoPreviewInitials" style="font-weight: bold; color: #64748b;">VO</span>
                     </div>
                     <div style="flex: 1;">
-                        <label style="margin: 0; font-size: 11px; font-weight: bold; color: #475569;">Profile Picture</label>
+                        <label style="margin: 0; font-size: 11px; font-weight: bold; color: #475569;">Profile
+                            Picture</label>
                         <input id="editPhotoInput" type="file" accept="image/*" style="font-size: 11px; padding: 4px;">
                         <small style="color: #64748b; font-size: 10px; display: block;">Picture will be saved only after clicking 'Save profile'.</small>
                     </div>
@@ -148,27 +536,33 @@
                         <option value="Unavailable">Unavailable</option>
                     </select>
                 </label>
-                <label>Skills<input id="editSkills" type="text" placeholder="Medical, rescue, logistics" required></label>
+                <label>Skills<input id="editSkills" type="text" placeholder="Medical, rescue, logistics"
+                        required></label>
                 <button class="primary-button" type="submit">Save profile <i class="bi bi-check2"></i></button>
             </form>
         </div>
     </div>
 
     <!-- DUAL-SIDED PROFESSIONAL VOLUNTEER ID CARD MODAL -->
-    <div class="modal fade id-card-modal" id="volunteerIdCardModal" tabindex="-1" aria-labelledby="volunteerIdCardModalLabel" aria-hidden="true">
+    <div class="modal fade id-card-modal" id="volunteerIdCardModal" tabindex="-1"
+        aria-labelledby="volunteerIdCardModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content id-card-modal-content border-0 shadow-lg">
                 <div class="modal-header bg-dark text-white border-0 py-3">
                     <div class="d-flex align-items-center gap-2">
                         <span class="badge bg-danger fs-6"><i class="bi bi-person-vcard-fill"></i></span>
-                        <h5 class="modal-title mb-0" id="volunteerIdCardModalLabel">Official Disaster Relief Volunteer ID Card</h5>
+                        <h5 class="modal-title mb-0" id="volunteerIdCardModalLabel">Official Disaster Relief Volunteer
+                            ID Card</h5>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4 bg-light">
                     <div class="text-center mb-3 d-print-none">
-                        <p class="text-muted small mb-2">Government of India · Disaster Management Authority Authorized Identification Card</p>
-                        <span class="badge bg-secondary-subtle text-secondary border">Physical Standard PVC Specification · Front & Back</span>
+                        <p class="text-muted small mb-2">Government of India · Disaster Management Authority Authorized
+                            Identification Card</p>
+                        <span class="badge bg-secondary-subtle text-secondary border">Physical Standard PVC
+                            Specification · Front & Back</span>
                     </div>
 
                     <div class="id-cards-wrapper" id="idCardsPrintArea">
@@ -184,7 +578,8 @@
 
                             <div class="id-card-front-body">
                                 <div class="id-card-photo-box">
-                                    <img id="idCardPhotoImg" class="id-card-photo" src="" alt="Volunteer Photo" style="display: none;">
+                                    <img id="idCardPhotoImg" class="id-card-photo" src="" alt="Volunteer Photo"
+                                        style="display: none;">
                                     <div id="idCardPhotoInitials" class="id-card-initials">VK</div>
                                     <span class="id-card-role-pill">VOLUNTEER</span>
                                 </div>
@@ -196,7 +591,8 @@
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Volunteer ID:</span>
-                                        <strong class="id-val font-monospace text-primary" id="idCardVolId">DRVOL-0001</strong>
+                                        <strong class="id-val font-monospace text-primary"
+                                            id="idCardVolId">DRVOL-0001</strong>
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">District:</span>
@@ -208,7 +604,8 @@
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Role:</span>
-                                        <span class="id-val fw-bold text-dark" id="idCardRole">Disaster Relief Volunteer</span>
+                                        <span class="id-val fw-bold text-dark" id="idCardRole">Disaster Relief
+                                            Volunteer</span>
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Blood Group:</span>
@@ -226,7 +623,8 @@
                             </div>
 
                             <div class="id-card-footer">
-                                <div class="id-card-watermark"><i class="bi bi-patch-check-fill text-success me-1"></i> Authorized Personnel</div>
+                                <div class="id-card-watermark"><i class="bi bi-patch-check-fill text-success me-1"></i>
+                                    Authorized Personnel</div>
                                 <div class="id-card-signature-box">
                                     <div class="signature-line" id="idCardSignatureScript">District Collector & DM</div>
                                     <span class="id-card-sign-label">Authorized Signature</span>
@@ -243,12 +641,18 @@
 
                             <div class="id-card-back-body">
                                 <ul class="id-responsibilities-list">
-                                    <li><span class="resp-icon">🚨</span> <span>Assist during disaster emergencies</span></li>
-                                    <li><span class="resp-icon">🏥</span> <span>Help affected people reach emergency services</span></li>
-                                    <li><span class="resp-icon">🏠</span> <span>Support shelter and relief activities</span></li>
-                                    <li><span class="resp-icon">📦</span> <span>Assist with distribution of relief materials</span></li>
-                                    <li><span class="resp-icon">📢</span> <span>Report emergency situations to the Mandal/Employee</span></li>
-                                    <li><span class="resp-icon">🤝</span> <span>Coordinate with the disaster management team</span></li>
+                                    <li><span class="resp-icon">🚨</span> <span>Assist during disaster
+                                            emergencies</span></li>
+                                    <li><span class="resp-icon">🏥</span> <span>Help affected people reach emergency
+                                            services</span></li>
+                                    <li><span class="resp-icon">🏠</span> <span>Support shelter and relief
+                                            activities</span></li>
+                                    <li><span class="resp-icon">📦</span> <span>Assist with distribution of relief
+                                            materials</span></li>
+                                    <li><span class="resp-icon">📢</span> <span>Report emergency situations to the
+                                            Mandal/Employee</span></li>
+                                    <li><span class="resp-icon">🤝</span> <span>Coordinate with the disaster management
+                                            team</span></li>
                                 </ul>
 
                                 <div class="emergency-contact-box">
@@ -272,7 +676,8 @@
                                 </div>
 
                                 <p class="id-disclaimer">
-                                    This ID card is issued by DISASTER RELIEF MANAGEMENT and is valid only for authorized disaster-relief volunteer activities.
+                                    This ID card is issued by DISASTER RELIEF MANAGEMENT and is valid only for
+                                    authorized disaster-relief volunteer activities.
                                 </p>
                             </div>
                         </div>
@@ -280,7 +685,662 @@
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="idCardPrintTriggerBtn"><i class="bi bi-printer"></i> Print ID Card (Front & Back)</button>
+                    <button type="button" class="btn btn-primary" id="idCardPrintTriggerBtn"><i
+                            class="bi bi-printer"></i> Print ID Card (Front & Back)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INCOMING SMARTPHONE MOBILE SMS MODAL POPUP -->
+    <div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent shadow-none">
+                <div class="sms-phone-frame">
+                    <div class="sms-phone-header">
+                        <span><i class="bi bi-reception-4"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="sms-bubble">
+                        <div class="sms-sender">
+                            <i class="bi bi-shield-fill-exclamation"></i>
+                            <span id="modalSmsSender">DISASTER CONTROL ROOM</span>
+                        </div>
+                        <div class="sms-body-text" id="modalSmsBody">
+                            ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your registered
+                            mobile number. Follow emergency volunteer directives and stay safe. Call 112 for rescue
+                            dispatch.
+                        </div>
+                        <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
+                    </div>
+                    <div
+                        class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                        <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast
+                            Delivered</small>
+                        <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i
+                                class="bi bi-telephone-fill"></i> Dial 112</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VOLUNTEER TASK & APPLICATION DOSSIER MODAL -->
+    <div class="modal fade" id="volunteerTaskModal" tabindex="-1" aria-labelledby="taskModalHeaderTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white py-3">
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <h5 class="modal-title fw-bold mb-0" id="taskModalHeaderTitle">
+                            <i class="bi bi-file-earmark-medical-fill text-danger me-2"></i>Task & Help Request Dossier
+                        </h5>
+                        <span class="badge bg-primary px-3 py-1 fs-6" id="modalWorkflowStatusBadge">Assigned</span>
+                        <span class="badge bg-secondary font-monospace" id="modalTrackIdBadge">#REQ-000000</span>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- 9-STAGE WORKFLOW STEPPER -->
+                    <div class="workflow-stepper mb-4 p-3 bg-white rounded-3 border shadow-sm"
+                        id="modalWorkflowStepper">
+                        <div class="workflow-step" data-step-id="Assigned" id="step-Assigned">
+                            <div class="workflow-step-num">1</div>
+                            <div class="workflow-step-label">Assigned</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Accepted" id="step-Accepted">
+                            <div class="workflow-step-num">2</div>
+                            <div class="workflow-step-label">Accepted</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="On the Way" id="step-On-the-Way">
+                            <div class="workflow-step-num">3</div>
+                            <div class="workflow-step-label">On the Way</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Reached Location" id="step-Reached-Location">
+                            <div class="workflow-step-num">4</div>
+                            <div class="workflow-step-label">Reached Location</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Work in Progress" id="step-Work-in-Progress">
+                            <div class="workflow-step-num">5</div>
+                            <div class="workflow-step-label">Work in Progress</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Assistance Required" id="step-Assistance-Required">
+                            <div class="workflow-step-num">6</div>
+                            <div class="workflow-step-label">Assistance Required</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Submitted for Verification"
+                            id="step-Submitted-for-Verification">
+                            <div class="workflow-step-num">7</div>
+                            <div class="workflow-step-label">Submitted Verification</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Verified / Completed" id="step-Verified-Completed">
+                            <div class="workflow-step-num">8</div>
+                            <div class="workflow-step-label">Verified / Completed</div>
+                        </div>
+                        <div class="workflow-step" data-step-id="Rejected / Rework Required"
+                            id="step-Rejected-Rework-Required">
+                            <div class="workflow-step-num">9</div>
+                            <div class="workflow-step-label">Rework Required</div>
+                        </div>
+                    </div>
+
+                    <!-- 3-TAB NAVIGATION -->
+                    <ul class="nav nav-pills nav-fill mb-3 bg-white p-2 rounded-3 border shadow-sm" id="taskModalTabs"
+                        role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-bold py-2" id="taskTabAppBtn" data-bs-toggle="tab"
+                                data-bs-target="#paneHelpRequestApp" type="button" role="tab"><i class="bi bi-file-earmark-person-fill me-1 text-primary"></i> 1. Help Request Application</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold py-2" id="taskTabLetterBtn" data-bs-toggle="tab"
+                                data-bs-target="#paneMandalGuidance" type="button" role="tab"><i class="bi bi-envelope-paper-heart-fill me-1 text-warning"></i> 2. Mandal Officer's Guidance Letter</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold py-2" id="taskTabFormBtn" data-bs-toggle="tab"
+                                data-bs-target="#paneTaskExecutionForm" type="button" role="tab"><i class="bi bi-clipboard2-check-fill me-1 text-success"></i> 3. Task Form & Evidence</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- TAB 1: CITIZEN HELP REQUEST APPLICATION -->
+                        <div class="tab-pane fade show active" id="paneHelpRequestApp" role="tabpanel">
+                            <div class="card p-4 border-0 shadow-sm rounded-3 bg-white">
+                                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                    <h6 class="fw-bold text-dark mb-0"><i
+                                            class="bi bi-info-circle-fill text-primary me-2"></i>Citizen Emergency
+                                        Application Details</h6>
+                                    <span class="badge bg-danger" id="modalReqPriorityBadge">High Priority</span>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Affected Citizen Name</span>
+                                            <strong class="fs-6" id="modalCitizenName">Citizen Name</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Contact Mobile Number</span>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <strong class="fs-6 font-monospace" id="modalCitizenPhone">+91 00000
+                                                    00000</strong>
+                                                <a href="#" class="btn btn-sm btn-outline-success py-0 px-2"
+                                                    id="modalCallCitizenBtn"><i class="bi bi-telephone-fill"></i>
+                                                    Call</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Incident District</span>
+                                            <strong id="modalCitizenDistrict">Krishna</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Mandal Jurisdiction</span>
+                                            <strong id="modalCitizenMandal">Vijayawada Rural</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Village / Habitation</span>
+                                            <strong id="modalCitizenVillage">Village Area</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Disaster Type</span>
+                                            <strong class="text-danger" id="modalDisasterType">Flood / Heavy
+                                                Rain</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block">Help Category Requested</span>
+                                            <strong class="text-primary" id="modalHelpType">Rescue & Relief</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block mb-1">Citizen Situation Report &
+                                                Landmark</span>
+                                            <p class="mb-0 text-dark fst-italic" id="modalCitizenDetails">"Emergency
+                                                details..."</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="p-3 bg-light rounded-2 border">
+                                            <span class="text-muted small d-block mb-1"><i
+                                                    class="bi bi-shield-exclamation text-danger"></i> Reported Losses &
+                                                Damages</span>
+                                            <div id="modalReportedLosses">
+                                                <span class="text-muted small">None declared</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: MANDAL OFFICER'S GUIDANCE LETTER -->
+                        <div class="tab-pane fade" id="paneMandalGuidance" role="tabpanel">
+                            <div class="guidance-letterhead">
+                                <div class="guidance-header-box d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="fw-bold mb-1 text-dark">GOVERNMENT OF ANDHRA PRADESH</h5>
+                                        <p class="small text-muted mb-0">DISASTER MANAGEMENT, RESCUE & HUMANITARIAN
+                                            RELIEF AUTHORITY</p>
+                                        <small class="fw-semibold text-primary">Office of the Mandal Incident Commander
+                                            & Executive Magistrate</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-danger px-3 py-2 fw-bold"><i
+                                                class="bi bi-shield-check"></i> OFFICIAL DIRECTIVE</span>
+                                    </div>
+                                </div>
+
+                                <div class="guidance-ref-row">
+                                    <span>REF NO: <strong id="letterRefNo">AP-DM/MND/2026/0892</strong></span>
+                                    <span>DISPATCH DATE: <strong id="letterDate">Today</strong></span>
+                                    <span>JURISDICTION: <strong id="letterMandal">Vijayawada Rural
+                                            Mandal</strong></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <p class="mb-1 text-muted small">TO:</p>
+                                    <strong class="text-dark d-block" id="letterVolunteerName">Assigned Volunteer
+                                        Officer</strong>
+                                    <span class="text-muted small">Registered Volunteer ID: <strong
+                                            id="letterVolunteerId">DRVOL-0001</strong></span>
+                                </div>
+
+                                <div class="p-2 mb-3 bg-light rounded border">
+                                    <p class="mb-0 fw-bold small text-dark">
+                                        SUBJECT: Operational Guidance & Standard Operating Procedures for Emergency Help
+                                        Request <span id="letterTrackId">#REQ-0000</span>
+                                    </p>
+                                </div>
+
+                                <h6 class="fw-bold text-dark mt-3 mb-2"><i
+                                        class="bi bi-list-check text-primary me-2"></i>MANDAL OFFICER DIRECTIVES &
+                                    ACTION INSTRUCTIONS:</h6>
+
+                                <div class="guidance-instruction-card">
+                                    <strong>1. Immediate On-Site Assessment & Verification:</strong>
+                                    <p class="mb-0 text-muted">Proceed to the incident coordinates safely. Verify
+                                        citizen identity, evaluate structural hazards, flood levels, and immediate
+                                        danger to human lives.</p>
+                                </div>
+
+                                <div class="guidance-instruction-card" style="border-left-color: #ea580c;">
+                                    <strong>2. Humanitarian Assistance Coordination:</strong>
+                                    <p class="mb-0 text-muted">Assess emergency relief needs (food rations, drinking
+                                        water packets, blankets, medical first aid, shelter). If affected people require
+                                        supplies, use the Assistance Coordination section to notify the Mandal Office
+                                        immediately.</p>
+                                </div>
+
+                                <div class="guidance-instruction-card" style="border-left-color: #16a34a;">
+                                    <strong>3. Photographic Evidence & Record Keeping:</strong>
+                                    <p class="mb-0 text-muted">Take clear photos of the affected site, damages, and
+                                        relief distribution. High-quality photographic evidence is strictly required
+                                        before submission for Mandal Officer verification.</p>
+                                </div>
+
+                                <div class="guidance-instruction-card" style="border-left-color: #7c3aed;">
+                                    <strong>4. Officer Verification & Sign-off:</strong>
+                                    <p class="mb-0 text-muted">Upon executing relief measures, submit the complete task
+                                        dossier and photo evidence to the Mandal Officer for final review and approval.
+                                    </p>
+                                </div>
+
+                                <div class="guidance-signature-box">
+                                    <div class="text-end">
+                                        <div class="font-monospace fw-bold text-primary" style="font-size: 13px;">
+                                            [Digitally Authorized & Dispatched]</div>
+                                        <strong class="d-block text-dark" id="letterOfficerName">Mandal Revenue Officer
+                                            & Incident Commander</strong>
+                                        <small class="text-muted">Sub-Divisional Emergency Operations Center</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: TASK EXECUTION & EVIDENCE FORM -->
+                        <div class="tab-pane fade" id="paneTaskExecutionForm" role="tabpanel">
+                            <div class="card p-4 border-0 shadow-sm rounded-3 bg-white">
+                                <!-- WORKFLOW PROGRESSION BUTTONS -->
+                                <div class="p-3 mb-4 rounded-3 bg-light border">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                                        <h6 class="fw-bold mb-0 text-dark"><i
+                                                class="bi bi-arrow-repeat text-primary me-2"></i>Update Task Workflow
+                                            Status</h6>
+                                        <span class="small text-muted">Step status records date, time, and
+                                            remarks</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2" id="taskWorkflowActionButtons">
+                                        <!-- Dynamically generated action buttons based on status -->
+                                    </div>
+                                </div>
+
+                                <!-- SECTION 2: ASSISTANCE FOR DISASTER-AFFECTED PEOPLE -->
+                                <div class="assistance-coordinator-card">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold text-warning-emphasis mb-0">
+                                            <i class="bi bi-heart-pulse-fill text-danger me-1"></i> Assistance for
+                                            Disaster-Affected People
+                                        </h6>
+                                        <span class="badge bg-warning text-dark fw-bold">Mandal Officer
+                                            Coordination</span>
+                                    </div>
+                                    <p class="small text-muted mb-2">
+                                        If disaster-affected people require assistance, coordinate directly with the
+                                        Mandal Officer to dispatch essential emergency supplies.
+                                    </p>
+
+                                    <div class="assistance-chip-grid mb-3" id="assistanceSuppliesContainer">
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies" value="Food Supplies">
+                                            <span>🍱 Food Supplies / Cooked Meals</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies" value="Drinking Water">
+                                            <span>💧 Safe Drinking Water</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies"
+                                                value="Medicines & First Aid">
+                                            <span>💊 Medicines & First Aid</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies"
+                                                value="Blankets & Clothing">
+                                            <span>🧣 Blankets & Clothing</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies" value="Emergency Shelter">
+                                            <span>⛺ Tarpaulins & Emergency Shelter</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies" value="Sanitation Kits">
+                                            <span>🧼 Sanitation & Hygiene Kits</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies" value="Infant Nutrition">
+                                            <span>🍼 Infant & Child Nutrition</span>
+                                        </label>
+                                        <label class="assistance-chip-label">
+                                            <input type="checkbox" name="assistanceSupplies" value="Elderly Care">
+                                            <span>🦽 Elderly & Disability Care</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold">Affected Persons Needing
+                                                Support</label>
+                                            <input type="number" class="form-control form-control-sm"
+                                                id="assistancePeopleCount" placeholder="e.g. 5" min="1" value="1">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label small fw-semibold">Specific Supplies Note /
+                                                Priority Remarks</label>
+                                            <input type="text" class="form-control form-control-sm"
+                                                id="assistanceNotesInput"
+                                                placeholder="Specify urgent medicines, infant age, shelter requirements...">
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-sm btn-danger fw-bold py-1 px-3"
+                                            id="btnRequestAssistanceThroughMandal">
+                                            <i class="bi bi-megaphone-fill me-1"></i> Request Assistance through Mandal
+                                            Officer
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- SECTION 3: EVIDENCE PHOTOS & APPLICATION SUBMISSION -->
+                                <div class="p-3 mb-4 rounded-3 bg-white border">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold text-dark mb-0"><i
+                                                class="bi bi-camera-fill text-primary me-2"></i>Task Evidence Photos
+                                            (Required for Verification)</h6>
+                                        <small class="text-muted">Attach ground-zero photos</small>
+                                    </div>
+                                    <p class="small text-muted mb-2">Upload photos as supporting evidence of completed
+                                        work or ongoing field response.</p>
+
+                                    <div class="mb-3">
+                                        <input type="file" class="form-control form-control-sm"
+                                            id="modalEvidencePhotoInput" accept="image/*" multiple>
+                                        <small class="text-muted">Select multiple images (JPG, PNG). Live preview will
+                                            appear below.</small>
+                                    </div>
+
+                                    <!-- LIVE THUMBNAILS PREVIEW -->
+                                    <div class="evidence-gallery-grid mb-3" id="modalEvidenceGalleryPreview">
+                                        <!-- Photo thumbnails with remove button -->
+                                    </div>
+
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">People Assisted /
+                                                Rescued</label>
+                                            <input type="number" class="form-control form-control-sm"
+                                                id="modalPeopleAssistedInput" min="0" value="1">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">Relief Supplies
+                                                Distributed</label>
+                                            <input type="text" class="form-control form-control-sm"
+                                                id="modalSuppliesDistributedInput"
+                                                placeholder="e.g. 10 food packets, 5 blankets">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small fw-semibold">Volunteer Action Report /
+                                                Completion Remarks</label>
+                                            <textarea class="form-control form-control-sm" id="modalActionReportInput"
+                                                rows="3"
+                                                placeholder="Describe relief measures executed, citizen condition, and ground observations..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                        <span class="text-muted small"><i class="bi bi-shield-check text-success"></i>
+                                            Submission will be reviewed by Mandal Officer</span>
+                                        <button type="button" class="btn btn-primary fw-bold"
+                                            id="btnSubmitForOfficerVerification">
+                                            <i class="bi bi-send-check-fill me-1"></i> Submit to Mandal Officer for
+                                            Verification
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- SECTION 4: AUDIT HISTORY TRAIL -->
+                                <div class="p-3 rounded-3 bg-light border">
+                                    <h6 class="fw-bold text-dark mb-2 small"><i
+                                            class="bi bi-clock-history me-1"></i>Task Status Audit Trail</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered bg-white small mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Stage / Status</th>
+                                                    <th>Updated By</th>
+                                                    <th>Volunteer ID</th>
+                                                    <th>Date & Time</th>
+                                                    <th>Remarks / Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="modalStatusAuditTbody">
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">No status transitions
+                                                        logged yet.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCATION WEATHER REPORT & WARNING MODAL -->
+    <div class="modal fade" id="weatherDetailModal" tabindex="-1" aria-labelledby="weatherModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-cloud-sun-fill fs-4 text-warning"></i>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0" id="weatherModalTitle">Live Weather Intelligence &
+                                Early Warning</h5>
+                            <small class="text-white-50">Location-specific weather report & disaster alerts</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- DISTRICT SELECTOR FOR STATE-WIDE FORECAST -->
+                    <div
+                        class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 p-2 bg-white rounded-2 border">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small fw-bold text-muted"><i class="bi bi-geo-alt-fill text-danger"></i> Target
+                                Location:</span>
+                            <select class="form-select form-select-sm" id="weatherDistrictSelect"
+                                style="width: auto; min-width: 200px;">
+                                <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+                                <option value="Anakapalli">Anakapalli</option>
+                                <option value="Ananthapuramu">Ananthapuramu</option>
+                                <option value="Annamayya">Annamayya</option>
+                                <option value="Bapatla">Bapatla</option>
+                                <option value="Chittoor">Chittoor</option>
+                                <option value="East Godavari">East Godavari</option>
+                                <option value="Eluru">Eluru</option>
+                                <option value="Guntur">Guntur</option>
+                                <option value="Kakinada">Kakinada</option>
+                                <option value="Konaseema">Konaseema</option>
+                                <option value="Krishna" selected>Krishna (Vijayawada)</option>
+                                <option value="Kurnool">Kurnool</option>
+                                <option value="Nandyal">Nandyal</option>
+                                <option value="NTR">NTR District</option>
+                                <option value="Palnadu">Palnadu</option>
+                                <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+                                <option value="Prakasam">Prakasam</option>
+                                <option value="Srikakulam">Srikakulam</option>
+                                <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+                                <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+                                <option value="Tirupati">Tirupati</option>
+                                <option value="Visakhapatnam">Visakhapatnam</option>
+                                <option value="Vizianagaram">Vizianagaram</option>
+                                <option value="West Godavari">West Godavari</option>
+                                <option value="YSR Kadapa">YSR Kadapa</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnRefreshWeatherModal">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Data
+                        </button>
+                    </div>
+
+                    <!-- CURRENT CONDITIONS HERO CARD -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 text-center text-sm-start mb-3 mb-sm-0">
+                                <div
+                                    class="d-flex align-items-center justify-content-center justify-content-sm-start gap-3">
+                                    <div id="weatherModalHeroIcon" style="font-size: 48px;">
+                                        <i class="bi bi-cloud-rain-fill text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="display-5 fw-bold text-dark mb-0" id="weatherModalHeroTemp">29°C
+                                        </div>
+                                        <div class="fw-semibold text-secondary" id="weatherModalHeroCondition">Scattered
+                                            Rain</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-muted small">
+                                    <i class="bi bi-geo-alt"></i> <span id="weatherModalHeroLocation">Vijayawada Rural,
+                                        Krishna, Andhra Pradesh</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row g-2 text-center">
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Humidity</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalHumidity">78%</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Wind Speed</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalWind">18 km/h</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Visibility</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalVisibility">8.5 km</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Pressure</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalPressure">1008 hPa</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2-COLUMN SECTION: RAINFALL FORECAST & STRONG WIND WARNING -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-cloud-drizzle-fill text-primary me-2"></i>Rainfall Forecast
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">24-Hr Precipitation:</span>
+                                    <strong class="text-primary font-monospace" id="weatherModalRainVolume">14.2
+                                        mm</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Rain Probability:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalRainProb">75%</strong>
+                                </div>
+                                <div class="p-2 rounded border bg-primary-subtle border-primary-subtle small text-primary-emphasis"
+                                    id="weatherModalRainRiskText">
+                                    Moderate scattered rainfall expected in coastal mandals. Keep emergency tarpaulins
+                                    ready.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-wind text-warning me-2"></i>Strong Wind Warning
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Current Wind Speed:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalWindSpeed">18 km/h</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Wind Category:</span>
+                                    <span class="badge bg-success" id="weatherModalWindCategory">Moderate Breeze</span>
+                                </div>
+                                <div class="p-2 rounded border small" id="weatherModalWindWarningBox"
+                                    style="background: #f0fdf4; border-color: #bbf7d0; color: #166534;">
+                                    Wind conditions within safe operational limits for field volunteers and boats.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WEATHER ALERTS & OFFICIAL ADVISORIES -->
+                    <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster Weather Alerts</h6>
+                            <span class="badge bg-danger" id="weatherModalAlertLevelBadge">ADVISORY ACTIVE</span>
+                        </div>
+                        <div class="alert alert-warning mb-0 p-2 small border" id="weatherModalOfficialAlertText">
+                            ⚠️ <strong>IMD & AP Disaster Management Advisory:</strong> Monsoon low-pressure system
+                            active over Bay of Bengal. Field volunteers advised to carry rain protection and stay in
+                            coordination with Mandal Emergency Desk.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2">
+                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Data Source:
+                        Open-Meteo & AP Disaster Management</small>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -289,4 +1349,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="volunteer.js"></script>
 </body>
+
 </html>

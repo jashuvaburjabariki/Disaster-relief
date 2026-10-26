@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
+    <div class="admin-video-backdrop" aria-hidden="true">
+        <video class="admin-backdrop-video" autoplay muted loop playsinline poster="disaster hero banner.png">
+            <source src="hero banner video motion.mp4" type="video/mp4">
+        </video>
+        <div class="admin-backdrop-overlay"></div>
+    </div>
     <div class="admin-shell">
         <aside class="admin-sidebar" id="adminSidebar">
             <div class="sidebar-brand">
@@ -22,8 +32,10 @@
             <div class="sidebar-label">CONTROL CENTER</div>
             <nav class="sidebar-nav" aria-label="Admin navigation">
                 <a class="sidebar-link active" href="#dashboard"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
-                <a class="sidebar-link" href="#mandals"><i class="bi bi-buildings"></i> Mandals & Logins <span class="nav-count" id="navMandalsPendingCount">0</span></a>
-                <a class="sidebar-link" href="#requests"><i class="bi bi-clipboard2-pulse"></i> Help Requests <span class="nav-count" id="navRequestsCount">0</span></a>
+                <a class="sidebar-link" href="#mandals"><i class="bi bi-buildings"></i> Mandals & Logins <span
+                        class="nav-count" id="navMandalsPendingCount">0</span></a>
+                <a class="sidebar-link" href="#requests"><i class="bi bi-clipboard2-pulse"></i> Help Requests <span
+                        class="nav-count" id="navRequestsCount">0</span></a>
                 <a class="sidebar-link" href="#alerts"><i class="bi bi-megaphone"></i> Disaster Alerts</a>
                 <a class="sidebar-link" href="#volunteers"><i class="bi bi-people"></i> Volunteers</a>
                 <a class="sidebar-link" href="#assign"><i class="bi bi-link-45deg"></i> Assign Volunteers</a>
@@ -34,37 +46,65 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a class="sidebar-link" href="index.html"><i class="bi bi-arrow-left"></i> Back to website</a>
-                <button class="sidebar-link logout-link" type="button" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                <button class="sidebar-link logout-link" type="button" id="logoutButton"><i
+                        class="bi bi-box-arrow-right"></i> Logout</button>
             </div>
         </aside>
 
         <main class="admin-main" id="dashboard">
             <header class="admin-topbar">
-                <button class="mobile-menu" type="button" id="menuButton" aria-label="Open admin menu"><i class="bi bi-list"></i></button>
+                <button class="mobile-menu" type="button" id="menuButton" aria-label="Open admin menu"><i
+                        class="bi bi-list"></i></button>
                 <div>
                     <p class="breadcrumb-label" id="adminBreadcrumb">CONTROL CENTER / DISTRICT OPERATIONS</p>
                     <h1 id="adminHeaderTitle">District Admin Dashboard</h1>
                 </div>
                 <div class="topbar-actions">
                     <!-- LIVE WEATHER REPORT WIDGET -->
-                    <div class="weather-topbar-widget" id="adminWeatherWidget" title="Live Weather for District Operations">
-                        <div class="weather-topbar-icon" id="adminWeatherIcon"><i class="bi bi-cloud-rain-fill text-info"></i></div>
+                    <div class="weather-topbar-widget" id="adminWeatherWidget"
+                        title="Click to view Live Weather Report & Warnings" style="cursor: pointer;" onclick="openWeatherDetailModal()">
+                        <div class="weather-topbar-icon" id="adminWeatherIcon"><i
+                                class="bi bi-cloud-rain-fill text-info"></i></div>
                         <div class="weather-topbar-info">
                             <div class="weather-temp-row">
                                 <strong id="adminWeatherTemp">29°C</strong>
-                                <span class="badge bg-danger text-white py-0 px-1" id="adminWeatherBadge" style="font-size: 8.5px;">Rain Watch</span>
+                                <span class="badge bg-danger text-white py-0 px-1" id="adminWeatherBadge"
+                                    style="font-size: 8.5px;">Rain Watch</span>
                             </div>
                             <small id="adminWeatherCondition">Scattered Rain · Krishna</small>
                         </div>
-                        <button type="button" class="btn btn-sm btn-link text-white-50 p-0 ms-1" id="refreshWeatherBtn" title="Refresh Live Weather"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button type="button" class="btn btn-sm btn-link text-white-50 p-0 ms-1" id="refreshWeatherBtn"
+                            title="Refresh Live Weather"><i class="bi bi-arrow-clockwise"></i></button>
                     </div>
 
-                    <button class="icon-button" type="button" aria-label="View notifications"><i class="bi bi-bell"></i><span class="notification-dot"></span></button>
-                    <div class="jurisdiction-control"><label for="adminState">State</label><select id="adminState" class="india-state-select"><option value="all">All India</option></select><label for="adminDistrict">District</label><input id="adminDistrict" type="text" placeholder="e.g. Krishna" aria-label="Admin district"><button type="button" id="applyJurisdiction">Set</button></div>
-                    <button class="admin-profile" type="button" id="profileButton" title="Click to view & edit Admin Profile">
+                    <button class="icon-button" type="button" aria-label="View notifications"><i
+                            class="bi bi-bell"></i><span class="notification-dot"></span></button>
+                    <!-- FIXED ASSIGNED JURISDICTION (STATE & DISTRICT NON-EDITABLE) -->
+                    <div class="fixed-jurisdiction-box" id="adminJurisdictionWidget"
+                        title="Assigned Official Jurisdiction (Fixed & Authorized)">
+                        <div class="jurisdiction-pill">
+                            <span class="jurisdiction-shield"><i class="bi bi-shield-lock-fill text-warning"></i></span>
+                            <div class="jurisdiction-text-wrap">
+                                <span class="jurisdiction-tag">ASSIGNED JURISDICTION</span>
+                                <span class="jurisdiction-display" id="adminJurisdictionDisplay">Andhra Pradesh / Alluri
+                                    Sitharama Raju</span>
+                            </div>
+                            <span class="jurisdiction-lock-icon"
+                                title="Fixed Jurisdiction - Cannot be edited manually"><i
+                                    class="bi bi-lock-fill"></i></span>
+                        </div>
+                        <!-- Hidden inputs for backward script compatibility -->
+                        <select id="adminState" class="india-state-select d-none" disabled>
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        </select>
+                        <input type="hidden" id="adminDistrict" value="Alluri Sitharama Raju">
+                        <button type="button" id="applyJurisdiction" class="d-none">Set</button>
+                    </div>
+                    <button class="admin-profile" type="button" id="profileButton"
+                        title="Click to view & edit Admin Profile">
                         <div class="admin-topbar-avatar-wrap">
-                            <img id="adminTopPhoto" class="admin-topbar-photo" src="" alt="Admin Profile" style="display: none;">
+                            <img id="adminTopPhoto" class="admin-topbar-photo" src="" alt="Admin Profile"
+                                style="display: none;">
                             <span class="profile-avatar" id="adminTopInitials">AD</span>
                             <span class="admin-online-badge" title="Active Duty"></span>
                         </div>
@@ -78,6 +118,30 @@
             </header>
 
             <section class="dashboard-content">
+                <!-- PRE-DISASTER MOBILE SMS ALERT BROADCAST BANNER -->
+                <div class="pre-disaster-sms-bar mb-3 p-3 rounded-3 shadow-sm border" id="preDisasterSmsBar">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="sms-pulse-badge"><i class="bi bi-broadcast"></i> EARLY WARNING MOBILE
+                                SMS</span>
+                            <span class="sms-text-preview" id="latestSmsText">
+                                ⚠️ URGENT PRE-DISASTER ADVISORY: Early warning system active. Severe cyclone/flood
+                                mobile text alerts enabled for all registered numbers.
+                            </span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-danger fw-bold"
+                                onclick="viewLatestSmsAlert()">
+                                <i class="bi bi-phone-fill me-1"></i> View Mobile SMS
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#preDisasterSmsModal">
+                                <i class="bi bi-send-fill me-1"></i> Broadcast Pre-Disaster SMS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- VIEW 1: DASHBOARD OVERVIEW -->
                 <div class="admin-view active" id="view-dashboard">
                     <div class="welcome-row">
@@ -87,17 +151,39 @@
                             <p>Here is the latest overview of emergency operations across India.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="secondary-button" type="button" onclick="switchAdminView('reports')"><i class="bi bi-file-earmark-bar-graph"></i> View Reports</button>
-                            <button class="primary-button" type="button" data-action="new-alert"><i class="bi bi-plus-lg"></i> Create alert</button>
+                            <button class="secondary-button" type="button" onclick="switchAdminView('reports')"><i
+                                    class="bi bi-file-earmark-bar-graph"></i> View Reports</button>
+                            <button class="primary-button" type="button" data-action="new-alert"><i
+                                    class="bi bi-plus-lg"></i> Create alert</button>
                         </div>
                     </div>
 
                     <div class="stat-grid" aria-label="Dashboard statistics">
-                        <article class="stat-card" onclick="switchAdminView('requests')" style="cursor: pointer;"><div class="stat-icon stat-red"><i class="bi bi-clipboard2-pulse"></i></div><div><span>Active Requests</span><strong id="activeRequestsCount">0</strong><small class="trend-up">Live submissions &rarr;</small></div></article>
-                        <article class="stat-card" onclick="switchAdminView('requests')" style="cursor: pointer;"><div class="stat-icon stat-orange"><i class="bi bi-exclamation-triangle"></i></div><div><span>Critical Requests</span><strong id="criticalRequestsCount">0</strong><small class="trend-down">Needs attention &rarr;</small></div></article>
-                        <article class="stat-card" onclick="switchAdminView('volunteers')" style="cursor: pointer;"><div class="stat-icon stat-blue"><i class="bi bi-people"></i></div><div><span>Total Volunteers</span><strong id="volunteersCount">0</strong><small class="trend-up">View directory &rarr;</small></div></article>
-                        <article class="stat-card" onclick="switchAdminView('requests')" style="cursor: pointer;"><div class="stat-icon stat-green"><i class="bi bi-check2-circle"></i></div><div><span>Resolved Requests</span><strong id="resolvedRequestsCount">0</strong><small class="trend-up">Admin-managed</small></div></article>
-                        <article class="stat-card" onclick="switchAdminView('shelters')" style="cursor: pointer;"><div class="stat-icon stat-purple"><i class="bi bi-house-heart"></i></div><div><span>Total Shelters</span><strong>9</strong><small class="stat-muted">3 at high capacity &rarr;</small></div></article>
+                        <article class="stat-card" onclick="switchAdminView('requests')" style="cursor: pointer;">
+                            <div class="stat-icon stat-red"><i class="bi bi-clipboard2-pulse"></i></div>
+                            <div><span>Active Requests</span><strong id="activeRequestsCount">0</strong><small
+                                    class="trend-up">Live submissions &rarr;</small></div>
+                        </article>
+                        <article class="stat-card" onclick="switchAdminView('requests')" style="cursor: pointer;">
+                            <div class="stat-icon stat-orange"><i class="bi bi-exclamation-triangle"></i></div>
+                            <div><span>Critical Requests</span><strong id="criticalRequestsCount">0</strong><small
+                                    class="trend-down">Needs attention &rarr;</small></div>
+                        </article>
+                        <article class="stat-card" onclick="switchAdminView('volunteers')" style="cursor: pointer;">
+                            <div class="stat-icon stat-blue"><i class="bi bi-people"></i></div>
+                            <div><span>Total Volunteers</span><strong id="volunteersCount">0</strong><small
+                                    class="trend-up">View directory &rarr;</small></div>
+                        </article>
+                        <article class="stat-card" onclick="switchAdminView('requests')" style="cursor: pointer;">
+                            <div class="stat-icon stat-green"><i class="bi bi-check2-circle"></i></div>
+                            <div><span>Resolved Requests</span><strong id="resolvedRequestsCount">0</strong><small
+                                    class="trend-up">Admin-managed</small></div>
+                        </article>
+                        <article class="stat-card" onclick="switchAdminView('shelters')" style="cursor: pointer;">
+                            <div class="stat-icon stat-purple"><i class="bi bi-house-heart"></i></div>
+                            <div><span>Total Shelters</span><strong>9</strong><small class="stat-muted">3 at high
+                                    capacity &rarr;</small></div>
+                        </article>
                     </div>
 
                     <!-- DISTRICT MANDAL VOLUNTEERS BREAKDOWN ROW -->
@@ -108,14 +194,21 @@
                                     <span class="eyebrow">DISTRICT PERSONNEL DISTRIBUTION</span>
                                     <h3 id="dashDistrictVolTitle">Volunteers in District Mandals</h3>
                                 </div>
-                                <a href="#mandals" class="text-link" onclick="switchAdminView('mandals'); return false;">Manage Mandals &rarr;</a>
+                                <a href="#mandals" class="text-link"
+                                    onclick="switchAdminView('mandals'); return false;">Manage Mandals &rarr;</a>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between p-2 mb-3 rounded bg-light border">
-                                <span>Total Volunteers in District: <strong class="text-primary fs-6" id="dashTotalDistrictVolunteers">0</strong></span>
-                                <span>Active Mandals: <strong class="text-success" id="dashActiveMandalsCount">0</strong></span>
-                                <span class="badge bg-warning text-dark" id="dashPendingMandalBadge" style="display: none;"><i class="bi bi-bell-fill"></i> Pending Mandal Approvals</span>
+                            <div
+                                class="d-flex align-items-center justify-content-between p-2 mb-3 rounded bg-light border">
+                                <span>Total Volunteers in District: <strong class="text-primary fs-6"
+                                        id="dashTotalDistrictVolunteers">0</strong></span>
+                                <span>Active Mandals: <strong class="text-success"
+                                        id="dashActiveMandalsCount">0</strong></span>
+                                <span class="badge bg-warning text-dark" id="dashPendingMandalBadge"
+                                    style="display: none;"><i class="bi bi-bell-fill"></i> Pending Mandal
+                                    Approvals</span>
                             </div>
-                            <div class="row g-2" id="dashMandalVolunteersList" style="max-height: 230px; overflow-y: auto;">
+                            <div class="row g-2" id="dashMandalVolunteersList"
+                                style="max-height: 230px; overflow-y: auto;">
                                 <!-- Mandal cards dynamically rendered -->
                             </div>
                         </section>
@@ -126,7 +219,8 @@
                                     <span class="eyebrow">LOCAL JURISDICTION</span>
                                     <h3>District Command Info</h3>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" onclick="openAdminProfileModal()"><i class="bi bi-pencil"></i> Profile</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2"
+                                    onclick="openAdminProfileModal()"><i class="bi bi-pencil"></i> Profile</button>
                             </div>
                             <div class="overview-details-box p-3">
                                 <div class="d-flex justify-content-between mb-2">
@@ -146,7 +240,8 @@
                                     <span class="font-monospace text-danger fw-bold">112 / 1077</span>
                                 </div>
                                 <div class="mt-3 pt-2 border-top">
-                                    <button class="secondary-button full-width" type="button" onclick="switchAdminView('mandals')">
+                                    <button class="secondary-button full-width" type="button"
+                                        onclick="switchAdminView('mandals')">
                                         <i class="bi bi-buildings me-1"></i> Open Mandals Control Desk
                                     </button>
                                 </div>
@@ -156,21 +251,109 @@
 
                     <div class="content-grid">
                         <section class="panel requests-panel">
-                            <div class="panel-heading"><div><span class="eyebrow">LIVE QUEUE</span><h3>Recent Help Requests</h3></div><a href="#requests" class="text-link" onclick="switchAdminView('requests'); return false;">View all <i class="bi bi-arrow-right"></i></a></div>
-                            <div class="request-toolbar"><div class="search-box"><i class="bi bi-search"></i><input id="dashRequestSearch" type="search" placeholder="Search ID, location or help type" aria-label="Search requests"></div><select id="dashStatusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="pending">Pending</option><option value="verified">Verified</option><option value="assigned">Assigned</option><option value="in progress">In progress</option><option value="resolved">Resolved</option></select></div>
-                            <div class="table-wrap"><table><thead><tr><th>Request ID</th><th>Name</th><th>Mobile</th><th>Location</th><th>Disaster</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead><tbody id="dashRequestTable"></tbody></table></div>
+                            <div class="panel-heading">
+                                <div><span class="eyebrow">LIVE QUEUE</span>
+                                    <h3>Recent Help Requests</h3>
+                                </div><a href="#requests" class="text-link"
+                                    onclick="switchAdminView('requests'); return false;">View all <i
+                                        class="bi bi-arrow-right"></i></a>
+                            </div>
+                            <div class="request-toolbar">
+                                <div class="search-box"><i class="bi bi-search"></i><input id="dashRequestSearch"
+                                        type="search" placeholder="Search ID, location or help type"
+                                        aria-label="Search requests"></div><select id="dashStatusFilter"
+                                    aria-label="Filter by status">
+                                    <option value="all">All statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="verified">Verified</option>
+                                    <option value="assigned">Assigned</option>
+                                    <option value="in progress">In progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </div>
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Request ID</th>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>Location</th>
+                                            <th>Disaster</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashRequestTable"></tbody>
+                                </table>
+                            </div>
                         </section>
 
                         <section class="panel alerts-panel">
-                            <div class="panel-heading"><div><span class="eyebrow">FIELD UPDATES</span><h3>Active Broadcast Alerts</h3></div><button class="icon-button small" type="button" data-action="new-alert" aria-label="Create alert"><i class="bi bi-plus-lg"></i></button></div>
+                            <div class="panel-heading">
+                                <div><span class="eyebrow">FIELD UPDATES</span>
+                                    <h3>Active Broadcast Alerts</h3>
+                                </div><button class="icon-button small" type="button" data-action="new-alert"
+                                    aria-label="Create alert"><i class="bi bi-plus-lg"></i></button>
+                            </div>
                             <div id="dashAlertList"></div>
-                            <button class="secondary-button full-width" type="button" onclick="switchAdminView('alerts')">Manage alerts <i class="bi bi-arrow-right"></i></button>
+                            <button class="secondary-button full-width" type="button"
+                                onclick="switchAdminView('alerts')">Manage alerts <i
+                                    class="bi bi-arrow-right"></i></button>
                         </section>
                     </div>
 
                     <div class="content-grid lower-grid">
-                        <section class="panel"><div class="panel-heading"><div><span class="eyebrow">RESPONSE CAPACITY</span><h3>Volunteer Readiness</h3></div><a href="#volunteers" class="text-link" onclick="switchAdminView('volunteers'); return false;">Manage <i class="bi bi-arrow-right"></i></a></div><div class="volunteer-summary"><div class="donut-chart"><strong id="volunteerTotal">0</strong><span>registered</span></div><div class="volunteer-legend"><div><span class="legend-dot available"></span><strong id="volunteerAvailable">0</strong> Available</div><div><span class="legend-dot assigned-dot"></span><strong id="volunteerAssigned">0</strong> Assigned</div><div><span class="legend-dot offline"></span><strong id="volunteerOffline">0</strong> Offline</div></div></div><div class="capacity-bar"><div><span>Current response capacity</span><strong id="capacityPercent">0%</strong></div><div class="progress-track"><span id="capacityProgress"></span></div></div></section>
-                        <section class="panel"><div class="panel-heading"><div><span class="eyebrow">SAFE LOCATIONS</span><h3>Shelter Capacity</h3></div><a href="#shelters" class="text-link" onclick="switchAdminView('shelters'); return false;">View shelters <i class="bi bi-arrow-right"></i></a></div><div class="shelter-row"><div class="shelter-icon"><i class="bi bi-house-heart"></i></div><div><strong>9 active shelters</strong><p>3 require capacity monitoring</p></div><span class="capacity-number">68%</span></div><div class="shelter-row"><div class="shelter-icon blue"><i class="bi bi-people"></i></div><div><strong>1,240 total capacity</strong><p>842 beds currently occupied</p></div><span class="capacity-number">398 free</span></div><button class="secondary-button full-width" type="button" onclick="switchAdminView('shelters')">Open shelter management <i class="bi bi-arrow-right"></i></button></section>
+                        <section class="panel">
+                            <div class="panel-heading">
+                                <div><span class="eyebrow">RESPONSE CAPACITY</span>
+                                    <h3>Volunteer Readiness</h3>
+                                </div><a href="#volunteers" class="text-link"
+                                    onclick="switchAdminView('volunteers'); return false;">Manage <i
+                                        class="bi bi-arrow-right"></i></a>
+                            </div>
+                            <div class="volunteer-summary">
+                                <div class="donut-chart"><strong id="volunteerTotal">0</strong><span>registered</span>
+                                </div>
+                                <div class="volunteer-legend">
+                                    <div><span class="legend-dot available"></span><strong
+                                            id="volunteerAvailable">0</strong> Available</div>
+                                    <div><span class="legend-dot assigned-dot"></span><strong
+                                            id="volunteerAssigned">0</strong> Assigned</div>
+                                    <div><span class="legend-dot offline"></span><strong
+                                            id="volunteerOffline">0</strong> Offline</div>
+                                </div>
+                            </div>
+                            <div class="capacity-bar">
+                                <div><span>Current response capacity</span><strong id="capacityPercent">0%</strong>
+                                </div>
+                                <div class="progress-track"><span id="capacityProgress"></span></div>
+                            </div>
+                        </section>
+                        <section class="panel">
+                            <div class="panel-heading">
+                                <div><span class="eyebrow">SAFE LOCATIONS</span>
+                                    <h3>Shelter Capacity</h3>
+                                </div><a href="#shelters" class="text-link"
+                                    onclick="switchAdminView('shelters'); return false;">View shelters <i
+                                        class="bi bi-arrow-right"></i></a>
+                            </div>
+                            <div class="shelter-row">
+                                <div class="shelter-icon"><i class="bi bi-house-heart"></i></div>
+                                <div><strong>9 active shelters</strong>
+                                    <p>3 require capacity monitoring</p>
+                                </div><span class="capacity-number">68%</span>
+                            </div>
+                            <div class="shelter-row">
+                                <div class="shelter-icon blue"><i class="bi bi-people"></i></div>
+                                <div><strong>1,240 total capacity</strong>
+                                    <p>842 beds currently occupied</p>
+                                </div><span class="capacity-number">398 free</span>
+                            </div><button class="secondary-button full-width" type="button"
+                                onclick="switchAdminView('shelters')">Open shelter management <i
+                                    class="bi bi-arrow-right"></i></button>
+                        </section>
                     </div>
                 </div>
 
@@ -180,20 +363,43 @@
                         <div>
                             <span class="eyebrow">DISTRICT JURISDICTION & MANDAL LOGINS</span>
                             <h2 id="mandalsViewTitle">District Mandals & Employee Logins</h2>
-                            <p id="mandalsViewSubtitle">Manage Mandal/Employee logins, review approval requests, and monitor mandal relief operations.</p>
+                            <p id="mandalsViewSubtitle">Manage Mandal/Employee logins, review approval requests, and
+                                monitor mandal relief operations.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="secondary-button" type="button" id="exportMandalsCsv"><i class="bi bi-download"></i> Export Directory</button>
-                            <button class="primary-button" type="button" id="adminProvisionNewMandalBtn"><i class="bi bi-person-plus-fill"></i> Provision Mandal Login</button>
+                            <button class="secondary-button" type="button" id="exportMandalsCsv"><i
+                                    class="bi bi-download"></i> Export Directory</button>
+                            <button class="primary-button" type="button" id="adminProvisionNewMandalBtn"><i
+                                    class="bi bi-person-plus-fill"></i> Provision Mandal Login</button>
                         </div>
                     </div>
 
                     <div class="stat-grid" aria-label="Mandal statistics">
-                        <article class="stat-card"><div class="stat-icon stat-blue"><i class="bi bi-buildings"></i></div><div><span>Total Mandals</span><strong id="statTotalMandals">0</strong><small class="trend-up">In this district</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-green"><i class="bi bi-check-circle-fill"></i></div><div><span>Approved Logins</span><strong id="statApprovedMandals">0</strong><small class="trend-up">Active desks</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-orange"><i class="bi bi-shield-exclamation"></i></div><div><span>Pending Approvals</span><strong id="statPendingMandals">0</strong><small class="trend-down">Action needed</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-red"><i class="bi bi-people-fill"></i></div><div><span>District Volunteers</span><strong id="statDistrictVolunteers">0</strong><small class="trend-up">Across mandals</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-purple"><i class="bi bi-clipboard2-pulse-fill"></i></div><div><span>Mandal Requests</span><strong id="statMandalRequests">0</strong><small class="stat-muted">Tracked locally</small></div></article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-blue"><i class="bi bi-buildings"></i></div>
+                            <div><span>Total Mandals</span><strong id="statTotalMandals">0</strong><small
+                                    class="trend-up">In this district</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-green"><i class="bi bi-check-circle-fill"></i></div>
+                            <div><span>Approved Logins</span><strong id="statApprovedMandals">0</strong><small
+                                    class="trend-up">Active desks</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-orange"><i class="bi bi-shield-exclamation"></i></div>
+                            <div><span>Pending Approvals</span><strong id="statPendingMandals">0</strong><small
+                                    class="trend-down">Action needed</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-red"><i class="bi bi-people-fill"></i></div>
+                            <div><span>District Volunteers</span><strong id="statDistrictVolunteers">0</strong><small
+                                    class="trend-up">Across mandals</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-purple"><i class="bi bi-clipboard2-pulse-fill"></i></div>
+                            <div><span>Mandal Requests</span><strong id="statMandalRequests">0</strong><small
+                                    class="stat-muted">Tracked locally</small></div>
+                        </article>
                     </div>
 
                     <section class="panel" id="mandalsPanel">
@@ -207,7 +413,9 @@
                         <div class="request-toolbar">
                             <div class="search-box">
                                 <i class="bi bi-search"></i>
-                                <input id="mandalSearchInput" type="search" placeholder="Search mandal name, officer name, employee ID or username..." aria-label="Search mandals">
+                                <input id="mandalSearchInput" type="search"
+                                    placeholder="Search mandal name, officer name, employee ID or username..."
+                                    aria-label="Search mandals">
                             </div>
                             <select id="mandalApprovalFilter" aria-label="Filter by approval status">
                                 <option value="all">All Approval Statuses</option>
@@ -246,17 +454,67 @@
                         <div>
                             <span class="eyebrow">DISASTER RESPONSE QUEUE</span>
                             <h2>Help Requests & Emergency Dispatch</h2>
-                            <p>Real-time queue of emergency requests submitted from across India. Click any request to view full details.</p>
+                            <p>Real-time queue of emergency requests submitted from across India. Click any request to
+                                view full details.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="secondary-button" type="button" id="exportRequestsCsv"><i class="bi bi-download"></i> Export CSV</button>
+                            <button class="secondary-button" type="button" id="exportRequestsCsv"><i
+                                    class="bi bi-download"></i> Export CSV</button>
                         </div>
                     </div>
 
                     <section class="panel requests-panel" id="requests">
-                        <div class="panel-heading"><div><span class="eyebrow">LIVE QUEUE</span><h3>All Help Requests</h3></div><span class="badge bg-primary text-white" id="requestsQueueCount">0 total</span></div>
-                        <div class="request-toolbar"><div class="search-box"><i class="bi bi-search"></i><input id="requestSearch" type="search" placeholder="Search ID, location, applicant name or help type" aria-label="Search requests"></div><select id="priorityFilter" aria-label="Filter by priority"><option value="all">All priorities</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option></select><select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="pending">Pending</option><option value="verified">Verified</option><option value="assigned">Assigned</option><option value="in progress">In progress</option><option value="resolved">Resolved</option></select></div>
-                        <div class="table-wrap"><table><thead><tr><th>Request ID</th><th>Name</th><th>Father Name</th><th>Mobile</th><th>Location</th><th>Disaster</th><th>Help Required</th><th>Proof</th><th>Priority</th><th>Status</th><th style="min-width: 130px; text-align: center;">Actions</th></tr></thead><tbody id="requestTable"></tbody></table><p class="empty-state" id="emptyState">No requests match your filters.</p></div>
+                        <div class="panel-heading">
+                            <div><span class="eyebrow">LIVE QUEUE</span>
+                                <h3>All Help Requests</h3>
+                            </div><span class="badge bg-primary text-white" id="requestsQueueCount">0 total</span>
+                        </div>
+                        <div class="request-toolbar">
+                            <div class="search-box"><i class="bi bi-search"></i><input id="requestSearch" type="search"
+                                    placeholder="Search ID, location, applicant name or help type"
+                                    aria-label="Search requests"></div><select id="priorityFilter"
+                                aria-label="Filter by priority">
+                                <option value="all">All priorities</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                            </select><select id="statusFilter" aria-label="Filter by status">
+                                <option value="all">All statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="verified">Verified</option>
+                                <option value="assigned">Assigned</option>
+                                <option value="in progress">In progress</option>
+                                <option value="resolved">Resolved</option>
+                            </select><select id="lossesFilter" aria-label="Filter by reported losses">
+                                <option value="all">All Reported Losses</option>
+                                <option value="House">🏠 House / Shelter</option>
+                                <option value="Animals">🐄 Animals / Livestock</option>
+                                <option value="Agriculture">🌾 Agriculture / Crops</option>
+                                <option value="Person">🩹 Person Injured</option>
+                            </select>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Name</th>
+                                        <th>Father Name</th>
+                                        <th>Mobile</th>
+                                        <th>Location</th>
+                                        <th>Disaster</th>
+                                        <th>Reported Losses</th>
+                                        <th>Help Required</th>
+                                        <th>Proof</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th style="min-width: 130px; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requestTable"></tbody>
+                            </table>
+                            <p class="empty-state" id="emptyState">No requests match your filters.</p>
+                        </div>
                     </section>
                 </div>
 
@@ -266,13 +524,36 @@
                         <div>
                             <span class="eyebrow">EMERGENCY BROADCAST SYSTEM</span>
                             <h2>Disaster Alerts & Early Warnings</h2>
-                            <p>Issue, update, and monitor real-time weather and emergency warnings across target regions.</p>
+                            <p>Issue, update, and monitor real-time weather and emergency warnings across target
+                                regions.</p>
                         </div>
-                        <button class="primary-button" type="button" data-action="new-alert"><i class="bi bi-plus-lg"></i> Create new alert</button>
+                        <div class="d-flex gap-2">
+                            <button class="secondary-button" type="button" data-bs-toggle="modal"
+                                data-bs-target="#preDisasterSmsModal"><i class="bi bi-broadcast"></i> Broadcast Mobile
+                                SMS</button>
+                            <button class="primary-button" type="button" data-action="new-alert"><i
+                                    class="bi bi-plus-lg"></i> Create new alert</button>
+                        </div>
                     </div>
 
                     <section class="panel alerts-panel" id="alerts">
-                        <div class="panel-heading"><div><span class="eyebrow">ACTIVE ADVISORIES</span><h3>Published Alerts</h3></div><button class="icon-button small" type="button" data-action="new-alert" aria-label="Create alert"><i class="bi bi-plus-lg"></i></button></div>
+                        <div class="panel-heading">
+                            <div><span class="eyebrow">ACTIVE ADVISORIES</span>
+                                <h3>Published Alerts</h3>
+                            </div><button class="icon-button small" type="button" data-action="new-alert"
+                                aria-label="Create alert"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                        <div class="request-toolbar">
+                            <div class="search-box"><i class="bi bi-search"></i><input id="alertSearchInput"
+                                    type="search" placeholder="Search alerts by title, details, district..."
+                                    aria-label="Search alerts"></div>
+                            <select id="alertTypeFilter" aria-label="Filter alert type">
+                                <option value="all">All Alert Types</option>
+                                <option value="warning">Warning / Critical</option>
+                                <option value="advisory">Advisory</option>
+                                <option value="sms">Mobile SMS Alerts Only</option>
+                            </select>
+                        </div>
                         <div id="alertList"></div>
                     </section>
                 </div>
@@ -283,20 +564,43 @@
                         <div>
                             <span class="eyebrow">FIELD PERSONNEL & RESPONSE NETWORK</span>
                             <h2>Volunteers Management & Applications</h2>
-                            <p>Review volunteer registrations, check readiness, and inspect applications with full overview.</p>
+                            <p>Review volunteer registrations, check readiness, and inspect applications with full
+                                overview.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="secondary-button" type="button" id="exportVolunteersCsv"><i class="bi bi-download"></i> Export Roster</button>
-                            <button class="primary-button" type="button" id="quickAddVolunteerBtn"><i class="bi bi-person-plus-fill"></i> Add Volunteer</button>
+                            <button class="secondary-button" type="button" id="exportVolunteersCsv"><i
+                                    class="bi bi-download"></i> Export Roster</button>
+                            <button class="primary-button" type="button" id="quickAddVolunteerBtn"><i
+                                    class="bi bi-person-plus-fill"></i> Add Volunteer</button>
                         </div>
                     </div>
 
                     <div class="stat-grid" aria-label="Volunteer statistics">
-                        <article class="stat-card"><div class="stat-icon stat-blue"><i class="bi bi-people"></i></div><div><span>Total Registered</span><strong id="volFullTotal">0</strong><small class="trend-up">Active pool</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-green"><i class="bi bi-person-check-fill"></i></div><div><span>Available for Duty</span><strong id="volFullAvailable">0</strong><small class="trend-up">Ready to deploy</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-purple"><i class="bi bi-person-badge-fill"></i></div><div><span>Currently Assigned</span><strong id="volFullAssigned">0</strong><small class="trend-down">On field duty</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-orange"><i class="bi bi-person-dash-fill"></i></div><div><span>Offline / On Leave</span><strong id="volFullOffline">0</strong><small class="stat-muted">Unavailable</small></div></article>
-                        <article class="stat-card"><div class="stat-icon stat-red"><i class="bi bi-activity"></i></div><div><span>Readiness Capacity</span><strong id="volFullReadiness">100%</strong><small class="trend-up">Full response</small></div></article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-blue"><i class="bi bi-people"></i></div>
+                            <div><span>Total Registered</span><strong id="volFullTotal">0</strong><small
+                                    class="trend-up">Active pool</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-green"><i class="bi bi-person-check-fill"></i></div>
+                            <div><span>Available for Duty</span><strong id="volFullAvailable">0</strong><small
+                                    class="trend-up">Ready to deploy</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-purple"><i class="bi bi-person-badge-fill"></i></div>
+                            <div><span>Currently Assigned</span><strong id="volFullAssigned">0</strong><small
+                                    class="trend-down">On field duty</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-orange"><i class="bi bi-person-dash-fill"></i></div>
+                            <div><span>Offline / On Leave</span><strong id="volFullOffline">0</strong><small
+                                    class="stat-muted">Unavailable</small></div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-icon stat-red"><i class="bi bi-activity"></i></div>
+                            <div><span>Readiness Capacity</span><strong id="volFullReadiness">100%</strong><small
+                                    class="trend-up">Full response</small></div>
+                        </article>
                     </div>
 
                     <section class="panel" id="volunteersPanel">
@@ -310,7 +614,9 @@
                         <div class="request-toolbar">
                             <div class="search-box">
                                 <i class="bi bi-search"></i>
-                                <input id="volunteerSearchInput" type="search" placeholder="Search volunteer name, phone, district, mandal, or skill (e.g. First Aid, Rescue)" aria-label="Search volunteers">
+                                <input id="volunteerSearchInput" type="search"
+                                    placeholder="Search volunteer name, phone, district, mandal, or skill (e.g. First Aid, Rescue)"
+                                    aria-label="Search volunteers">
                             </div>
                             <select id="volunteerStatusFilter" aria-label="Filter by availability">
                                 <option value="all">All Availability</option>
@@ -356,22 +662,30 @@
                         <div>
                             <span class="eyebrow">FIELD DISPATCH OPERATIONS</span>
                             <h2>Assign Volunteers to Emergency Requests</h2>
-                            <p>Match pending disaster help requests with available field volunteers in nearby districts.</p>
+                            <p>Match pending disaster help requests with available field volunteers in nearby districts.
+                            </p>
                         </div>
-                        <button class="secondary-button" type="button" onclick="switchAdminView('requests')"><i class="bi bi-arrow-left"></i> View Help Requests</button>
+                        <button class="secondary-button" type="button" onclick="switchAdminView('requests')"><i
+                                class="bi bi-arrow-left"></i> View Help Requests</button>
                     </div>
 
                     <div class="row g-3">
                         <div class="col-lg-6">
                             <div class="panel h-100">
-                                <div class="panel-heading"><div><span class="eyebrow">STEP 1</span><h3>Select Help Request to Dispatch</h3></div></div>
+                                <div class="panel-heading">
+                                    <div><span class="eyebrow">STEP 1</span>
+                                        <h3>Select Help Request to Dispatch</h3>
+                                    </div>
+                                </div>
                                 <div class="mb-3">
-                                    <label for="assignSelectRequest" class="form-label small fw-bold text-muted">Active Emergency Request</label>
+                                    <label for="assignSelectRequest" class="form-label small fw-bold text-muted">Active
+                                        Emergency Request</label>
                                     <select class="form-select" id="assignSelectRequest">
                                         <option value="">-- Choose Emergency Request --</option>
                                     </select>
                                 </div>
-                                <div id="assignSelectedRequestCard" class="overview-details-box mt-3" style="display: none;">
+                                <div id="assignSelectedRequestCard" class="overview-details-box mt-3"
+                                    style="display: none;">
                                     <!-- Populated on request selection -->
                                 </div>
                             </div>
@@ -379,17 +693,24 @@
 
                         <div class="col-lg-6">
                             <div class="panel h-100">
-                                <div class="panel-heading"><div><span class="eyebrow">STEP 2</span><h3>Select Available Volunteer</h3></div></div>
+                                <div class="panel-heading">
+                                    <div><span class="eyebrow">STEP 2</span>
+                                        <h3>Select Available Volunteer</h3>
+                                    </div>
+                                </div>
                                 <div class="mb-3">
-                                    <label for="assignSelectVolunteer" class="form-label small fw-bold text-muted">Available Responders</label>
+                                    <label for="assignSelectVolunteer"
+                                        class="form-label small fw-bold text-muted">Available Responders</label>
                                     <select class="form-select" id="assignSelectVolunteer">
                                         <option value="">-- Choose Available Volunteer --</option>
                                     </select>
                                 </div>
-                                <div id="assignSelectedVolunteerCard" class="overview-details-box mt-3" style="display: none;">
+                                <div id="assignSelectedVolunteerCard" class="overview-details-box mt-3"
+                                    style="display: none;">
                                     <!-- Populated on volunteer selection -->
                                 </div>
-                                <button type="button" class="primary-button full-width mt-4" id="executeAssignmentBtn" disabled>
+                                <button type="button" class="primary-button full-width mt-4" id="executeAssignmentBtn"
+                                    disabled>
                                     <i class="bi bi-check2-circle"></i> Confirm Dispatch & Assign Responder
                                 </button>
                             </div>
@@ -397,7 +718,11 @@
 
                         <div class="col-12 mt-3">
                             <div class="panel">
-                                <div class="panel-heading"><div><span class="eyebrow">LIVE MISSIONS</span><h3>Current Field Deployments</h3></div></div>
+                                <div class="panel-heading">
+                                    <div><span class="eyebrow">LIVE MISSIONS</span>
+                                        <h3>Current Field Deployments</h3>
+                                    </div>
+                                </div>
                                 <div class="table-wrap">
                                     <table>
                                         <thead>
@@ -421,19 +746,97 @@
                     </div>
                 </div>
 
-                <!-- VIEW 6: SHELTERS VIEW (DETAILS ONLY) -->
+                <!-- VIEW 6: SHELTERS VIEW (2-STEP MANDAL-FIRST DRILL-DOWN) -->
                 <div class="admin-view" id="view-shelters">
                     <div class="welcome-row">
                         <div>
                             <span class="eyebrow">SAFE REFUGE NETWORK</span>
                             <h2>Emergency Shelters & Relief Camps</h2>
-                            <p>Real-time capacity tracking, occupancy updates, and resource allocation for safe relief camps.</p>
+                            <p id="shelterViewSubtitle">Select a mandal below to inspect and manage its designated
+                                relief shelters and bed capacity.</p>
                         </div>
-                        <button class="primary-button" type="button" id="addNewShelterBtn"><i class="bi bi-plus-lg"></i> Add Relief Shelter</button>
+                        <div class="d-flex gap-2">
+                            <button class="secondary-button" type="button" id="backToAllMandalsBtn"
+                                style="display: none;" onclick="showSheltersMandalList()"><i
+                                    class="bi bi-arrow-left"></i> Back to All Mandals</button>
+                            <button class="primary-button" type="button" id="addNewShelterBtn"><i
+                                    class="bi bi-plus-lg"></i> Add Relief Shelter</button>
+                        </div>
                     </div>
 
-                    <div class="row g-3" id="sheltersContainer">
-                        <!-- Populated dynamically with shelter cards -->
+                    <!-- STEP 1: MANDALS DIRECTORY (DISPLAYED FIRST) -->
+                    <div id="sheltersMandalListView">
+                        <div class="panel mb-4 p-3 bg-white rounded-3 shadow-sm border">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <h3 class="fs-6 mb-1"><i class="bi bi-buildings text-danger me-2"></i>Mandals
+                                        Shelter Network (<span id="shelterDistrictNameText">Alluri Sitharama
+                                            Raju</span>)</h3>
+                                    <p class="small text-muted mb-0">Click any mandal below to view only the available
+                                        shelters in that mandal.</p>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="search-box">
+                                        <i class="bi bi-search"></i>
+                                        <input type="text" id="shelterMandalSearchInput" placeholder="Filter mandals..."
+                                            style="height: 34px; font-size: 11px;">
+                                    </div>
+                                    <span class="badge bg-primary text-white" id="shelterMandalsCountBadge">0
+                                        Mandals</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3" id="shelterMandalsGrid">
+                            <!-- Populated dynamically with interactive Mandal cards -->
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: AVAILABLE SHELTERS IN SELECTED MANDAL -->
+                    <div id="sheltersDetailView" style="display: none;">
+                        <div class="panel mb-3 p-3 bg-white rounded-3 shadow-sm border">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <button class="btn btn-sm btn-outline-danger fw-bold"
+                                        onclick="showSheltersMandalList()">
+                                        <i class="bi bi-arrow-left me-1"></i> Back to Mandals List
+                                    </button>
+                                    <h3 class="fs-6 mb-0" id="selectedMandalSheltersHeader">Available Shelters in Mandal
+                                    </h3>
+                                </div>
+                                <span
+                                    class="badge bg-success-subtle text-success border border-success fw-bold px-3 py-1"
+                                    id="mandalCapacityBadge">Available Capacity</span>
+                            </div>
+                        </div>
+
+                        <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12 col-md-5">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="shelterSearchInput"
+                                            placeholder="Search shelter by name, location...">
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <select class="form-select form-select-sm" id="shelterStatusFilter">
+                                        <option value="all">All Shelters</option>
+                                        <option value="open">Available Capacity</option>
+                                        <option value="near">Near Capacity (&ge;75%)</option>
+                                        <option value="full">Full Capacity</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-md-3 text-end">
+                                    <span class="badge bg-secondary-subtle text-secondary"
+                                        id="shelterFilterCountBadge">Showing all</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3" id="sheltersContainer">
+                            <!-- Populated dynamically with shelter cards for selected mandal -->
+                        </div>
                     </div>
                 </div>
 
@@ -443,9 +846,36 @@
                         <div>
                             <span class="eyebrow">SUPPLY CHAIN & LOGISTICS</span>
                             <h2>Relief Inventory & Supplies Management</h2>
-                            <p>Track essential emergency provisions, medical supplies, and rescue equipment stockpiles.</p>
+                            <p>Track essential emergency provisions, medical supplies, and rescue equipment stockpiles.
+                            </p>
                         </div>
-                        <button class="secondary-button" type="button" id="restockInventoryBtn"><i class="bi bi-box-arrow-in-down"></i> Restock Supplies</button>
+                        <button class="secondary-button" type="button" id="restockInventoryBtn"><i
+                                class="bi bi-box-arrow-in-down"></i> Restock Supplies</button>
+                    </div>
+
+                    <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="inventorySearchInput"
+                                        placeholder="Search item, category...">
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <select class="form-select form-select-sm" id="inventoryCategoryFilter">
+                                    <option value="all">All Supply Categories</option>
+                                    <option value="food">Food & Drinking Water</option>
+                                    <option value="medical">Medical & First Aid Kits</option>
+                                    <option value="shelter">Tarpaulins & Blankets</option>
+                                    <option value="gear">Rescue & Safety Gear</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3 text-end">
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                    id="inventoryFilterCountBadge">Showing all</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row g-3" id="inventoryContainer">
@@ -453,23 +883,126 @@
                     </div>
                 </div>
 
-                <!-- VIEW 8: DONATIONS VIEW (DETAILS ONLY) -->
+                <!-- VIEW 8: DONATIONS VIEW (DETAILS ONLY WITH OFFICIAL ASR ACCOUNT DETAILS) -->
                 <div class="admin-view" id="view-donations">
                     <div class="welcome-row">
                         <div>
                             <span class="eyebrow">PUBLIC CONTRIBUTIONS</span>
                             <h2>Donations & Relief Materials</h2>
-                            <p>Manage community contributions, food packets, medical aid, and dispatch relief items.</p>
+                            <p>Manage community contributions, verified bank account channels, and relief allocations.
+                            </p>
                         </div>
-                        <button class="secondary-button" type="button" id="clearSubmissions">Clear completed records</button>
+                        <button class="secondary-button" type="button" id="clearSubmissions">Clear completed
+                            records</button>
+                    </div>
+
+                    <!-- OFFICIAL VERIFIED BANK ACCOUNT DETAILS FOR ALLURI SITHARAMA RAJU (ASR) DISTRICT -->
+                    <div class="official-asr-donation-card mb-4 p-4 rounded-3 text-white shadow-sm"
+                        style="background: linear-gradient(135deg, #091a33 0%, #173359 100%); border: 1px solid rgba(255,255,255,0.12);">
+                        <div
+                            class="d-flex align-items-center justify-content-between flex-wrap gap-3 pb-3 border-bottom border-light-subtle">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="official-seal-icon"
+                                    style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255,193,7,0.15); display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-bank fs-3 text-warning"></i>
+                                </div>
+                                <div>
+                                    <span class="badge bg-warning text-dark fw-bold px-2 py-1 mb-1"><i
+                                            class="bi bi-shield-check"></i> OFFICIAL GOVERNMENT RELIEF CHANNEL</span>
+                                    <h4 class="mb-0 text-white fw-bold">Alluri Sitharama Raju (ASR) District Disaster
+                                        Relief Fund</h4>
+                                    <small class="text-white-50">Authorized by District Collectorate, Paderu & Andhra
+                                        Pradesh Chief Minister's Relief Fund (CMRF)</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-success text-white fw-bold px-3 py-2"><i
+                                        class="bi bi-patch-check-fill me-1"></i> Verified Active Account</span>
+                            </div>
+                        </div>
+                        <div class="row g-3 pt-3">
+                            <div class="col-md-3">
+                                <small class="text-white-50 text-uppercase fw-bold d-block"
+                                    style="font-size: 9px; letter-spacing: 0.5px;">Authorized Bank Name</small>
+                                <strong class="text-white fs-6">State Bank of India (SBI)</strong>
+                                <small class="d-block text-white-50" style="font-size: 11px;">AP Secretariat Branch,
+                                    Velagapudi</small>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="text-white-50 text-uppercase fw-bold d-block"
+                                    style="font-size: 9px; letter-spacing: 0.5px;">Official Account Number</small>
+                                <div class="d-flex align-items-center gap-2">
+                                    <strong class="text-warning fs-5 font-monospace"
+                                        id="asrOfficialAccountDisplay">38588079208</strong>
+                                    <button type="button" class="btn btn-sm btn-outline-light py-0 px-2"
+                                        onclick="navigator.clipboard.writeText('38588079208'); showDashboardMessage('Official Account Number (38588079208) copied to clipboard!');"
+                                        title="Copy Account Number"><i class="bi bi-copy"></i></button>
+                                </div>
+                                <small class="d-block text-white-50" style="font-size: 11px;">CMRF / ASR Collectorate
+                                    Relief</small>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="text-white-50 text-uppercase fw-bold d-block"
+                                    style="font-size: 9px; letter-spacing: 0.5px;">IFSC Code & Official UPI</small>
+                                <strong class="text-white fs-6 font-monospace">SBIN0018884</strong>
+                                <small class="d-block text-warning font-monospace" style="font-size: 11px;">UPI ID:
+                                    apcmrf@sbi</small>
+                            </div>
+                            <div class="col-md-3">
+                                <small class="text-white-50 text-uppercase fw-bold d-block"
+                                    style="font-size: 9px; letter-spacing: 0.5px;">Designated Relief Destination</small>
+                                <strong class="text-white fs-6">Alluri Sitharama Raju District</strong>
+                                <small class="d-block text-white-50" style="font-size: 11px;">Collectorate, Paderu -
+                                    531024</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-filter-card mb-3 p-3 bg-white rounded-3 shadow-sm border">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="donationSearchInput"
+                                        placeholder="Search donor name, phone, destination mandal...">
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <select class="form-select form-select-sm" id="donationTypeFilter">
+                                    <option value="all">All Contribution Types</option>
+                                    <option value="money">Financial Donations (Official SBI)</option>
+                                    <option value="food">Food & Rations</option>
+                                    <option value="water">Drinking Water</option>
+                                    <option value="medicine">Medicine & Medical Kits</option>
+                                    <option value="clothes">Clothes & Blankets</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3 text-end">
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                    id="donationFilterCountBadge">Showing all</span>
+                            </div>
+                        </div>
                     </div>
 
                     <section class="panel submissions-panel" id="submissions">
-                        <div class="panel-heading"><div><span class="eyebrow">INCOMING CONTRIBUTIONS</span><h3>Registered Donations</h3></div><span class="badge bg-success text-white" id="donationsBadgeCount">0 donations</span></div>
+                        <div class="panel-heading">
+                            <div><span class="eyebrow">INCOMING CONTRIBUTIONS</span>
+                                <h3>Registered Donations & Target Mandals</h3>
+                            </div><span class="badge bg-success text-white" id="donationsBadgeCount">0 donations</span>
+                        </div>
                         <div class="submission-columns">
-                            <div><h4>Account registrations</h4><div id="registrationSubmissions" class="submission-list"></div></div>
-                            <div><h4>Volunteer applications</h4><div id="volunteerSubmissions" class="submission-list"></div></div>
-                            <div><h4>Donation registrations</h4><div id="donationSubmissions" class="submission-list"></div></div>
+                            <div>
+                                <h4>Account registrations</h4>
+                                <div id="registrationSubmissions" class="submission-list"></div>
+                            </div>
+                            <div>
+                                <h4>Volunteer applications</h4>
+                                <div id="volunteerSubmissions" class="submission-list"></div>
+                            </div>
+                            <div>
+                                <h4>Donation registrations</h4>
+                                <div id="donationSubmissions" class="submission-list"></div>
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -480,11 +1013,14 @@
                         <div>
                             <span class="eyebrow">EXECUTIVE ANALYTICS</span>
                             <h2>Disaster Operations & Response Reports</h2>
-                            <p>Comprehensive breakdown of emergency requests, volunteer deployment, and relief distribution.</p>
+                            <p>Comprehensive breakdown of emergency requests, volunteer deployment, and relief
+                                distribution.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="secondary-button" type="button" onclick="window.print()"><i class="bi bi-printer"></i> Print Summary</button>
-                            <button class="primary-button" type="button" id="downloadFullReportBtn"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download Operations Log</button>
+                            <button class="secondary-button" type="button" onclick="window.print()"><i
+                                    class="bi bi-printer"></i> Print Summary</button>
+                            <button class="primary-button" type="button" id="downloadFullReportBtn"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i> Download Operations Log</button>
                         </div>
                     </div>
 
@@ -495,20 +1031,25 @@
                     <!-- ANNUAL STATEMENTS OF RESOLVED REQUESTS -->
                     <div class="col-12 mt-4">
                         <div class="panel">
-                            <div class="panel-heading d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div
+                                class="panel-heading d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <div>
                                     <span class="eyebrow">HISTORICAL ARCHIVES & AUDIT</span>
                                     <h3>Annual Statements of Resolved Disaster Operations</h3>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    <button class="secondary-button" type="button" id="printAnnualReportBtn"><i class="bi bi-printer"></i> Print Statement</button>
-                                    <button class="primary-button" type="button" id="downloadAnnualCsvBtn"><i class="bi bi-download"></i> Export Annual Statement (CSV)</button>
+                                    <button class="secondary-button" type="button" id="printAnnualReportBtn"><i
+                                            class="bi bi-printer"></i> Print Statement</button>
+                                    <button class="primary-button" type="button" id="downloadAnnualCsvBtn"><i
+                                            class="bi bi-download"></i> Export Annual Statement (CSV)</button>
                                 </div>
                             </div>
                             <div class="request-toolbar flex-wrap">
                                 <div class="d-flex align-items-center gap-2">
-                                    <label for="annualYearFilter" class="small fw-bold text-muted mb-0">Operational Year:</label>
-                                    <select id="annualYearFilter" class="form-select form-select-sm" style="width: auto;">
+                                    <label for="annualYearFilter" class="small fw-bold text-muted mb-0">Operational
+                                        Year:</label>
+                                    <select id="annualYearFilter" class="form-select form-select-sm"
+                                        style="width: auto;">
                                         <option value="all">All Years</option>
                                         <option value="2026" selected>2026 (Current Year)</option>
                                         <option value="2025">2025</option>
@@ -516,8 +1057,10 @@
                                     </select>
                                 </div>
                                 <div class="d-flex align-items-center gap-2 ms-sm-2">
-                                    <label for="annualMandalFilter" class="small fw-bold text-muted mb-0">Mandal / Taluk:</label>
-                                    <select id="annualMandalFilter" class="form-select form-select-sm" style="width: auto;">
+                                    <label for="annualMandalFilter" class="small fw-bold text-muted mb-0">Mandal /
+                                        Taluk:</label>
+                                    <select id="annualMandalFilter" class="form-select form-select-sm"
+                                        style="width: auto;">
                                         <option value="all">All Mandals</option>
                                     </select>
                                 </div>
@@ -569,17 +1112,66 @@
                                         <!-- Populated dynamically -->
                                     </tbody>
                                 </table>
-                                <p class="empty-state" id="emptyAnnualStatements">No resolved requests found for the selected year and filters.</p>
+                                <p class="empty-state" id="emptyAnnualStatements">No resolved requests found for the
+                                    selected year and filters.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- UNIVERSAL HOMEPAGE FOOTER (MATCHING ALL PAGES) -->
+            <footer class="site-footer mt-5 pt-4 border-top">
+                <div class="container-fluid px-4 py-3">
+                    <div class="row g-4 footer-main">
+                        <div class="col-lg-5">
+                            <a href="index.html"
+                                class="footer-brand text-decoration-none d-flex align-items-center gap-2 mb-2">
+                                <span class="brand-logo"><i class="bi bi-shield-fill-check"></i></span>
+                                <span class="text-white fs-5">DISASTER <strong class="text-white">RELIEF</strong></span>
+                            </a>
+                            <p class="footer-description text-white-50 small mb-0">
+                                National disaster relief coordination platform connecting citizens, volunteers, mandal
+                                officers, and emergency response teams across India.
+                            </p>
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <h6 class="text-white fw-bold mb-3 small text-uppercase">Platform</h6>
+                            <div class="d-flex flex-column gap-2 small">
+                                <a href="index.html#home" class="text-white-50 text-decoration-none">Home</a>
+                                <a href="index.html#overview" class="text-white-50 text-decoration-none">Overview</a>
+                                <a href="index.html#help" class="text-white-50 text-decoration-none">Request Help</a>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <h6 class="text-white fw-bold mb-3 small text-uppercase">Get Involved</h6>
+                            <div class="d-flex flex-column gap-2 small">
+                                <a href="index.html#volunteer" class="text-white-50 text-decoration-none">Volunteer</a>
+                                <a href="index.html#donate" class="text-white-50 text-decoration-none">Donate</a>
+                                <a href="about.html" class="text-white-50 text-decoration-none">About Us</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <h6 class="text-white fw-bold mb-3 small text-uppercase">Emergency Contact</h6>
+                            <p class="small text-white-50 mb-1"><i class="bi bi-telephone-fill text-danger me-1"></i>
+                                112 — National Emergency</p>
+                            <p class="small text-white-50 mb-2"><i class="bi bi-geo-alt-fill text-primary me-1"></i>
+                                India Emergency Operations Center</p>
+                        </div>
+                    </div>
+                    <div
+                        class="footer-bottom d-flex justify-content-between align-items-center pt-3 mt-3 border-top border-secondary-subtle small text-white-50">
+                        <span>© 2026 DISASTER RELIEF. All rights reserved.</span>
+                        <span>Built for safer communities.</span>
+                    </div>
+                </div>
+            </footer>
         </main>
     </div>
 
     <!-- APPLICATION OVERVIEW MODAL -->
-    <div class="modal fade request-overview-modal" id="requestOverviewModal" tabindex="-1" aria-labelledby="requestOverviewModalLabel" aria-hidden="true">
+    <div class="modal fade request-overview-modal" id="requestOverviewModal" tabindex="-1"
+        aria-labelledby="requestOverviewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content overview-modal-content">
                 <div class="modal-header overview-modal-header">
@@ -592,10 +1184,12 @@
                                 <span class="status-pill" id="modalPriorityBadge">Critical</span>
                                 <span class="status-pill" id="modalStatusBadge">Pending</span>
                             </div>
-                            <small class="overview-timestamp" id="modalCreatedAt"><i class="bi bi-clock"></i> Submitted: Just now</small>
+                            <small class="overview-timestamp" id="modalCreatedAt"><i class="bi bi-clock"></i> Submitted:
+                                Just now</small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body overview-modal-body p-4">
                     <div class="row g-3">
@@ -618,8 +1212,11 @@
                                         <label>Mobile Number</label>
                                         <div class="d-flex align-items-center gap-2 flex-wrap mt-1">
                                             <span class="field-val font-monospace" id="modalPhone">—</span>
-                                            <a href="#" class="btn btn-sm btn-outline-success py-1 px-2 modal-comm-btn" id="modalCallBtn"><i class="bi bi-telephone-fill"></i> Call</a>
-                                            <a href="#" target="_blank" rel="noopener" class="btn btn-sm btn-outline-success py-1 px-2 modal-comm-btn" id="modalWhatsAppBtn"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                                            <a href="#" class="btn btn-sm btn-outline-success py-1 px-2 modal-comm-btn"
+                                                id="modalCallBtn"><i class="bi bi-telephone-fill"></i> Call</a>
+                                            <a href="#" target="_blank" rel="noopener"
+                                                class="btn btn-sm btn-outline-success py-1 px-2 modal-comm-btn"
+                                                id="modalWhatsAppBtn"><i class="bi bi-whatsapp"></i> WhatsApp</a>
                                         </div>
                                     </div>
                                 </div>
@@ -649,7 +1246,9 @@
                                         <label>GPS Coordinates</label>
                                         <div class="d-flex align-items-center gap-2 flex-wrap mt-1">
                                             <span class="field-val font-monospace small" id="modalGps">—</span>
-                                            <a href="#" target="_blank" rel="noopener" class="btn btn-sm btn-outline-danger py-1 px-2 modal-comm-btn" id="modalGpsLink"><i class="bi bi-pin-map-fill"></i> Open Maps</a>
+                                            <a href="#" target="_blank" rel="noopener"
+                                                class="btn btn-sm btn-outline-danger py-1 px-2 modal-comm-btn"
+                                                id="modalGpsLink"><i class="bi bi-pin-map-fill"></i> Open Maps</a>
                                         </div>
                                     </div>
                                 </div>
@@ -667,7 +1266,8 @@
                                         <div class="col-sm-4">
                                             <div class="overview-field">
                                                 <label>Disaster Type</label>
-                                                <div class="field-val text-danger fw-bold" id="modalDisasterType">—</div>
+                                                <div class="field-val text-danger fw-bold" id="modalDisasterType">—
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
@@ -679,7 +1279,17 @@
                                         <div class="col-sm-4">
                                             <div class="overview-field">
                                                 <label>Application Track ID</label>
-                                                <div class="field-val font-monospace text-primary" id="modalTrackIdText">—</div>
+                                                <div class="field-val font-monospace text-primary"
+                                                    id="modalTrackIdText">—</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" id="modalLossesSection">
+                                            <div class="overview-field">
+                                                <label>Reported Losses (Declared by Citizen)</label>
+                                                <div class="overview-chips mt-1 d-flex flex-wrap gap-2"
+                                                    id="modalLossesBadges">
+                                                    <!-- Chips dynamically rendered -->
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -716,14 +1326,18 @@
                         <!-- Dispatch & Action Panel -->
                         <div class="col-12">
                             <div class="overview-card border-primary">
-                                <div class="overview-card-header bg-navy text-white d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-gear-fill text-warning"></i> Admin Operations & Dispatch Control</span>
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-shield-check"></i> Admin Action</span>
+                                <div
+                                    class="overview-card-header bg-navy text-white d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-gear-fill text-warning"></i> Admin Operations & Dispatch
+                                        Control</span>
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-shield-check"></i> Admin
+                                        Action</span>
                                 </div>
                                 <div class="overview-card-body">
                                     <div class="row g-3">
                                         <div class="col-md-4">
-                                            <label for="modalStatusSelect" class="form-label fw-bold small">Update Application Status</label>
+                                            <label for="modalStatusSelect" class="form-label fw-bold small">Update
+                                                Application Status</label>
                                             <select class="form-select form-select-sm" id="modalStatusSelect">
                                                 <option value="Pending">Pending</option>
                                                 <option value="Verified">Verified</option>
@@ -733,19 +1347,23 @@
                                             </select>
                                         </div>
                                         <div class="col-md-5">
-                                            <label for="modalVolunteerSelect" class="form-label fw-bold small">Assign Volunteer Responder</label>
+                                            <label for="modalVolunteerSelect" class="form-label fw-bold small">Assign
+                                                Volunteer Responder</label>
                                             <select class="form-select form-select-sm" id="modalVolunteerSelect">
                                                 <option value="">-- Select Volunteer --</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3 d-flex align-items-end">
-                                            <button type="button" class="btn btn-sm btn-primary w-100" id="modalSaveUpdatesBtn">
+                                            <button type="button" class="btn btn-sm btn-primary w-100"
+                                                id="modalSaveUpdatesBtn">
                                                 <i class="bi bi-check2-circle"></i> Save Updates
                                             </button>
                                         </div>
                                         <div class="col-12">
-                                            <label for="modalAdminNotes" class="form-label fw-bold small mb-1">Admin Operations / Dispatch Notes</label>
-                                            <textarea class="form-control form-control-sm" id="modalAdminNotes" rows="2" placeholder="Add field dispatch notes, team assigned, rescue vehicle ID, relief packet tracking, etc."></textarea>
+                                            <label for="modalAdminNotes" class="form-label fw-bold small mb-1">Admin
+                                                Operations / Dispatch Notes</label>
+                                            <textarea class="form-control form-control-sm" id="modalAdminNotes" rows="2"
+                                                placeholder="Add field dispatch notes, team assigned, rescue vehicle ID, relief packet tracking, etc."></textarea>
                                         </div>
                                         <div class="col-12" id="modalCurrentAssignment">
                                             <!-- Currently assigned banner -->
@@ -758,37 +1376,46 @@
                 </div>
                 <div class="modal-footer overview-modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-dark" id="modalPrintBtn"><i class="bi bi-printer"></i> Print Overview</button>
-                    <button type="button" class="btn btn-danger" id="modalQuickResolveBtn"><i class="bi bi-check-lg"></i> Mark Resolved</button>
+                    <button type="button" class="btn btn-outline-dark" id="modalPrintBtn"><i class="bi bi-printer"></i>
+                        Print Overview</button>
+                    <button type="button" class="btn btn-danger" id="modalQuickResolveBtn"><i
+                            class="bi bi-check-lg"></i> Mark Resolved</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- VOLUNTEER APPLICATION OVERVIEW MODAL -->
-    <div class="modal fade request-overview-modal" id="volunteerOverviewModal" tabindex="-1" aria-labelledby="volunteerOverviewModalLabel" aria-hidden="true">
+    <div class="modal fade request-overview-modal" id="volunteerOverviewModal" tabindex="-1"
+        aria-labelledby="volunteerOverviewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content overview-modal-content">
                 <div class="modal-header overview-modal-header" style="border-bottom-color: #2563eb;">
                     <div class="d-flex align-items-center gap-3">
-                        <span class="overview-header-icon" style="background: rgba(37,99,235,0.2); color: #60a5fa;"><i class="bi bi-person-vcard-fill"></i></span>
+                        <span class="overview-header-icon" style="background: rgba(37,99,235,0.2); color: #60a5fa;"><i
+                                class="bi bi-person-vcard-fill"></i></span>
                         <div>
                             <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                                <h5 class="modal-title mb-0" id="volunteerOverviewModalLabel">Volunteer Personnel Profile</h5>
+                                <h5 class="modal-title mb-0" id="volunteerOverviewModalLabel">Volunteer Personnel
+                                    Profile</h5>
                                 <span class="badge bg-dark font-monospace" id="volModalId">VOL-0000</span>
                                 <span class="status-pill available" id="volModalStatusBadge">Available</span>
-                                <span class="badge bg-success" id="volModalOtpBadge"><i class="bi bi-shield-check"></i> OTP Verified</span>
+                                <span class="badge bg-success" id="volModalOtpBadge"><i class="bi bi-shield-check"></i>
+                                    OTP Verified</span>
                             </div>
-                            <small class="overview-timestamp" id="volModalCreatedAt"><i class="bi bi-clock"></i> Registered: Recent</small>
+                            <small class="overview-timestamp" id="volModalCreatedAt"><i class="bi bi-clock"></i>
+                                Registered: Recent</small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body overview-modal-body p-4">
                     <!-- Hero Profile Header with Photo & Direct Action Buttons -->
                     <div class="profile-hero-banner">
                         <div class="profile-photo-container">
-                            <img id="volModalPhotoImg" class="profile-photo-img" src="" alt="Volunteer Photo" style="display: none;">
+                            <img id="volModalPhotoImg" class="profile-photo-img" src="" alt="Volunteer Photo"
+                                style="display: none;">
                             <div id="volModalPhotoInitials" class="profile-initials-lg">VK</div>
                             <label for="volModalPhotoInput" class="photo-upload-badge" title="Change Volunteer Photo">
                                 <i class="bi bi-camera-fill"></i>
@@ -797,13 +1424,21 @@
                         </div>
                         <div class="profile-hero-meta">
                             <h4 id="volModalHeroName">Volunteer Name</h4>
-                            <p class="mb-1 text-white-50 small"><i class="bi bi-person me-1"></i> Father / Guardian: <strong id="volModalHeroFatherName" class="text-white">—</strong></p>
-                            <p class="mb-2 text-white-50 small"><i class="bi bi-geo-alt me-1"></i> Station: <span id="volModalHeroLocation" class="text-white">—</span> · <span id="volModalHeroDistrict" class="text-warning">—</span></p>
+                            <p class="mb-1 text-white-50 small"><i class="bi bi-person me-1"></i> Father / Guardian:
+                                <strong id="volModalHeroFatherName" class="text-white">—</strong>
+                            </p>
+                            <p class="mb-2 text-white-50 small"><i class="bi bi-geo-alt me-1"></i> Station: <span
+                                    id="volModalHeroLocation" class="text-white">—</span> · <span
+                                    id="volModalHeroDistrict" class="text-warning">—</span></p>
                             <div class="profile-hero-actions">
-                                <a href="#" class="btn btn-sm btn-success" id="volModalCallBtn"><i class="bi bi-telephone-fill"></i> Call</a>
-                                <a href="#" target="_blank" rel="noopener" class="btn btn-sm btn-success" id="volModalWhatsAppBtn"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-                                <a href="#" class="btn btn-sm btn-outline-light" id="volModalEmailBtn"><i class="bi bi-envelope-fill"></i> Email</a>
-                                <button type="button" class="btn btn-sm btn-outline-light" id="volModalHeroPrintBtn"><i class="bi bi-printer"></i> ID Pass</button>
+                                <a href="#" class="btn btn-sm btn-success" id="volModalCallBtn"><i
+                                        class="bi bi-telephone-fill"></i> Call</a>
+                                <a href="#" target="_blank" rel="noopener" class="btn btn-sm btn-success"
+                                    id="volModalWhatsAppBtn"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                                <a href="#" class="btn btn-sm btn-outline-light" id="volModalEmailBtn"><i
+                                        class="bi bi-envelope-fill"></i> Email</a>
+                                <button type="button" class="btn btn-sm btn-outline-light" id="volModalHeroPrintBtn"><i
+                                        class="bi bi-printer"></i> ID Pass</button>
                             </div>
                         </div>
                     </div>
@@ -834,11 +1469,13 @@
                                     </div>
                                     <div class="overview-field">
                                         <label>Blood Group</label>
-                                        <div class="field-val text-danger fw-bold" id="volModalBloodGroup">O+ (Default)</div>
+                                        <div class="field-val text-danger fw-bold" id="volModalBloodGroup">O+ (Default)
+                                        </div>
                                     </div>
                                     <div class="overview-field mt-2">
                                         <label>Authentication Status</label>
-                                        <div class="field-val small text-success"><i class="bi bi-patch-check-fill"></i> Mobile Verified via OTP</div>
+                                        <div class="field-val small text-success"><i class="bi bi-patch-check-fill"></i>
+                                            Mobile Verified via OTP</div>
                                     </div>
                                 </div>
                             </div>
@@ -882,7 +1519,8 @@
                                     <i class="bi bi-tools"></i> Emergency Skills & Experience (Submitted by Volunteer)
                                 </div>
                                 <div class="overview-card-body">
-                                    <label class="text-uppercase small fw-bold text-muted mb-2 d-block">Specialized Emergency Readiness</label>
+                                    <label class="text-uppercase small fw-bold text-muted mb-2 d-block">Specialized
+                                        Emergency Readiness</label>
                                     <div class="overview-chips" id="volModalSkillsContainer">
                                         <!-- Rendered as badges -->
                                     </div>
@@ -893,14 +1531,18 @@
                         <!-- Operations & Dispatch Control -->
                         <div class="col-12">
                             <div class="overview-card border-primary">
-                                <div class="overview-card-header bg-navy text-white d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-gear-fill text-warning"></i> Volunteer Dispatch & Assignment Control</span>
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-shield-check"></i> Admin Action</span>
+                                <div
+                                    class="overview-card-header bg-navy text-white d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-gear-fill text-warning"></i> Volunteer Dispatch & Assignment
+                                        Control</span>
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-shield-check"></i> Admin
+                                        Action</span>
                                 </div>
                                 <div class="overview-card-body">
                                     <div class="row g-3">
                                         <div class="col-md-4">
-                                            <label for="volModalStatusSelect" class="form-label fw-bold small">Availability Status</label>
+                                            <label for="volModalStatusSelect"
+                                                class="form-label fw-bold small">Availability Status</label>
                                             <select class="form-select form-select-sm" id="volModalStatusSelect">
                                                 <option value="Available">Available (Ready for Duty)</option>
                                                 <option value="Assigned">Assigned (On Active Mission)</option>
@@ -908,13 +1550,16 @@
                                             </select>
                                         </div>
                                         <div class="col-md-5">
-                                            <label for="volModalAssignRequestSelect" class="form-label fw-bold small">Assign to Active Emergency Request</label>
+                                            <label for="volModalAssignRequestSelect"
+                                                class="form-label fw-bold small">Assign to Active Emergency
+                                                Request</label>
                                             <select class="form-select form-select-sm" id="volModalAssignRequestSelect">
                                                 <option value="">-- Choose Help Request --</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3 d-flex align-items-end">
-                                            <button type="button" class="btn btn-sm btn-primary w-100" id="volModalSaveBtn">
+                                            <button type="button" class="btn btn-sm btn-primary w-100"
+                                                id="volModalSaveBtn">
                                                 <i class="bi bi-check2-circle"></i> Save Updates
                                             </button>
                                         </div>
@@ -929,41 +1574,85 @@
                 </div>
                 <div class="modal-footer overview-modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-danger" id="volModalDeleteBtn"><i class="bi bi-trash3"></i> Delete Volunteer</button>
-                    <button type="button" class="btn btn-outline-dark" id="volModalPrintBtn"><i class="bi bi-printer"></i> Print Volunteer ID Card</button>
-                    <button type="button" class="btn btn-success" id="volModalQuickAvailableBtn"><i class="bi bi-check-lg"></i> Mark Available</button>
+                    <button type="button" class="btn btn-outline-danger" id="volModalDeleteBtn"><i
+                            class="bi bi-trash3"></i> Delete Volunteer</button>
+                    <button type="button" class="btn btn-outline-dark" id="volModalPrintBtn"><i
+                            class="bi bi-printer"></i> Print Volunteer ID Card</button>
+                    <button type="button" class="btn btn-success" id="volModalQuickAvailableBtn"><i
+                            class="bi bi-check-lg"></i> Mark Available</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ADMIN ADD VOLUNTEER MODAL WITH STATE, DISTRICT, MANDAL CASCADING SELECT -->
-    <div class="modal fade" id="adminAddVolunteerModal" tabindex="-1" aria-labelledby="adminAddVolTitle" aria-hidden="true">
+    <div class="modal fade" id="adminAddVolunteerModal" tabindex="-1" aria-labelledby="adminAddVolTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content login-modal border-0 shadow-lg">
                 <div class="modal-header bg-dark text-white border-0">
                     <div>
                         <span class="section-tag text-warning">PERSONNEL ONBOARDING</span>
-                        <h4 class="modal-title fs-5" id="adminAddVolTitle"><i class="bi bi-person-plus-fill me-1"></i> Register New Volunteer</h4>
+                        <h4 class="modal-title fs-5" id="adminAddVolTitle"><i class="bi bi-person-plus-fill me-1"></i>
+                            Register New Volunteer</h4>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <form id="adminAddVolunteerForm">
+                        <!-- MANDATORY LOGIN CREDENTIALS SECTION -->
+                        <div class="p-3 mb-3 bg-light rounded-3 border">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-danger fw-bold small">
+                                <i class="bi bi-shield-lock-fill"></i> VOLUNTEER LOGIN CREDENTIALS
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label for="volUsername" class="form-label small fw-bold">Username <span
+                                            class="text-danger">*</span></label>
+                                    <input id="volUsername" name="volUsername" data-alt-id="adminAddVolUsername"
+                                        type="text" class="form-control form-control-sm" placeholder="e.g. vol_asr01"
+                                        required autocomplete="username">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="volPassword" class="form-label small fw-bold">Password <span
+                                            class="text-danger">*</span></label>
+                                    <input id="volPassword" name="volPassword" data-alt-id="adminAddVolPassword"
+                                        type="password" class="form-control form-control-sm"
+                                        placeholder="e.g. volpass123" required autocomplete="new-password">
+                                </div>
+                                <div class="col-12">
+                                    <label for="volEmail" class="form-label small fw-bold">Email Address <span
+                                            class="text-danger">*</span></label>
+                                    <input id="volEmail" name="volEmail" data-alt-id="adminAddVolEmail" type="email"
+                                        class="form-control form-control-sm"
+                                        placeholder="e.g. volunteer.asr@disasterrelief.gov.in" required
+                                        autocomplete="email">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-3">
-                            <label for="adminAddVolName" class="form-label small fw-bold">Full Name</label>
-                            <input id="adminAddVolName" type="text" class="form-control" placeholder="Enter volunteer's full name" required>
+                            <label for="adminAddVolName" class="form-label small fw-bold">Full Name <span
+                                    class="text-danger">*</span></label>
+                            <input id="adminAddVolName" type="text" class="form-control"
+                                placeholder="Enter volunteer's full name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="adminAddVolFatherName" class="form-label small fw-bold">Father / Guardian Name</label>
-                            <input id="adminAddVolFatherName" type="text" class="form-control" placeholder="Enter guardian name" required>
+                            <label for="adminAddVolFatherName" class="form-label small fw-bold">Father / Guardian
+                                Name</label>
+                            <input id="adminAddVolFatherName" type="text" class="form-control"
+                                placeholder="Enter guardian name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="adminAddVolPhone" class="form-label small fw-bold">10-Digit Mobile Contact</label>
-                            <input id="adminAddVolPhone" type="tel" maxlength="10" class="form-control" placeholder="e.g. 9876543210" required>
+                            <label for="adminAddVolPhone" class="form-label small fw-bold">10-Digit Mobile Contact <span
+                                    class="text-danger">*</span></label>
+                            <input id="adminAddVolPhone" type="tel" maxlength="10" class="form-control"
+                                placeholder="e.g. 9876543210" required>
                         </div>
                         <div class="mb-3">
-                            <label for="adminAddVolState" class="form-label small fw-bold">State / Union Territory</label>
+                            <label for="adminAddVolState" class="form-label small fw-bold">State / Union
+                                Territory</label>
                             <select id="adminAddVolState" class="form-select india-state-select" required>
                                 <option value="">Select state or union territory</option>
                             </select>
@@ -979,19 +1668,25 @@
                             <select id="adminAddVolMandal" class="form-select" required disabled>
                                 <option value="">Select a district first</option>
                             </select>
-                            <small class="form-text text-muted">Populated automatically with authentic local mandals for the selected district.</small>
+                            <small class="form-text text-muted">Populated automatically with authentic local mandals for
+                                the selected district.</small>
                         </div>
                         <div class="mb-3">
-                            <label for="adminAddVolSkills" class="form-label small fw-bold">Specialized Skills & Qualifications</label>
-                            <input id="adminAddVolSkills" type="text" class="form-control" placeholder="e.g. First Aid, Water Rescue, Heavy Vehicle Driving" required>
+                            <label for="adminAddVolSkills" class="form-label small fw-bold">Specialized Skills &
+                                Qualifications</label>
+                            <input id="adminAddVolSkills" type="text" class="form-control"
+                                placeholder="e.g. First Aid, Water Rescue, Heavy Vehicle Driving" required>
                         </div>
                         <div class="mb-3">
-                            <label for="adminAddVolPhoto" class="form-label small fw-bold">Volunteer Profile Picture (Optional)</label>
+                            <label for="adminAddVolPhoto" class="form-label small fw-bold">Volunteer Profile Picture
+                                (Optional)</label>
                             <input id="adminAddVolPhoto" type="file" class="form-control" accept="image/*">
-                            <small class="form-text text-muted">Upload an authentic photo badge for field identification.</small>
+                            <small class="form-text text-muted">Upload an authentic photo badge for field
+                                identification.</small>
                         </div>
                         <div class="mb-3">
-                            <label for="adminAddVolStatus" class="form-label small fw-bold">Deployment Availability</label>
+                            <label for="adminAddVolStatus" class="form-label small fw-bold">Deployment
+                                Availability</label>
                             <select id="adminAddVolStatus" class="form-select">
                                 <option value="Available">Available (Ready for Immediate Duty)</option>
                                 <option value="Assigned">Assigned (Active Field Mission)</option>
@@ -999,8 +1694,10 @@
                             </select>
                         </div>
                         <div class="d-flex justify-content-end gap-2 pt-2">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Save Volunteer to Roster</button>
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Save
+                                Volunteer to Roster</button>
                         </div>
                     </form>
                 </div>
@@ -1009,31 +1706,40 @@
     </div>
 
     <!-- ADMIN PROFILE MODAL WITH PROFILE PICTURE & FULL CREDENTIALS -->
-    <div class="modal fade request-overview-modal" id="adminProfileModal" tabindex="-1" aria-labelledby="adminProfileModalLabel" aria-hidden="true">
+    <div class="modal fade request-overview-modal" id="adminProfileModal" tabindex="-1"
+        aria-labelledby="adminProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content overview-modal-content">
                 <div class="modal-header overview-modal-header" style="border-bottom-color: #e14c59;">
                     <div class="d-flex align-items-center gap-3">
-                        <span class="overview-header-icon" style="background: rgba(225,76,89,0.2); color: #ff7880;"><i class="bi bi-person-badge-fill"></i></span>
+                        <span class="overview-header-icon" style="background: rgba(225,76,89,0.2); color: #ff7880;"><i
+                                class="bi bi-person-badge-fill"></i></span>
                         <div>
                             <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                                <h5 class="modal-title mb-0" id="adminProfileModalLabel">Administrator Profile & Command Credentials</h5>
+                                <h5 class="modal-title mb-0" id="adminProfileModalLabel">Administrator Profile & Command
+                                    Credentials</h5>
                                 <span class="badge bg-dark font-monospace" id="adminModalBadgeId">ADM-NDRF-8842</span>
-                                <span class="badge bg-danger"><i class="bi bi-shield-lock-fill"></i> Top Security Clearance</span>
+                                <span class="badge bg-danger"><i class="bi bi-shield-lock-fill"></i> Top Security
+                                    Clearance</span>
                                 <span class="badge bg-success"><i class="bi bi-broadcast"></i> Live Operational</span>
                             </div>
-                            <small class="overview-timestamp"><i class="bi bi-shield-check"></i> National Emergency Response System · Command Center</small>
+                            <small class="overview-timestamp"><i class="bi bi-shield-check"></i> National Emergency
+                                Response System · Command Center</small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body overview-modal-body p-4">
                     <!-- Admin Hero Banner -->
-                    <div class="profile-hero-banner" style="background: linear-gradient(135deg, #111c2e 0%, #202b3e 100%);">
+                    <div class="profile-hero-banner"
+                        style="background: linear-gradient(135deg, #111c2e 0%, #202b3e 100%);">
                         <div class="profile-photo-container">
-                            <img id="adminModalPhotoImg" class="profile-photo-img" src="" alt="Admin Profile Picture" style="display: none;">
+                            <img id="adminModalPhotoImg" class="profile-photo-img" src="" alt="Admin Profile Picture"
+                                style="display: none;">
                             <div id="adminModalPhotoInitials" class="profile-initials-lg admin-initials-lg">AD</div>
-                            <label for="adminPhotoFileInput" class="photo-upload-badge" title="Upload Admin Profile Picture">
+                            <label for="adminPhotoFileInput" class="photo-upload-badge"
+                                title="Upload Admin Profile Picture">
                                 <i class="bi bi-camera-fill"></i>
                                 <input type="file" id="adminPhotoFileInput" accept="image/*" style="display: none;">
                             </label>
@@ -1042,14 +1748,19 @@
                             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                                 <div>
                                     <h4 id="adminModalHeroName" class="mb-1 text-white">Administrator</h4>
-                                    <p class="mb-1 text-white-50 small" id="adminModalHeroRole">Senior Disaster Operations Controller · NDRF Command</p>
-                                    <p class="mb-0 text-white-50 small"><i class="bi bi-geo-alt me-1"></i> Command Jurisdiction: <strong id="adminModalHeroJurisdiction" class="text-warning">All India Operations</strong></p>
+                                    <p class="mb-1 text-white-50 small" id="adminModalHeroRole">Senior Disaster
+                                        Operations Controller · NDRF Command</p>
+                                    <p class="mb-0 text-white-50 small"><i class="bi bi-geo-alt me-1"></i> Command
+                                        Jurisdiction: <strong id="adminModalHeroJurisdiction" class="text-warning">All
+                                            India Operations</strong></p>
                                 </div>
                                 <div class="d-flex flex-column gap-1">
-                                    <button type="button" class="btn btn-sm btn-outline-light py-1 px-2" id="adminUploadTriggerBtn">
+                                    <button type="button" class="btn btn-sm btn-outline-light py-1 px-2"
+                                        id="adminUploadTriggerBtn">
                                         <i class="bi bi-upload me-1"></i> Change Photo
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" id="adminRemovePhotoBtn" style="font-size: 11px;">
+                                    <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2"
+                                        id="adminRemovePhotoBtn" style="font-size: 11px;">
                                         <i class="bi bi-trash3 me-1"></i> Remove Photo
                                     </button>
                                 </div>
@@ -1067,20 +1778,30 @@
                                 </div>
                                 <div class="overview-card-body">
                                     <div class="mb-2">
-                                        <label for="adminInputFullName" class="form-label small fw-bold text-muted mb-1">OFFICER FULL NAME</label>
-                                        <input type="text" class="form-control form-control-sm" id="adminInputFullName" placeholder="e.g. Rajeshwar Rao, IAS">
+                                        <label for="adminInputFullName"
+                                            class="form-label small fw-bold text-muted mb-1">OFFICER FULL NAME</label>
+                                        <input type="text" class="form-control form-control-sm" id="adminInputFullName"
+                                            placeholder="e.g. Rajeshwar Rao, IAS">
                                     </div>
                                     <div class="mb-2">
-                                        <label for="adminInputRole" class="form-label small fw-bold text-muted mb-1">DESIGNATION / TITLE</label>
-                                        <input type="text" class="form-control form-control-sm" id="adminInputRole" placeholder="e.g. Senior Disaster Operations Controller">
+                                        <label for="adminInputRole"
+                                            class="form-label small fw-bold text-muted mb-1">DESIGNATION / TITLE</label>
+                                        <input type="text" class="form-control form-control-sm" id="adminInputRole"
+                                            placeholder="e.g. Senior Disaster Operations Controller">
                                     </div>
                                     <div class="mb-2">
-                                        <label for="adminInputDept" class="form-label small fw-bold text-muted mb-1">DEPARTMENT / DIRECTORATE</label>
-                                        <input type="text" class="form-control form-control-sm" id="adminInputDept" placeholder="e.g. National Disaster Management Authority (NDMA)">
+                                        <label for="adminInputDept"
+                                            class="form-label small fw-bold text-muted mb-1">DEPARTMENT /
+                                            DIRECTORATE</label>
+                                        <input type="text" class="form-control form-control-sm" id="adminInputDept"
+                                            placeholder="e.g. National Disaster Management Authority (NDMA)">
                                     </div>
                                     <div class="mb-0">
-                                        <label for="adminInputOfficerId" class="form-label small fw-bold text-muted mb-1">OFFICER BADGE / EMPLOYEE ID</label>
-                                        <input type="text" class="form-control form-control-sm font-monospace" id="adminInputOfficerId" placeholder="e.g. ADM-NDRF-8842">
+                                        <label for="adminInputOfficerId"
+                                            class="form-label small fw-bold text-muted mb-1">OFFICER BADGE / EMPLOYEE
+                                            ID</label>
+                                        <input type="text" class="form-control form-control-sm font-monospace"
+                                            id="adminInputOfficerId" placeholder="e.g. ADM-NDRF-8842">
                                     </div>
                                 </div>
                             </div>
@@ -1094,22 +1815,34 @@
                                 </div>
                                 <div class="overview-card-body">
                                     <div class="mb-2">
-                                        <label for="adminInputEmail" class="form-label small fw-bold text-muted mb-1">OFFICIAL EMAIL CONTACT</label>
-                                        <input type="email" class="form-control form-control-sm" id="adminInputEmail" placeholder="e.g. admin.ops@disaster-relief.gov.in">
+                                        <label for="adminInputEmail"
+                                            class="form-label small fw-bold text-muted mb-1">OFFICIAL EMAIL
+                                            CONTACT</label>
+                                        <input type="email" class="form-control form-control-sm" id="adminInputEmail"
+                                            placeholder="e.g. admin.ops@disaster-relief.gov.in">
                                     </div>
                                     <div class="mb-2">
-                                        <label for="adminInputPhone" class="form-label small fw-bold text-muted mb-1">OFFICIAL EMERGENCY MOBILE</label>
-                                        <input type="tel" class="form-control form-control-sm font-monospace" id="adminInputPhone" placeholder="e.g. +91 98765 00100">
+                                        <label for="adminInputPhone"
+                                            class="form-label small fw-bold text-muted mb-1">OFFICIAL EMERGENCY
+                                            MOBILE</label>
+                                        <input type="tel" class="form-control form-control-sm font-monospace"
+                                            id="adminInputPhone" placeholder="e.g. +91 98765 00100">
                                     </div>
                                     <div class="mb-2">
-                                        <label for="adminInputState" class="form-label small fw-bold text-muted mb-1">ASSIGNED COMMAND STATE</label>
-                                        <select class="form-select form-select-sm india-state-select" id="adminInputState">
+                                        <label for="adminInputState"
+                                            class="form-label small fw-bold text-muted mb-1">ASSIGNED COMMAND
+                                            STATE</label>
+                                        <select class="form-select form-select-sm india-state-select"
+                                            id="adminInputState">
                                             <option value="all">All India (National Command)</option>
                                         </select>
                                     </div>
                                     <div class="mb-0">
-                                        <label for="adminInputDistrict" class="form-label small fw-bold text-muted mb-1">ASSIGNED DISTRICT JURISDICTION</label>
-                                        <input type="text" class="form-control form-control-sm" id="adminInputDistrict" placeholder="e.g. All Districts or Krishna, Wayanad...">
+                                        <label for="adminInputDistrict"
+                                            class="form-label small fw-bold text-muted mb-1">ASSIGNED DISTRICT
+                                            JURISDICTION</label>
+                                        <input type="text" class="form-control form-control-sm" id="adminInputDistrict"
+                                            placeholder="e.g. All Districts or Krishna, Wayanad...">
                                     </div>
                                 </div>
                             </div>
@@ -1119,32 +1852,48 @@
                         <div class="col-12">
                             <div class="overview-card">
                                 <div class="overview-card-header bg-navy text-white">
-                                    <i class="bi bi-key-fill text-warning"></i> Security Clearance & Operational Authority
+                                    <i class="bi bi-key-fill text-warning"></i> Security Clearance & Operational
+                                    Authority
                                 </div>
                                 <div class="overview-card-body">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label for="adminInputClearance" class="form-label small fw-bold text-muted mb-1">SECURITY CLEARANCE LEVEL</label>
+                                            <label for="adminInputClearance"
+                                                class="form-label small fw-bold text-muted mb-1">SECURITY CLEARANCE
+                                                LEVEL</label>
                                             <select class="form-select form-select-sm" id="adminInputClearance">
-                                                <option value="Level 5 - Command & Dispatch Authority">Level 5 - Command & Dispatch Authority (Executive)</option>
-                                                <option value="Level 4 - State Disaster Coordinator">Level 4 - State Disaster Coordinator</option>
-                                                <option value="Level 3 - District Emergency Officer">Level 3 - District Emergency Officer</option>
-                                                <option value="Level 2 - Relief Field Supervisor">Level 2 - Relief Field Supervisor</option>
+                                                <option value="Level 5 - Command & Dispatch Authority">Level 5 - Command
+                                                    & Dispatch Authority (Executive)</option>
+                                                <option value="Level 4 - State Disaster Coordinator">Level 4 - State
+                                                    Disaster Coordinator</option>
+                                                <option value="Level 3 - District Emergency Officer">Level 3 - District
+                                                    Emergency Officer</option>
+                                                <option value="Level 2 - Relief Field Supervisor">Level 2 - Relief Field
+                                                    Supervisor</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="adminInputDutyStatus" class="form-label small fw-bold text-muted mb-1">OPERATIONAL DUTY STATUS</label>
+                                            <label for="adminInputDutyStatus"
+                                                class="form-label small fw-bold text-muted mb-1">OPERATIONAL DUTY
+                                                STATUS</label>
                                             <select class="form-select form-select-sm" id="adminInputDutyStatus">
-                                                <option value="Active Duty / Operational">Active Duty / Live Operations</option>
-                                                <option value="Standby / Incident Command">Standby / Incident Command</option>
+                                                <option value="Active Duty / Operational">Active Duty / Live Operations
+                                                </option>
+                                                <option value="Standby / Incident Command">Standby / Incident Command
+                                                </option>
                                                 <option value="Relief Camp Duty">Relief Camp Field Duty</option>
                                             </select>
                                         </div>
                                         <div class="col-12">
-                                            <div class="p-2 rounded bg-light border d-flex align-items-center justify-content-between flex-wrap gap-2 text-muted small">
-                                                <span><i class="bi bi-clock-history me-1"></i> Session Active: <strong id="adminSessionTime" class="text-dark">Current Live Session</strong></span>
-                                                <span><i class="bi bi-hdd-network me-1"></i> Secure Node: <strong>Gateway SSL-256</strong></span>
-                                                <span class="text-success"><i class="bi bi-shield-fill-check me-1"></i> 2FA Authenticated</span>
+                                            <div
+                                                class="p-2 rounded bg-light border d-flex align-items-center justify-content-between flex-wrap gap-2 text-muted small">
+                                                <span><i class="bi bi-clock-history me-1"></i> Session Active: <strong
+                                                        id="adminSessionTime" class="text-dark">Current Live
+                                                        Session</strong></span>
+                                                <span><i class="bi bi-hdd-network me-1"></i> Secure Node:
+                                                    <strong>Gateway SSL-256</strong></span>
+                                                <span class="text-success"><i class="bi bi-shield-fill-check me-1"></i>
+                                                    2FA Authenticated</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1155,8 +1904,10 @@
                 </div>
                 <div class="modal-footer overview-modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-danger" id="adminResetProfileBtn"><i class="bi bi-arrow-counterclockwise"></i> Reset to Default</button>
-                    <button type="button" class="btn btn-danger" id="saveAdminProfileBtn"><i class="bi bi-check2-circle"></i> Save Administrator Profile</button>
+                    <button type="button" class="btn btn-outline-danger" id="adminResetProfileBtn"><i
+                            class="bi bi-arrow-counterclockwise"></i> Reset to Default</button>
+                    <button type="button" class="btn btn-danger" id="saveAdminProfileBtn"><i
+                            class="bi bi-check2-circle"></i> Save Administrator Profile</button>
                 </div>
             </div>
         </div>
@@ -1165,20 +1916,25 @@
     <!-- =====================================================
          DUAL-SIDED PROFESSIONAL VOLUNTEER ID CARD MODAL (FRONT & BACK)
     ===================================================== -->
-    <div class="modal fade id-card-modal" id="volunteerIdCardModal" tabindex="-1" aria-labelledby="volunteerIdCardModalLabel" aria-hidden="true">
+    <div class="modal fade id-card-modal" id="volunteerIdCardModal" tabindex="-1"
+        aria-labelledby="volunteerIdCardModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content id-card-modal-content border-0 shadow-lg">
                 <div class="modal-header bg-dark text-white border-0 py-3">
                     <div class="d-flex align-items-center gap-2">
                         <span class="badge bg-danger fs-6"><i class="bi bi-person-vcard-fill"></i></span>
-                        <h5 class="modal-title mb-0" id="volunteerIdCardModalLabel">Official Disaster Relief Volunteer ID Card</h5>
+                        <h5 class="modal-title mb-0" id="volunteerIdCardModalLabel">Official Disaster Relief Volunteer
+                            ID Card</h5>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4 bg-light">
                     <div class="text-center mb-3 d-print-none">
-                        <p class="text-muted small mb-2">Government of India · Disaster Management Authority Authorized Identification Card</p>
-                        <span class="badge bg-secondary-subtle text-secondary border">Physical Standard PVC Specification · Front & Back</span>
+                        <p class="text-muted small mb-2">Government of India · Disaster Management Authority Authorized
+                            Identification Card</p>
+                        <span class="badge bg-secondary-subtle text-secondary border">Physical Standard PVC
+                            Specification · Front & Back</span>
                     </div>
 
                     <div class="id-cards-wrapper" id="idCardsPrintArea">
@@ -1194,7 +1950,8 @@
 
                             <div class="id-card-front-body">
                                 <div class="id-card-photo-box">
-                                    <img id="idCardPhotoImg" class="id-card-photo" src="" alt="Volunteer Photo" style="display: none;">
+                                    <img id="idCardPhotoImg" class="id-card-photo" src="" alt="Volunteer Photo"
+                                        style="display: none;">
                                     <div id="idCardPhotoInitials" class="id-card-initials">VK</div>
                                     <span class="id-card-role-pill">VOLUNTEER</span>
                                 </div>
@@ -1206,7 +1963,8 @@
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Volunteer ID:</span>
-                                        <strong class="id-val font-monospace text-primary" id="idCardVolId">DRVOL-0001</strong>
+                                        <strong class="id-val font-monospace text-primary"
+                                            id="idCardVolId">DRVOL-0001</strong>
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">District:</span>
@@ -1218,7 +1976,8 @@
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Role:</span>
-                                        <span class="id-val fw-bold text-dark" id="idCardRole">Disaster Relief Volunteer</span>
+                                        <span class="id-val fw-bold text-dark" id="idCardRole">Disaster Relief
+                                            Volunteer</span>
                                     </div>
                                     <div class="id-info-row">
                                         <span class="id-lbl">Blood Group:</span>
@@ -1236,7 +1995,8 @@
                             </div>
 
                             <div class="id-card-footer">
-                                <div class="id-card-watermark"><i class="bi bi-patch-check-fill text-success me-1"></i> Authorized Personnel</div>
+                                <div class="id-card-watermark"><i class="bi bi-patch-check-fill text-success me-1"></i>
+                                    Authorized Personnel</div>
                                 <div class="id-card-signature-box">
                                     <div class="signature-line" id="idCardSignatureScript">District Collector & DM</div>
                                     <span class="id-card-sign-label">Authorized Signature</span>
@@ -1253,12 +2013,18 @@
 
                             <div class="id-card-back-body">
                                 <ul class="id-responsibilities-list">
-                                    <li><span class="resp-icon">🚨</span> <span>Assist during disaster emergencies</span></li>
-                                    <li><span class="resp-icon">🏥</span> <span>Help affected people reach emergency services</span></li>
-                                    <li><span class="resp-icon">🏠</span> <span>Support shelter and relief activities</span></li>
-                                    <li><span class="resp-icon">📦</span> <span>Assist with distribution of relief materials</span></li>
-                                    <li><span class="resp-icon">📢</span> <span>Report emergency situations to the Mandal/Employee</span></li>
-                                    <li><span class="resp-icon">🤝</span> <span>Coordinate with the disaster management team</span></li>
+                                    <li><span class="resp-icon">🚨</span> <span>Assist during disaster
+                                            emergencies</span></li>
+                                    <li><span class="resp-icon">🏥</span> <span>Help affected people reach emergency
+                                            services</span></li>
+                                    <li><span class="resp-icon">🏠</span> <span>Support shelter and relief
+                                            activities</span></li>
+                                    <li><span class="resp-icon">📦</span> <span>Assist with distribution of relief
+                                            materials</span></li>
+                                    <li><span class="resp-icon">📢</span> <span>Report emergency situations to the
+                                            Mandal/Employee</span></li>
+                                    <li><span class="resp-icon">🤝</span> <span>Coordinate with the disaster management
+                                            team</span></li>
                                 </ul>
 
                                 <div class="emergency-contact-box">
@@ -1282,7 +2048,8 @@
                                 </div>
 
                                 <p class="id-disclaimer">
-                                    This ID card is issued by DISASTER RELIEF MANAGEMENT and is valid only for authorized disaster-relief volunteer activities.
+                                    This ID card is issued by DISASTER RELIEF MANAGEMENT and is valid only for
+                                    authorized disaster-relief volunteer activities.
                                 </p>
                             </div>
                         </div>
@@ -1290,7 +2057,8 @@
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="idCardPrintTriggerBtn"><i class="bi bi-printer"></i> Print ID Card (Front & Back)</button>
+                    <button type="button" class="btn btn-primary" id="idCardPrintTriggerBtn"><i
+                            class="bi bi-printer"></i> Print ID Card (Front & Back)</button>
                 </div>
             </div>
         </div>
@@ -1299,7 +2067,8 @@
     <!-- =====================================================
          ADMIN PROVISION / EDIT MANDAL LOGIN MODAL
     ===================================================== -->
-    <div class="modal fade" id="adminProvisionMandalModal" tabindex="-1" aria-labelledby="provisionMandalLabel" aria-hidden="true">
+    <div class="modal fade" id="adminProvisionMandalModal" tabindex="-1" aria-labelledby="provisionMandalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header bg-dark text-white">
@@ -1307,7 +2076,8 @@
                         <span class="section-tag text-warning">MANDAL ACCESS CONTROL</span>
                         <h5 class="modal-title mb-0" id="provisionMandalLabel">Provision Mandal / Employee Login</h5>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <form id="adminProvisionMandalForm">
@@ -1321,25 +2091,31 @@
                             <input type="text" class="form-control" id="provDistrict" required readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="provOfficerName" class="form-label small fw-bold">Officer / Employee Name</label>
-                            <input type="text" class="form-control" id="provOfficerName" placeholder="e.g. K. Satyanarayana" required>
+                            <label for="provOfficerName" class="form-label small fw-bold">Officer / Employee
+                                Name</label>
+                            <input type="text" class="form-control" id="provOfficerName"
+                                placeholder="e.g. K. Satyanarayana" required>
                         </div>
                         <div class="mb-3">
                             <label for="provEmployeeId" class="form-label small fw-bold">Official Employee ID</label>
-                            <input type="text" class="form-control font-monospace" id="provEmployeeId" placeholder="e.g. MND-AP-2041" required>
+                            <input type="text" class="form-control font-monospace" id="provEmployeeId"
+                                placeholder="e.g. MND-AP-2041" required>
                         </div>
                         <div class="mb-3">
                             <label for="provPhone" class="form-label small fw-bold">Official Mobile Contact</label>
-                            <input type="tel" class="form-control" id="provPhone" placeholder="10-digit phone number" required>
+                            <input type="tel" class="form-control" id="provPhone" placeholder="10-digit phone number"
+                                required>
                         </div>
                         <div class="row g-2 mb-3">
                             <div class="col-md-6">
                                 <label for="provUsername" class="form-label small fw-bold">Login Username</label>
-                                <input type="text" class="form-control font-monospace" id="provUsername" placeholder="e.g. mandal_vja_rural" required>
+                                <input type="text" class="form-control font-monospace" id="provUsername"
+                                    placeholder="e.g. mandal_vja_rural" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="provPassword" class="form-label small fw-bold">Login Password</label>
-                                <input type="text" class="form-control font-monospace" id="provPassword" placeholder="e.g. mandal123" required>
+                                <input type="text" class="form-control font-monospace" id="provPassword"
+                                    placeholder="e.g. mandal123" required>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -1348,11 +2124,14 @@
                                 <option value="Approved">Approved (Login Active)</option>
                                 <option value="Pending">Pending Approval (Login Blocked)</option>
                             </select>
-                            <small class="form-text text-muted">A Mandal/Employee login can only authenticate when status is set to Approved.</small>
+                            <small class="form-text text-muted">A Mandal/Employee login can only authenticate when
+                                status is set to Approved.</small>
                         </div>
                         <div class="d-flex justify-content-end gap-2 pt-2">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Save Mandal Credentials</button>
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Save
+                                Mandal Credentials</button>
                         </div>
                     </form>
                 </div>
@@ -1363,22 +2142,30 @@
     <!-- =====================================================
          MANDAL ACTIVITIES & ROUTING OVERVIEW MODAL
     ===================================================== -->
-    <div class="modal fade" id="mandalActivitiesModal" tabindex="-1" aria-labelledby="mandalActivitiesLabel" aria-hidden="true">
+    <div class="modal fade" id="mandalActivitiesModal" tabindex="-1" aria-labelledby="mandalActivitiesLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content overview-modal-content border-0 shadow-lg">
                 <div class="modal-header overview-modal-header bg-navy text-white">
                     <div class="d-flex align-items-center gap-3">
-                        <span class="overview-header-icon" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;"><i class="bi bi-buildings"></i></span>
+                        <span class="overview-header-icon"
+                            style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;"><i
+                                class="bi bi-buildings"></i></span>
                         <div>
                             <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
                                 <h5 class="modal-title mb-0" id="mandalActivitiesTitle">Mandal Relief Operations</h5>
-                                <span class="badge bg-primary" id="mandalActivitiesDistrictBadge">Krishna District</span>
-                                <span class="mandal-status-badge mandal-status-approved" id="mandalActivitiesStatusBadge">Approved</span>
+                                <span class="badge bg-primary" id="mandalActivitiesDistrictBadge">Krishna
+                                    District</span>
+                                <span class="mandal-status-badge mandal-status-approved"
+                                    id="mandalActivitiesStatusBadge">Approved</span>
                             </div>
-                            <small class="text-white-50"><i class="bi bi-person-badge me-1"></i> Officer In-Charge: <strong id="mandalOfficerDisplay" class="text-white">—</strong> · Mobile: <span id="mandalPhoneDisplay" class="text-white font-monospace">—</span></small>
+                            <small class="text-white-50"><i class="bi bi-person-badge me-1"></i> Officer In-Charge:
+                                <strong id="mandalOfficerDisplay" class="text-white">—</strong> · Mobile: <span
+                                    id="mandalPhoneDisplay" class="text-white font-monospace">—</span></small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4 bg-light">
                     <!-- Quick Stats -->
@@ -1412,10 +2199,14 @@
                     <!-- Mandal Tabs -->
                     <ul class="nav nav-tabs mb-3" id="mandalDetailTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active fw-bold" id="mandal-requests-tab" data-bs-toggle="tab" data-bs-target="#mandal-requests-pane" type="button" role="tab"><i class="bi bi-clipboard2-pulse me-1"></i> Routed Help Requests</button>
+                            <button class="nav-link active fw-bold" id="mandal-requests-tab" data-bs-toggle="tab"
+                                data-bs-target="#mandal-requests-pane" type="button" role="tab"><i
+                                    class="bi bi-clipboard2-pulse me-1"></i> Routed Help Requests</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link fw-bold" id="mandal-volunteers-tab" data-bs-toggle="tab" data-bs-target="#mandal-volunteers-pane" type="button" role="tab"><i class="bi bi-people me-1"></i> Local Volunteers Roster</button>
+                            <button class="nav-link fw-bold" id="mandal-volunteers-tab" data-bs-toggle="tab"
+                                data-bs-target="#mandal-volunteers-pane" type="button" role="tab"><i
+                                    class="bi bi-people me-1"></i> Local Volunteers Roster</button>
                         </li>
                     </ul>
 
@@ -1439,7 +2230,8 @@
                                         <!-- Dynamically populated -->
                                     </tbody>
                                 </table>
-                                <p class="empty-state" id="emptyMandalRequests">No help requests originating from this mandal yet.</p>
+                                <p class="empty-state" id="emptyMandalRequests">No help requests originating from this
+                                    mandal yet.</p>
                             </div>
                         </div>
 
@@ -1461,22 +2253,302 @@
                                         <!-- Dynamically populated -->
                                     </tbody>
                                 </table>
-                                <p class="empty-state" id="emptyMandalVolunteers">No registered volunteers in this mandal yet.</p>
+                                <p class="empty-state" id="emptyMandalVolunteers">No registered volunteers in this
+                                    mandal yet.</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-primary" id="mandalManageLoginDirectBtn"><i class="bi bi-key-fill"></i> Manage Mandal Credentials</button>
+                    <button type="button" class="btn btn-outline-primary" id="mandalManageLoginDirectBtn"><i
+                            class="bi bi-key-fill"></i> Manage Mandal Credentials</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="dashboard-toast" id="dashboardToast" role="status"><i class="bi bi-check-circle-fill"></i><span></span></div>
+    <!-- PRE-DISASTER MOBILE SMS BROADCAST MODAL -->
+    <div class="modal fade" id="preDisasterSmsModal" tabindex="-1" aria-labelledby="preDisasterSmsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-broadcast fs-5"></i>
+                        <h5 class="modal-title mb-0" id="preDisasterSmsModalLabel">Broadcast Pre-Disaster Mobile SMS
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-3">
+                        Broadcast an early emergency text message alert to <strong>all registered citizens and
+                            volunteers' mobile phones</strong> before disaster impact.
+                    </p>
+                    <form id="preDisasterSmsForm" onsubmit="handleAdminSendPreDisasterSms(event)">
+                        <div class="mb-3">
+                            <label for="smsDisasterType" class="form-label small fw-bold">Disaster Impending
+                                Event</label>
+                            <select class="form-select form-select-sm" id="smsDisasterType" required>
+                                <option value="Severe Cyclone Warning">🌀 Severe Cyclone Warning</option>
+                                <option value="Flash Flood Alert">🌊 Flash Flood Inundation Alert</option>
+                                <option value="Heavy Rainfall & Storm Watch">🌧️ Heavy Rainfall & Storm Watch</option>
+                                <option value="Tsunami & Coastal Surge Advisory">🌊 Tsunami & Coastal Surge Advisory
+                                </option>
+                                <option value="Severe Heatwave Warning">☀️ Severe Heatwave Warning</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="smsWarningLevel" class="form-label small fw-bold">Warning Level</label>
+                            <select class="form-select form-select-sm" id="smsWarningLevel" required>
+                                <option value="RED ALERT - Immediate Evacuation">🚨 RED ALERT - Immediate Evacuation &
+                                    Shelter</option>
+                                <option value="ORANGE ALERT - Prepare to Move">⚠️ ORANGE ALERT - High Preparedness
+                                </option>
+                                <option value="YELLOW ALERT - Weather Watch">🟡 YELLOW ALERT - Advisory Watch</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="smsMessageText" class="form-label small fw-bold">Mobile SMS Text (Dispatched to
+                                Registered Mobiles)</label>
+                            <textarea class="form-control" id="smsMessageText" rows="3"
+                                required>⚠️ URGENT GOVT DISASTER ALERT: Severe weather & flood warning issued for this area. Heavy rainfall expected within 6 hrs. Relocate to designated relief shelters immediately. Helpline: 112 / 1077.</textarea>
+                            <small class="form-text text-muted">Simulates official SMS broadcast gateway to cell numbers
+                                across the district.</small>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                            <i class="bi bi-send-fill me-1"></i> Send Emergency SMS to All Registered Mobiles
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INCOMING SMARTPHONE MOBILE SMS MODAL POPUP -->
+    <div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent shadow-none">
+                <div class="sms-phone-frame">
+                    <div class="sms-phone-header">
+                        <span><i class="bi bi-reception-4"></i> EMERGENCY SMS BROADCAST</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="sms-bubble">
+                        <div class="sms-sender">
+                            <i class="bi bi-shield-fill-exclamation"></i>
+                            <span id="modalSmsSender">DISTRICT DISASTER CONTROL ROOM</span>
+                        </div>
+                        <div class="sms-body-text" id="modalSmsBody">
+                            ⚠️ URGENT PRE-DISASTER WARNING: Cyclone & Heavy Inundation warning issued. All residents in
+                            low-lying zones must relocate to designated emergency shelters immediately. Follow volunteer
+                            guidance. Call 112 for rescue dispatch.
+                        </div>
+                        <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
+                    </div>
+                    <div
+                        class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                        <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast
+                            Delivered</small>
+                        <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i
+                                class="bi bi-telephone-fill"></i> Dial 112</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCATION WEATHER REPORT & WARNING MODAL -->
+    <div class="modal fade" id="weatherDetailModal" tabindex="-1" aria-labelledby="weatherModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-cloud-sun-fill fs-4 text-warning"></i>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0" id="weatherModalTitle">Live Weather Intelligence &
+                                Early Warning</h5>
+                            <small class="text-white-50">Location-specific weather report & disaster alerts</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- DISTRICT SELECTOR FOR STATE-WIDE FORECAST -->
+                    <div
+                        class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 p-2 bg-white rounded-2 border">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small fw-bold text-muted"><i class="bi bi-geo-alt-fill text-danger"></i> Target
+                                Location:</span>
+                            <select class="form-select form-select-sm" id="weatherDistrictSelect"
+                                style="width: auto; min-width: 200px;">
+                                <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+                                <option value="Anakapalli">Anakapalli</option>
+                                <option value="Ananthapuramu">Ananthapuramu</option>
+                                <option value="Annamayya">Annamayya</option>
+                                <option value="Bapatla">Bapatla</option>
+                                <option value="Chittoor">Chittoor</option>
+                                <option value="East Godavari">East Godavari</option>
+                                <option value="Eluru">Eluru</option>
+                                <option value="Guntur">Guntur</option>
+                                <option value="Kakinada">Kakinada</option>
+                                <option value="Konaseema">Konaseema</option>
+                                <option value="Krishna" selected>Krishna (Vijayawada)</option>
+                                <option value="Kurnool">Kurnool</option>
+                                <option value="Nandyal">Nandyal</option>
+                                <option value="NTR">NTR District</option>
+                                <option value="Palnadu">Palnadu</option>
+                                <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+                                <option value="Prakasam">Prakasam</option>
+                                <option value="Srikakulam">Srikakulam</option>
+                                <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+                                <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+                                <option value="Tirupati">Tirupati</option>
+                                <option value="Visakhapatnam">Visakhapatnam</option>
+                                <option value="Vizianagaram">Vizianagaram</option>
+                                <option value="West Godavari">West Godavari</option>
+                                <option value="YSR Kadapa">YSR Kadapa</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnRefreshWeatherModal">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Data
+                        </button>
+                    </div>
+
+                    <!-- CURRENT CONDITIONS HERO CARD -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 text-center text-sm-start mb-3 mb-sm-0">
+                                <div
+                                    class="d-flex align-items-center justify-content-center justify-content-sm-start gap-3">
+                                    <div id="weatherModalHeroIcon" style="font-size: 48px;">
+                                        <i class="bi bi-cloud-rain-fill text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="display-5 fw-bold text-dark mb-0" id="weatherModalHeroTemp">29°C
+                                        </div>
+                                        <div class="fw-semibold text-secondary" id="weatherModalHeroCondition">Scattered
+                                            Rain</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-muted small">
+                                    <i class="bi bi-geo-alt"></i> <span id="weatherModalHeroLocation">Vijayawada Rural,
+                                        Krishna, Andhra Pradesh</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row g-2 text-center">
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Humidity</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalHumidity">78%</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Wind Speed</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalWind">18 km/h</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Visibility</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalVisibility">8.5 km</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Pressure</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalPressure">1008 hPa</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2-COLUMN SECTION: RAINFALL FORECAST & STRONG WIND WARNING -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-cloud-drizzle-fill text-primary me-2"></i>Rainfall Forecast
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">24-Hr Precipitation:</span>
+                                    <strong class="text-primary font-monospace" id="weatherModalRainVolume">14.2
+                                        mm</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Rain Probability:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalRainProb">75%</strong>
+                                </div>
+                                <div class="p-2 rounded border bg-primary-subtle border-primary-subtle small text-primary-emphasis"
+                                    id="weatherModalRainRiskText">
+                                    Moderate scattered rainfall expected in coastal mandals. Keep emergency tarpaulins
+                                    ready.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-wind text-warning me-2"></i>Strong Wind Warning
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Current Wind Speed:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalWindSpeed">18 km/h</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Wind Category:</span>
+                                    <span class="badge bg-success" id="weatherModalWindCategory">Moderate Breeze</span>
+                                </div>
+                                <div class="p-2 rounded border small" id="weatherModalWindWarningBox"
+                                    style="background: #f0fdf4; border-color: #bbf7d0; color: #166534;">
+                                    Wind conditions within safe operational limits for field volunteers and boats.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WEATHER ALERTS & OFFICIAL ADVISORIES -->
+                    <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster Weather Alerts</h6>
+                            <span class="badge bg-danger" id="weatherModalAlertLevelBadge">ADVISORY ACTIVE</span>
+                        </div>
+                        <div class="alert alert-warning mb-0 p-2 small border" id="weatherModalOfficialAlertText">
+                            ⚠️ <strong>IMD & AP Disaster Management Advisory:</strong> Monsoon low-pressure system
+                            active over Bay of Bengal. Field rescue teams and district control desks are in 24/7 readiness.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2">
+                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Data Source:
+                        Open-Meteo & AP Disaster Management</small>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-toast" id="dashboardToast" role="status"><i class="bi bi-check-circle-fill"></i><span></span>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="mandals-data.js"></script>
     <script src="admin.js"></script>
 </body>
+
 </html>

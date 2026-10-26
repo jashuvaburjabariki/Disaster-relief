@@ -83,6 +83,21 @@
                     </a>
                 </li>
 
+                <!-- LIVE WEATHER REPORT WIDGET -->
+                <li class="nav-item ms-lg-2 me-lg-2 my-1 my-lg-0">
+                    <div class="weather-topbar-widget" id="citizenWeatherWidget" role="button" tabindex="0"
+                        title="Click to view Live Weather Report & Warnings" onclick="openWeatherDetailModal()">
+                        <div class="weather-topbar-icon" id="citizenWeatherIcon"><i class="bi bi-cloud-rain-fill text-info"></i></div>
+                        <div class="weather-topbar-info">
+                            <div class="weather-temp-row">
+                                <strong id="citizenWeatherTemp">29°C</strong>
+                                <span class="badge bg-danger text-white py-0 px-1" id="citizenWeatherBadge" style="font-size: 8.5px;">Rain Watch</span>
+                            </div>
+                            <small id="citizenWeatherCondition">Scattered Rain · Andhra Pradesh</small>
+                        </div>
+                    </div>
+                </li>
+
                 <!-- LOGIN DROPDOWN -->
 
                 <li class="nav-item dropdown ms-lg-3">
@@ -175,6 +190,26 @@
             <!-- LEFT SIDE -->
 
             <div class="col-lg-7">
+
+                <!-- PRE-DISASTER MOBILE TEXT ALERT BROADCAST BANNER -->
+                <div class="pre-disaster-sms-bar mb-3 p-3 rounded-3 shadow-lg border border-danger-subtle" id="preDisasterSmsBar">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="sms-pulse-badge"><i class="bi bi-broadcast"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
+                            <span class="sms-text-preview" id="latestSmsText">
+                                ⚠️ URGENT PRE-DISASTER WARNING: Weather & Flood early alert active. Relocate to safe shelters immediately.
+                            </span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-light fw-bold" onclick="viewLatestSmsAlert()">
+                                <i class="bi bi-phone-fill me-1"></i> View Mobile Text
+                            </button>
+                            <a href="#help" class="btn btn-sm btn-light fw-bold text-danger">
+                                <i class="bi bi-life-preserver me-1"></i> Request Help
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- DISASTER ALERT -->
 
@@ -636,24 +671,44 @@
 
                     <div class="form-group">
 
-                        <label>
+                        <label for="loginPassword">
                             Password
                         </label>
 
-                        <input
-                            id="loginPassword"
-                            type="password"
-                            placeholder="Enter password"
-                            required
-                        >
+                        <div class="password-input-wrap position-relative">
+                            <input
+                                id="loginPassword"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Enter password"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle-btn"
+                                id="showPasswordToggleBtn"
+                                aria-label="Show password"
+                                title="Show password"
+                                style="display: none;"
+                            >
+                                <i class="bi bi-eye" id="showPasswordToggleIcon"></i>
+                                <span id="showPasswordToggleText">Show</span>
+                            </button>
+                        </div>
 
                     </div>
 
                     <div class="login-options">
-                        <label class="remember-option">
-                            <input id="rememberPassword" type="checkbox">
-                            Remember password
-                        </label>
+                        <div class="d-flex align-items-center gap-3">
+                            <label class="remember-option">
+                                <input id="rememberPassword" type="checkbox">
+                                Remember password
+                            </label>
+                            <label class="remember-option show-password-option" id="showPasswordCheckboxLabel" style="display: none;">
+                                <input id="showPasswordCheckbox" type="checkbox">
+                                Show password
+                            </label>
+                        </div>
                         <a href="#" onclick="forgotPassword(); return false;">Forgot password?</a>
                     </div>
 
@@ -674,7 +729,8 @@
                 <div class="p-2 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
                     <strong>Quick Test Logins:</strong>
                     <div class="mt-1" id="loginDemoCredentials">
-                        <span>• District Admin: <code>admin_krishna</code> / <code>admin123</code></span><br>
+                        <span>• District Admin: <code>admin_asr</code> / <code>admin123</code> (Alluri Sitharama Raju District)</span><br>
+                        <span>• District Admin: <code>admin_krishna</code> / <code>admin123</code> (Krishna District)</span><br>
                         <span>• Mandal Officer: <code>mandal_vja_rural</code> / <code>mandal123</code> (Approved)</span><br>
                         <span>• Pending Mandal: <code>mandal_gudivada</code> / <code>mandal123</code> (Approval flow)</span>
                     </div>
@@ -803,14 +859,28 @@
                             Create Password
                         </label>
 
-                        <input
-                            id="registerPassword"
-                            type="password"
-                            autocomplete="new-password"
-                            placeholder="Create a secure password"
-                            minlength="6"
-                            required
-                        >
+                        <div class="password-input-wrap position-relative">
+                            <input
+                                id="registerPassword"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Create a secure password"
+                                minlength="6"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle-btn"
+                                id="registerPasswordToggleBtn"
+                                aria-label="Show password"
+                                title="Show password"
+                                style="display: none;"
+                                onclick="toggleGenericPassword('registerPassword', 'registerPasswordToggleBtn')"
+                            >
+                                <i class="bi bi-eye"></i>
+                                <span>Show</span>
+                            </button>
+                        </div>
 
                     </div>
 
@@ -909,11 +979,39 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="forgotNewPassword" class="form-label small fw-bold">New Password</label>
-                            <input type="password" class="form-control" id="forgotNewPassword" placeholder="Minimum 6 characters" minlength="6" required>
+                            <div class="password-input-wrap position-relative">
+                                <input type="password" class="form-control" id="forgotNewPassword" placeholder="Minimum 6 characters" minlength="6" required>
+                                <button
+                                    type="button"
+                                    class="password-toggle-btn"
+                                    id="forgotNewPasswordToggleBtn"
+                                    aria-label="Show password"
+                                    title="Show password"
+                                    style="display: none;"
+                                    onclick="toggleGenericPassword('forgotNewPassword', 'forgotNewPasswordToggleBtn')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                    <span>Show</span>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <label for="forgotConfirmPassword" class="form-label small fw-bold">Confirm New Password</label>
-                            <input type="password" class="form-control" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required>
+                            <div class="password-input-wrap position-relative">
+                                <input type="password" class="form-control" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required>
+                                <button
+                                    type="button"
+                                    class="password-toggle-btn"
+                                    id="forgotConfirmPasswordToggleBtn"
+                                    aria-label="Show password"
+                                    title="Show password"
+                                    style="display: none;"
+                                    onclick="toggleGenericPassword('forgotConfirmPassword', 'forgotConfirmPasswordToggleBtn')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                    <span>Show</span>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn login-submit w-100 py-2" id="rebuildPasswordBtn">
                             Rebuild Password <i class="bi bi-check2-circle"></i>
@@ -933,9 +1031,6 @@
         </div>
     </div>
 </div>
-
-</div>
-
 
 <!-- =====================================================
      PUBLIC SUBMISSION MODALS
@@ -958,9 +1053,10 @@
                     </div>
                     <small id="helpTrackStatus">Your Track ID will be shown after you submit this form.</small>
                 </div>
-                <form onsubmit="submitHelpRequest(event)">
-                    <div class="form-group"><label for="helpName">Name</label><input id="helpName" type="text" placeholder="Enter applicant name" required></div>
-                    <div class="form-group"><label for="helpFatherName">Father Name</label><input id="helpFatherName" type="text" placeholder="Enter father's name" required></div>
+                <div id="helpFormAlert" style="display: none;"></div>
+                <form id="helpRequestForm" onsubmit="submitHelpRequest(event)">
+                    <div class="form-group"><label for="helpName">Applicant Name</label><input id="helpName" type="text" placeholder="Enter applicant full name" required></div>
+                    <div class="form-group"><label for="helpFatherName">Father / Guardian Name</label><input id="helpFatherName" type="text" placeholder="Enter father or guardian name" required></div>
                     <div class="form-group">
                         <label for="helpPhone">Mobile Number</label>
                         <input id="helpPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number" required>
@@ -968,14 +1064,70 @@
                     <div class="form-group"><label for="helpState">State / Union Territory</label><select id="helpState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
                     <div class="form-group"><label for="helpDistrict">District</label><select id="helpDistrict" required disabled><option value="">Select a state first</option></select></div>
                     <div class="form-group"><label for="helpMandal">Mandal / Taluk</label><select id="helpMandal" required disabled><option value="">Select a district first</option></select><small class="form-hint">Select the local mandal or taluk for your emergency location.</small></div>
-                    <div class="form-group"><label for="helpVillage">Village and exact location</label><div class="location-input"><input id="helpVillage" type="text" placeholder="Enter the village or landmark" required><button type="button" class="location-button" id="useHelpLocation" title="Use your current GPS location"><i class="bi bi-crosshair"></i><span>Use GPS</span></button></div><small id="helpGpsStatus" class="form-hint">GPS coordinates will be captured with your request.</small></div>
+                    <div class="form-group"><label for="helpVillage">Village / Town and Exact Location</label><div class="location-input"><input id="helpVillage" type="text" placeholder="Enter village, colony, or landmark" required><button type="button" class="location-button" id="useHelpLocation" title="Use your current GPS location"><i class="bi bi-crosshair"></i><span>Use GPS</span></button></div><small id="helpGpsStatus" class="form-hint">GPS coordinates will be captured with your request.</small></div>
                     <input id="helpGps" type="hidden">
-                    <div class="form-group"><label for="helpDisasterType">Disaster Type</label><select id="helpDisasterType" required><option value="">Select disaster type</option><option>Flood</option><option>Cyclone</option><option>Earthquake</option><option>Landslide</option><option>Fire</option><option>Drought</option><option>Tsunami</option><option>Other</option></select></div>
-                    <div class="form-group"><label for="helpProof">Proof</label><input id="helpProof" type="file" accept="image/*,.pdf" required><small class="form-hint">Upload a photo or PDF showing the emergency.</small></div>
-                    <div class="form-group"><span class="form-field-label">Help required</span><details class="help-category-picker"><summary>Choose help needed</summary><div class="help-category-options" id="helpCategoryOptions"><label class="help-category-option"><input type="checkbox" value="Food and water"><span>Food and water</span></label><label class="help-category-option"><input type="checkbox" value="Medical support"><span>Medical support</span></label><label class="help-category-option"><input type="checkbox" value="Rescue support"><span>Rescue support</span></label><label class="help-category-option"><input type="checkbox" value="Shelter"><span>Shelter</span></label><label class="help-category-option"><input type="checkbox" value="Other emergency"><span>Other emergency</span></label></div></details><small class="form-hint">Select all that apply.</small></div>
-                    <div class="form-group"><label for="helpPriority">Priority</label><select id="helpPriority" required><option value="">Select priority</option><option>Critical</option><option>High</option><option>Medium</option></select></div>
-                    <div class="form-group"><label for="helpDetails">Details</label><textarea id="helpDetails" rows="3" placeholder="Describe what is needed" required></textarea></div>
-                    <button type="submit" class="btn login-submit">Submit Help Request <i class="bi bi-arrow-right"></i></button>
+                    <div class="form-group"><label for="helpDisasterType">Disaster Incident Type</label><select id="helpDisasterType" required><option value="">Select disaster type</option><option>Flood</option><option>Cyclone</option><option>Earthquake</option><option>Landslide</option><option>Fire</option><option>Drought</option><option>Tsunami</option><option>Heavy Rainfall</option><option>Other</option></select></div>
+
+                    <!-- WHAT WAS AFFECTED / WHAT WAS LOST -->
+                    <div class="form-group">
+                        <label class="form-field-label fw-bold text-dark"><i class="bi bi-exclamation-octagon-fill text-danger me-1"></i> What was affected / What did you lose?</label>
+                        <div class="loss-grid" id="helpLossesOptions">
+                            <label class="loss-option">
+                                <input type="checkbox" name="helpLoss" value="House / Shelter Damaged" id="lossHouse">
+                                <span>🏠 House / Shelter Damaged</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" name="helpLoss" value="Animals / Livestock Lost" id="lossAnimals">
+                                <span>🐄 Animals / Livestock Lost</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" name="helpLoss" value="Agriculture / Crops Ruined" id="lossAgriculture">
+                                <span>🌾 Agriculture / Crops Ruined</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" name="helpLoss" value="Person Injured / Casualties" id="lossInjure">
+                                <span>🩹 Person Injured / Casualties</span>
+                            </label>
+                        </div>
+                        <small class="form-hint">Select any damages or losses sustained during this disaster.</small>
+                    </div>
+
+                    <!-- ASSISTANCE / HELP NEEDED -->
+                    <div class="form-group">
+                        <label class="form-field-label fw-bold text-dark"><i class="bi bi-life-preserver text-primary me-1"></i> Assistance / Relief Required</label>
+                        <div class="loss-grid" id="helpCategoryOptions">
+                            <label class="loss-option">
+                                <input type="checkbox" value="Food and water" checked>
+                                <span>🍲 Food and Water</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" value="Medical support">
+                                <span>🩺 Medical & First Aid</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" value="Rescue support">
+                                <span>🚤 Rescue & Evacuation</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" value="Shelter">
+                                <span>⛺ Temporary Shelter</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" value="Animal fodder & veterinary care">
+                                <span>🌾 Cattle Fodder & Care</span>
+                            </label>
+                            <label class="loss-option">
+                                <input type="checkbox" value="Emergency relief kit">
+                                <span>📦 Relief Material Kit</span>
+                            </label>
+                        </div>
+                        <small class="form-hint">Select all urgent relief assistance required.</small>
+                    </div>
+
+                    <div class="form-group"><label for="helpPriority">Urgency Priority</label><select id="helpPriority" required><option value="Critical">Critical (Immediate Rescue Needed)</option><option value="High" selected>High (Urgent Relief Required)</option><option value="Medium">Medium (Standard Assistance)</option></select></div>
+                    <div class="form-group"><label for="helpDetails">Emergency Need Description</label><textarea id="helpDetails" rows="3" placeholder="Describe the current emergency situation and specific needs" required></textarea></div>
+                    <div class="form-group"><label for="helpProof">Verification Photo / Document (Optional)</label><input id="helpProof" type="file" accept="image/*,.pdf"><small class="form-hint">Upload a photo or PDF if available. Not mandatory for emergency submission.</small></div>
+                    <button type="submit" class="btn login-submit" id="submitHelpRequestBtn">Submit Help Request <i class="bi bi-arrow-right"></i></button>
                 </form>
             </div>
         </div>
@@ -1023,22 +1175,159 @@
 </div>
 
 <div class="modal fade" id="donationModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content login-modal">
-            <div class="modal-header"><div><span class="section-tag">SUPPORT RECOVERY</span><h3>Register a donation</h3></div><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <p>Register your contribution for the admin team to track.</p>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content login-modal border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white">
+                <div>
+                    <span class="section-tag text-warning">OFFICIAL RELIEF CHANNEL</span>
+                    <h3 class="modal-title fs-5 text-white">Financial & Relief Donation Application</h3>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- OFFICIAL VERIFIED ASR DISTRICT ACCOUNT DETAILS CARD (AUTOMATICALLY PRE-FILLED) -->
+                <div class="official-donation-bank-card p-3 mb-4 rounded-3 text-white" style="background: linear-gradient(135deg, #091a33 0%, #173359 100%); border: 1px solid rgba(255,193,7,0.3);">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pb-2 border-bottom border-light-subtle">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-bank fs-4 text-warning"></i>
+                            <div>
+                                <strong class="d-block text-warning small text-uppercase fw-bold">Official Authorized Relief Account</strong>
+                                <span class="small text-white">Alluri Sitharama Raju (ASR) District Administration Relief Fund</span>
+                            </div>
+                        </div>
+                        <span class="badge bg-success text-white py-1 px-2"><i class="bi bi-shield-check me-1"></i> Verified AP Govt Gateway</span>
+                    </div>
+                    <div class="row g-2 pt-2 small">
+                        <div class="col-md-4">
+                            <span class="text-white-50 d-block">Authorized Bank:</span>
+                            <strong class="text-white">State Bank of India (SBI)</strong>
+                            <small class="d-block text-white-50">AP Secretariat Branch</small>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="text-white-50 d-block">Official Account Number:</span>
+                            <strong class="text-warning font-monospace fs-6" id="formOfficialAccount">38588079208</strong>
+                            <small class="d-block text-white-50">Chief Minister's Relief Fund</small>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="text-white-50 d-block">IFSC & UPI Handle:</span>
+                            <strong class="text-white font-monospace">SBIN0018884</strong>
+                            <small class="d-block text-warning font-monospace">UPI: apcmrf@sbi</small>
+                        </div>
+                    </div>
+                    <!-- INTENDED DESTINATION NOTICE -->
+                    <div class="mt-3 p-2 rounded bg-black bg-opacity-25 border border-warning-subtle small donationDestinationNotice">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> <strong>Intended Relief Destination:</strong> 
+                        <span id="donationIntendedDestinationText" class="text-warning fw-bold">Alluri Sitharama Raju District Relief Fund (Collectorate, Paderu)</span>
+                    </div>
+                </div>
+
                 <form onsubmit="submitDonation(event)">
-                    <div class="form-group"><label for="donorName">Donor name</label><input id="donorName" type="text" placeholder="Enter your name" required></div>
-                    <div class="form-group"><label for="donationState">State / Union Territory</label><select id="donationState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
-                    <div class="form-group"><label for="donationDistrict">District</label><select id="donationDistrict" required disabled><option value="">Select a state first</option></select></div>
-                    <div class="form-group"><label for="donationMandal">Mandal / Taluk</label><select id="donationMandal" disabled><option value="">Select a district first</option></select></div>
-                    <div class="form-group"><span class="form-field-label">Donation type</span><details class="help-category-picker" id="donationTypePicker"><summary>Choose donation types</summary><div class="help-category-options" id="donationTypeOptions"><label class="help-category-option"><input type="checkbox" value="Money"><span>Money</span></label><label class="help-category-option"><input type="checkbox" value="Food"><span>Food</span></label><label class="help-category-option"><input type="checkbox" value="Water"><span>Water</span></label><label class="help-category-option"><input type="checkbox" value="Clothes"><span>Clothes</span></label><label class="help-category-option"><input type="checkbox" value="Medicine"><span>Medicine</span></label><label class="help-category-option"><input type="checkbox" value="Blankets"><span>Blankets</span></label><label class="help-category-option"><input type="checkbox" value="Other materials"><span>Other materials</span></label><div class="donation-type-submit-row"><button type="button" class="donation-type-submit" onclick="applyDonationTypes()">Submit</button></div></div></details><div id="donationTypeSelection" class="donation-type-selection" data-types="[]" aria-live="polite">No donation types selected yet.</div><small class="form-hint">Select one or more types, then submit your selection.</small></div>
-                    <div class="form-group"><label for="donationQuantity">Quantity or amount</label><input id="donationQuantity" type="text" placeholder="Example: 50 packets or Rs. 5,000" required></div>
-                    <div class="form-group"><label for="donorPhone">Phone number</label><input id="donorPhone" type="tel" placeholder="Enter your phone number" required></div>
-                    <div class="form-group"><label for="donationMessage">Message</label><textarea id="donationMessage" rows="3" placeholder="Add a message or donation details (optional)"></textarea></div>
-                    <button type="submit" class="btn login-submit">Submit Donation <i class="bi bi-arrow-right"></i></button>
+                    <div class="form-group mb-3"><label for="donorName" class="fw-bold small">Donor / Organization Name <span class="text-danger">*</span></label><input id="donorName" class="form-control" type="text" placeholder="Enter your full name or entity" required></div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4 form-group">
+                            <label for="donationState" class="fw-bold small">State / Union Territory</label>
+                            <select id="donationState" class="form-select india-state-select" required>
+                                <option value="Andhra Pradesh" selected>Andhra Pradesh</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="donationDistrict" class="fw-bold small">Target District <span class="text-danger">*</span></label>
+                            <select id="donationDistrict" class="form-select" required onchange="updateDonationDestinationDisplay()">
+                                <option value="Alluri Sitharama Raju" selected>Alluri Sitharama Raju</option>
+                                <option value="Krishna">Krishna</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="donationMandal" class="fw-bold small">Area / Target Mandal <span class="text-danger">*</span></label>
+                            <select id="donationMandal" name="donationDestinationMandal" class="form-select" required onchange="updateDonationDestinationDisplay()">
+                                <option value="Paderu">Paderu (District HQ)</option>
+                                <option value="Araku Valley">Araku Valley</option>
+                                <option value="Rampachodavaram">Rampachodavaram</option>
+                                <option value="Chintapalli">Chintapalli</option>
+                                <option value="Maredumilli">Maredumilli</option>
+                                <option value="Devipatnam">Devipatnam</option>
+                                <option value="G.K. Veedhi">G.K. Veedhi</option>
+                                <option value="Ananthagiri">Ananthagiri</option>
+                                <option value="Koyyuru">Koyyuru</option>
+                                <option value="All Mandals">Entire ASR District-Wide</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <span class="form-field-label fw-bold small">Contribution Category</span>
+                        <details class="help-category-picker" id="donationTypePicker">
+                            <summary>Choose donation types (e.g. Money, Food)</summary>
+                            <div class="help-category-options" id="donationTypeOptions">
+                                <label class="help-category-option"><input type="checkbox" value="Money" checked><span>Money (Financial Aid - SBI 38588079208)</span></label>
+                                <label class="help-category-option"><input type="checkbox" value="Food"><span>Food & Rations</span></label>
+                                <label class="help-category-option"><input type="checkbox" value="Water"><span>Water</span></label>
+                                <label class="help-category-option"><input type="checkbox" value="Clothes"><span>Clothes & Blankets</span></label>
+                                <label class="help-category-option"><input type="checkbox" value="Medicine"><span>Medicine & First Aid</span></label>
+                                <label class="help-category-option"><input type="checkbox" value="Blankets"><span>Tarpaulins & Shelters</span></label>
+                                <div class="donation-type-submit-row"><button type="button" class="donation-type-submit" onclick="applyDonationTypes()">Confirm Selection</button></div>
+                            </div>
+                        </details>
+                        <div id="donationTypeSelection" class="donation-type-selection mt-1" data-types='["Money"]' aria-live="polite">Selected: Money</div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6 form-group">
+                            <label for="donationQuantity" class="fw-bold small">Amount (INR) or Quantity <span class="text-danger">*</span></label>
+                            <input id="donationQuantity" class="form-control" type="text" placeholder="e.g. ₹5,000 or 100 Rations" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="donorPhone" class="fw-bold small">10-Digit Mobile Number <span class="text-danger">*</span></label>
+                            <input id="donorPhone" class="form-control" type="tel" maxlength="10" placeholder="e.g. 9876543210" required>
+                        </div>
+                    </div>
+
+                    <!-- PRE-FILLED BANK TRANSACTION RECEIPT / REFERENCE -->
+                    <div class="p-2 mb-3 bg-light rounded border small">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Pre-filled Official Credit: <strong>SBI A/C 38588079208</strong> (CMRF / ASR)</span>
+                            <span class="text-success fw-bold"><i class="bi bi-shield-check"></i> Authorized</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3"><label for="donationMessage" class="fw-bold small">Message / Intended Relief Purpose (Optional)</label><textarea id="donationMessage" class="form-control" rows="2" placeholder="e.g. Emergency rations and relief assistance for cyclone victims in Araku Valley"></textarea></div>
+                    
+                    <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                        <i class="bi bi-send-check-fill me-1"></i> Submit Official Donation <i class="bi bi-arrow-right"></i>
+                    </button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     INCOMING SMARTPHONE MOBILE SMS MODAL POPUP
+===================================================== -->
+<div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 bg-transparent shadow-none">
+            <div class="sms-phone-frame">
+                <div class="sms-phone-header">
+                    <span><i class="bi bi-reception-4"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="sms-bubble">
+                    <div class="sms-sender">
+                        <i class="bi bi-shield-fill-exclamation"></i>
+                        <span id="modalSmsSender">DISASTER CONTROL ROOM</span>
+                    </div>
+                    <div class="sms-body-text" id="modalSmsBody">
+                        ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your mobile. Relocate to designated shelters immediately. Follow volunteer guidance. Call 112 for rescue dispatch.
+                    </div>
+                    <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                    <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast Delivered</small>
+                    <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i class="bi bi-telephone-fill"></i> Dial 112</a>
+                </div>
             </div>
         </div>
     </div>
@@ -1048,6 +1337,189 @@
 <!-- =====================================================
      TOAST MESSAGE
 ===================================================== -->
+
+    <!-- LOCATION WEATHER REPORT & WARNING MODAL -->
+    <div class="modal fade" id="weatherDetailModal" tabindex="-1" aria-labelledby="weatherModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-cloud-sun-fill fs-4 text-warning"></i>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0" id="weatherModalTitle">Live Weather Intelligence &
+                                Early Warning</h5>
+                            <small class="text-white-50">Location-specific weather report & disaster alerts</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- DISTRICT SELECTOR FOR STATE-WIDE FORECAST -->
+                    <div
+                        class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 p-2 bg-white rounded-2 border">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small fw-bold text-muted"><i class="bi bi-geo-alt-fill text-danger"></i> Target
+                                Location:</span>
+                            <select class="form-select form-select-sm" id="weatherDistrictSelect"
+                                style="width: auto; min-width: 200px;">
+                                <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+                                <option value="Anakapalli">Anakapalli</option>
+                                <option value="Ananthapuramu">Ananthapuramu</option>
+                                <option value="Annamayya">Annamayya</option>
+                                <option value="Bapatla">Bapatla</option>
+                                <option value="Chittoor">Chittoor</option>
+                                <option value="East Godavari">East Godavari</option>
+                                <option value="Eluru">Eluru</option>
+                                <option value="Guntur">Guntur</option>
+                                <option value="Kakinada">Kakinada</option>
+                                <option value="Konaseema">Konaseema</option>
+                                <option value="Krishna" selected>Krishna (Vijayawada)</option>
+                                <option value="Kurnool">Kurnool</option>
+                                <option value="Nandyal">Nandyal</option>
+                                <option value="NTR">NTR District</option>
+                                <option value="Palnadu">Palnadu</option>
+                                <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+                                <option value="Prakasam">Prakasam</option>
+                                <option value="Srikakulam">Srikakulam</option>
+                                <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+                                <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+                                <option value="Tirupati">Tirupati</option>
+                                <option value="Visakhapatnam">Visakhapatnam</option>
+                                <option value="Vizianagaram">Vizianagaram</option>
+                                <option value="West Godavari">West Godavari</option>
+                                <option value="YSR Kadapa">YSR Kadapa</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnRefreshWeatherModal">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Data
+                        </button>
+                    </div>
+
+                    <!-- CURRENT CONDITIONS HERO CARD -->
+                    <div class="card p-3 mb-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 text-center text-sm-start mb-3 mb-sm-0">
+                                <div
+                                    class="d-flex align-items-center justify-content-center justify-content-sm-start gap-3">
+                                    <div id="weatherModalHeroIcon" style="font-size: 48px;">
+                                        <i class="bi bi-cloud-rain-fill text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="display-5 fw-bold text-dark mb-0" id="weatherModalHeroTemp">29°C
+                                        </div>
+                                        <div class="fw-semibold text-secondary" id="weatherModalHeroCondition">Scattered
+                                            Rain</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-muted small">
+                                    <i class="bi bi-geo-alt"></i> <span id="weatherModalHeroLocation">Vijayawada Rural,
+                                        Krishna, Andhra Pradesh</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row g-2 text-center">
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Humidity</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalHumidity">78%</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Wind Speed</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalWind">18 km/h</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Visibility</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalVisibility">8.5 km</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded border">
+                                            <span class="text-muted d-block" style="font-size: 11px;">Pressure</span>
+                                            <strong class="fs-6 text-dark" id="weatherModalPressure">1008 hPa</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2-COLUMN SECTION: RAINFALL FORECAST & STRONG WIND WARNING -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-cloud-drizzle-fill text-primary me-2"></i>Rainfall Forecast
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">24-Hr Precipitation:</span>
+                                    <strong class="text-primary font-monospace" id="weatherModalRainVolume">14.2
+                                        mm</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Rain Probability:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalRainProb">75%</strong>
+                                </div>
+                                <div class="p-2 rounded border bg-primary-subtle border-primary-subtle small text-primary-emphasis"
+                                    id="weatherModalRainRiskText">
+                                    Moderate scattered rainfall expected in coastal mandals. Keep emergency tarpaulins
+                                    ready.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card p-3 border-0 shadow-sm rounded-3 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-2">
+                                    <i class="bi bi-wind text-warning me-2"></i>Strong Wind Warning
+                                </h6>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Current Wind Speed:</span>
+                                    <strong class="text-dark font-monospace" id="weatherModalWindSpeed">18 km/h</strong>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-light border">
+                                    <span class="small text-muted">Wind Category:</span>
+                                    <span class="badge bg-success" id="weatherModalWindCategory">Moderate Breeze</span>
+                                </div>
+                                <div class="p-2 rounded border small" id="weatherModalWindWarningBox"
+                                    style="background: #f0fdf4; border-color: #bbf7d0; color: #166534;">
+                                    Wind conditions within safe operational limits for field volunteers and boats.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WEATHER ALERTS & OFFICIAL ADVISORIES -->
+                    <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster Weather Alerts</h6>
+                            <span class="badge bg-danger" id="weatherModalAlertLevelBadge">ADVISORY ACTIVE</span>
+                        </div>
+                        <div class="alert alert-warning mb-0 p-2 small border" id="weatherModalOfficialAlertText">
+                            ⚠️ <strong>IMD & AP Disaster Management Advisory:</strong> Monsoon low-pressure system
+                            active over Bay of Bengal. Citizens in coastal and low-lying zones advised to follow volunteer guidance and emergency advisories. Helpline: 112 / 1077.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white py-2">
+                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Data Source:
+                        Open-Meteo & AP Disaster Management</small>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <div class="toast-container position-fixed bottom-0 end-0 p-4">
 

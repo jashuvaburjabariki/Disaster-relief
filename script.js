@@ -540,11 +540,14 @@ if (loginRoleFromUrl && document.getElementById("loginModal")) {
 
 window.addEventListener("scroll", function () {
 
+    if (!navbar) return;
+    const isAboutPage = window.location.pathname.endsWith("about.html") || window.location.pathname.includes("about.html");
+
     if (window.scrollY > 40) {
 
         navbar.classList.add("scrolled");
 
-    } else {
+    } else if (!isAboutPage) {
 
         navbar.classList.remove("scrolled");
 
@@ -595,15 +598,15 @@ window.addEventListener("scroll", function () {
 
     navLinks.forEach(function (link) {
 
-        link.classList.remove("active");
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+            link.classList.remove("active");
 
-        if (
-            link.getAttribute("href") ===
-            "#" + currentSection
-        ) {
+            if (href === "#" + currentSection) {
 
-            link.classList.add("active");
+                link.classList.add("active");
 
+            }
         }
 
     });
@@ -634,6 +637,174 @@ navLinks.forEach(function (link) {
 
 });
 
+
+// =====================================================
+// SHOW / HIDE PASSWORD TOGGLE
+// =====================================================
+
+function updatePasswordToggleState(isVisible) {
+    const toggleBtn = document.getElementById("showPasswordToggleBtn");
+    const toggleIcon = document.getElementById("showPasswordToggleIcon");
+    const toggleText = document.getElementById("showPasswordToggleText");
+
+    if (toggleIcon) {
+        toggleIcon.className = isVisible ? "bi bi-eye-slash" : "bi bi-eye";
+    }
+    if (toggleText) {
+        toggleText.textContent = isVisible ? "Hide" : "Show";
+    }
+    if (toggleBtn) {
+        const label = isVisible ? "Hide password" : "Show password";
+        toggleBtn.setAttribute("aria-label", label);
+        toggleBtn.setAttribute("title", label);
+    }
+}
+
+function updateLoginPasswordToggleVisibility() {
+    const passwordInput = document.getElementById("loginPassword");
+    const toggleBtn = document.getElementById("showPasswordToggleBtn");
+    const checkboxLabel = document.getElementById("showPasswordCheckboxLabel");
+    const checkboxInput = document.getElementById("showPasswordCheckbox");
+
+    if (!passwordInput) return;
+
+    const hasValue = Boolean(passwordInput.value && passwordInput.value.length > 0);
+
+    if (toggleBtn) {
+        toggleBtn.style.display = hasValue ? "inline-flex" : "none";
+    }
+    if (checkboxLabel) {
+        checkboxLabel.style.display = hasValue ? "inline-flex" : "none";
+    }
+
+    if (!hasValue) {
+        passwordInput.type = "password";
+        if (checkboxInput) checkboxInput.checked = false;
+        updatePasswordToggleState(false);
+    }
+}
+
+function toggleLoginPasswordVisibility(forceState) {
+    const passwordInput = document.getElementById("loginPassword");
+    const checkboxInput = document.getElementById("showPasswordCheckbox");
+    if (!passwordInput) return;
+
+    const isCurrentlyVisible = passwordInput.type === "text";
+    const nextState = typeof forceState === "boolean" ? forceState : !isCurrentlyVisible;
+
+    passwordInput.type = nextState ? "text" : "password";
+
+    if (checkboxInput) {
+        checkboxInput.checked = nextState;
+    }
+    updatePasswordToggleState(nextState);
+
+    if (typeof passwordInput.setSelectionRange === "function") {
+        const len = passwordInput.value.length;
+        passwordInput.setSelectionRange(len, len);
+    }
+    passwordInput.focus();
+}
+
+function toggleGenericPassword(inputId, btnId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    if (!input || !btn) return;
+
+    const nextState = input.type !== "text";
+    input.type = nextState ? "text" : "password";
+
+    const icon = btn.querySelector("i");
+    const text = btn.querySelector("span");
+    if (icon) icon.className = nextState ? "bi bi-eye-slash" : "bi bi-eye";
+    if (text) text.textContent = nextState ? "Hide" : "Show";
+    const label = nextState ? "Hide password" : "Show password";
+    btn.setAttribute("aria-label", label);
+    btn.setAttribute("title", label);
+
+    if (typeof input.setSelectionRange === "function") {
+        const len = input.value.length;
+        input.setSelectionRange(len, len);
+    }
+    input.focus();
+}
+
+function attachGenericPasswordWatcher(inputId, btnId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    if (!input || !btn) return;
+
+    function check() {
+        const hasValue = Boolean(input.value && input.value.length > 0);
+        btn.style.display = hasValue ? "inline-flex" : "none";
+        if (!hasValue) {
+            input.type = "password";
+            const icon = btn.querySelector("i");
+            const text = btn.querySelector("span");
+            if (icon) icon.className = "bi bi-eye";
+            if (text) text.textContent = "Show";
+            btn.setAttribute("aria-label", "Show password");
+            btn.setAttribute("title", "Show password");
+        }
+    }
+
+    input.addEventListener("input", check);
+    input.addEventListener("keyup", check);
+    input.addEventListener("change", check);
+    input.addEventListener("paste", function () { setTimeout(check, 10); });
+    check();
+}
+
+function setupLoginPasswordListeners() {
+    const passwordInput = document.getElementById("loginPassword");
+    const toggleBtn = document.getElementById("showPasswordToggleBtn");
+    const checkboxInput = document.getElementById("showPasswordCheckbox");
+    const loginModalEl = document.getElementById("loginModal");
+
+    if (passwordInput) {
+        passwordInput.addEventListener("input", updateLoginPasswordToggleVisibility);
+        passwordInput.addEventListener("keyup", updateLoginPasswordToggleVisibility);
+        passwordInput.addEventListener("change", updateLoginPasswordToggleVisibility);
+        passwordInput.addEventListener("paste", function () {
+            setTimeout(updateLoginPasswordToggleVisibility, 10);
+        });
+        passwordInput.addEventListener("cut", function () {
+            setTimeout(updateLoginPasswordToggleVisibility, 10);
+        });
+    }
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleLoginPasswordVisibility();
+        });
+    }
+
+    if (checkboxInput) {
+        checkboxInput.addEventListener("change", function () {
+            toggleLoginPasswordVisibility(checkboxInput.checked);
+        });
+    }
+
+    if (loginModalEl) {
+        loginModalEl.addEventListener("hidden.bs.modal", function () {
+            if (passwordInput) passwordInput.type = "password";
+            if (checkboxInput) checkboxInput.checked = false;
+            updatePasswordToggleState(false);
+            updateLoginPasswordToggleVisibility();
+        });
+        loginModalEl.addEventListener("shown.bs.modal", function () {
+            updateLoginPasswordToggleVisibility();
+        });
+    }
+
+    attachGenericPasswordWatcher("registerPassword", "registerPasswordToggleBtn");
+    attachGenericPasswordWatcher("forgotNewPassword", "forgotNewPasswordToggleBtn");
+    attachGenericPasswordWatcher("forgotConfirmPassword", "forgotConfirmPasswordToggleBtn");
+
+    updateLoginPasswordToggleVisibility();
+}
 
 // =====================================================
 // LOGIN MODAL
@@ -720,8 +891,16 @@ function openLogin(role) {
     const rememberCheckbox = document.getElementById("rememberPassword");
 
     if (usernameInput) usernameInput.value = rememberedEmail || "";
-    if (passwordInput) passwordInput.value = rememberedPassword || "";
+    if (passwordInput) {
+        passwordInput.value = rememberedPassword || "";
+        passwordInput.type = "password";
+    }
     if (rememberCheckbox) rememberCheckbox.checked = Boolean(rememberedEmail || rememberedPassword);
+
+    const checkboxInput = document.getElementById("showPasswordCheckbox");
+    if (checkboxInput) checkboxInput.checked = false;
+    updatePasswordToggleState(false);
+    updateLoginPasswordToggleVisibility();
 
     const modalElement = document.getElementById("loginModal");
     if (modalElement) {
@@ -1020,7 +1199,13 @@ function loginUser(event) {
             return;
         }
 
-        if ((username === "admin" || username === "admin_krishna") && password === "admin123") {
+        if ((username === "admin" || username === "admin_asr" || username === "admin_alluri") && password === "admin123") {
+            localStorage.setItem("disasterAdminDistrict", "Alluri Sitharama Raju");
+            localStorage.setItem("disasterAdminJurisdiction", JSON.stringify({ state: "Andhra Pradesh", district: "Alluri Sitharama Raju" }));
+            localStorage.setItem("disasterAdminName", "District Collector & Magistrate");
+            window.location.href = "admin.html";
+            return;
+        } else if (username === "admin_krishna" && password === "admin123") {
             localStorage.setItem("disasterAdminDistrict", "Krishna");
             localStorage.setItem("disasterAdminJurisdiction", JSON.stringify({ state: "Andhra Pradesh", district: "Krishna" }));
             window.location.href = "admin.html";
@@ -1036,12 +1221,12 @@ function loginUser(event) {
             window.location.href = "admin.html";
             return;
         } else {
-            showMessage("Invalid Admin credentials. Try admin_krishna / admin123 or admin / admin123.");
+            showMessage("Invalid Admin credentials. Try admin_asr / admin123 or admin_krishna / admin123.");
             return;
         }
     }
 
-    // VOLUNTEER LOGIN
+    // VOLUNTEER LOGIN (Requires Mandal Officer approval)
     if (role === "Volunteer") {
         const accounts = JSON.parse(localStorage.getItem("disasterUserAccounts") || "[]");
         const volunteers = JSON.parse(localStorage.getItem("disasterVolunteers") || "[]");
@@ -1054,7 +1239,7 @@ function loginUser(event) {
 
         const volMatch = volunteers.find(function (v) {
             return (v.username || "").toLowerCase() === username &&
-                (v.phone === password || password === "volunteer123");
+                (v.phone === password || password === "volunteer123" || v.password === password);
         });
 
         if (!account && !volMatch && !(username === "volunteer" && password === "volunteer123")) {
@@ -1062,7 +1247,24 @@ function loginUser(event) {
             return;
         }
 
-        const volUser = account || volMatch || { username: "volunteer", role: "Volunteer", name: "Volunteer" };
+        // CHECK MANDAL OFFICER APPROVAL
+        const isDemo = username === "volunteer" && password === "volunteer123";
+        if (!isDemo) {
+            const target = volMatch || (account ? volunteers.find(function (v) {
+                return (v.username || "").toLowerCase() === (account.username || "").toLowerCase() || v.name === account.profileName;
+            }) : null);
+
+            const isPending = (target && (target.status === "Pending" || target.approvalStatus === "Pending" || target.status === "New")) ||
+                              (account && (account.status === "Pending" || account.approvalStatus === "Pending"));
+
+            if (isPending) {
+                const targetMandal = (target && target.mandal) || "local";
+                showMessage(`Approval Required: Your Volunteer registration for ${targetMandal} Mandal is PENDING APPROVAL by the Mandal Officer. Once approved, you can log in.`);
+                return;
+            }
+        }
+
+        const volUser = account || volMatch || { username: "volunteer", role: "Volunteer", name: "Volunteer", status: "Approved" };
         localStorage.setItem("disasterCurrentUser", JSON.stringify(volUser));
         localStorage.setItem("disasterCurrentVolunteer", JSON.stringify(volUser));
         window.location.href = "volunteer.html";
@@ -1356,21 +1558,34 @@ function openDonationForm() {
 
 
 function saveSubmission(key, record) {
-
-    const records =
-        JSON.parse(localStorage.getItem(key) || "[]");
-
-    const savedRecord = {
-        id: Date.now(),
-        createdAt: new Date().toLocaleString(),
-        ...record
-    };
-
-    records.unshift(savedRecord);
-
-    localStorage.setItem(key, JSON.stringify(records));
-    return savedRecord;
-
+    try {
+        const records = JSON.parse(localStorage.getItem(key) || "[]");
+        const savedRecord = {
+            id: Date.now(),
+            createdAt: new Date().toLocaleString(),
+            ...record
+        };
+        records.unshift(savedRecord);
+        try {
+            localStorage.setItem(key, JSON.stringify(records));
+        } catch (storageErr) {
+            console.warn("Storage quota limit reached for " + key + ", attempting trim...", storageErr);
+            if (savedRecord.proof) {
+                savedRecord.proof = { name: savedRecord.proof.name || "Verification file", note: "Stored at control desk" };
+            }
+            records[0] = savedRecord;
+            if (records.length > 50) records.splice(50);
+            try {
+                localStorage.setItem(key, JSON.stringify(records));
+            } catch (err2) {
+                console.error("Critical storage error:", err2);
+            }
+        }
+        return savedRecord;
+    } catch (err) {
+        console.error("saveSubmission failed", err);
+        return { id: Date.now(), createdAt: new Date().toLocaleString(), ...record };
+    }
 }
 
 function createApplicationAccount(username, password, role, profileName) {
@@ -1387,6 +1602,8 @@ function createApplicationAccount(username, password, role, profileName) {
         password: password,
         role: role,
         profileName: profileName,
+        approvalStatus: role === "Volunteer" ? "Pending" : "Approved",
+        status: role === "Volunteer" ? "Pending" : "Approved",
         createdAt: new Date().toLocaleString()
     });
 
@@ -1405,84 +1622,168 @@ function closeSubmission(id) {
 
 
 async function submitHelpRequest(event) {
+    if (event) event.preventDefault();
 
-    event.preventDefault();
+    const alertEl = document.getElementById("helpFormAlert");
+    if (alertEl) {
+        alertEl.style.display = "none";
+        alertEl.innerHTML = "";
+    }
 
-    const mobileNumber = document.getElementById("helpPhone").value.replace(/\D/g, "");
+    const name = (document.getElementById("helpName") ? document.getElementById("helpName").value : "").trim();
+    const fatherName = (document.getElementById("helpFatherName") ? document.getElementById("helpFatherName").value : "").trim();
+    const phoneInput = document.getElementById("helpPhone");
+    const mobileNumber = phoneInput ? phoneInput.value.replace(/\D/g, "") : "";
 
     if (mobileNumber.length !== 10) {
-        showMessage("Please enter a valid 10-digit mobile number.");
+        const errorMsg = "Please enter a valid 10-digit mobile number.";
+        if (alertEl) {
+            alertEl.className = "alert alert-danger py-2 px-3 small";
+            alertEl.textContent = errorMsg;
+            alertEl.style.display = "block";
+        }
+        showMessage(errorMsg);
+        if (phoneInput) phoneInput.focus();
         return;
     }
 
-    const helpCategories = Array.from(document.querySelectorAll("#helpCategoryOptions input:checked"), function (input) { return input.value; });
+    const lossCategories = Array.from(document.querySelectorAll("#helpLossesOptions input:checked"), function (input) { return input.value; });
+    let helpCategories = Array.from(document.querySelectorAll("#helpCategoryOptions input:checked"), function (input) { return input.value; });
     if (helpCategories.length === 0) {
-        showMessage("Please select at least one help category.");
-        return;
+        helpCategories = ["Emergency Disaster Relief"];
     }
 
-    const proof = document.getElementById("helpProof").files[0];
-    const proofData = proof ? await new Promise(function (resolve) {
-        const reader = new FileReader();
-        reader.onload = function () { resolve({ name: proof.name, type: proof.type, data: reader.result }); };
-        reader.readAsDataURL(proof);
-    }) : null;
+    let proofData = null;
+    const proofInput = document.getElementById("helpProof");
+    if (proofInput && proofInput.files && proofInput.files[0]) {
+        const proof = proofInput.files[0];
+        try {
+            proofData = await new Promise(function (resolve) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    resolve({ name: proof.name, type: proof.type, data: reader.result });
+                };
+                reader.onerror = function () { resolve(null); };
+                reader.readAsDataURL(proof);
+            });
+        } catch (e) {
+            console.warn("Could not read attached proof file", e);
+        }
+    }
+
+    const state = document.getElementById("helpState") ? document.getElementById("helpState").value : "";
+    const district = document.getElementById("helpDistrict") ? document.getElementById("helpDistrict").value.trim() : "";
+    const mandal = document.getElementById("helpMandal") ? document.getElementById("helpMandal").value.trim() : "";
+    const village = document.getElementById("helpVillage") ? document.getElementById("helpVillage").value.trim() : "";
+    const disasterType = document.getElementById("helpDisasterType") ? document.getElementById("helpDisasterType").value : "Emergency";
+    const gps = document.getElementById("helpGps") ? document.getElementById("helpGps").value : "";
+    const priority = document.getElementById("helpPriority") ? document.getElementById("helpPriority").value : "High";
+    const details = document.getElementById("helpDetails") ? document.getElementById("helpDetails").value : "";
 
     const trackId = "DR-" + new Date().toISOString().slice(0, 10).replace(/-/g, "") + "-" + Math.floor(100000 + Math.random() * 900000);
-    saveSubmission("disasterHelpRequests", {
+
+    const record = {
         trackId: trackId,
-        name: document.getElementById("helpName").value.trim(),
-        fatherName: document.getElementById("helpFatherName").value.trim(),
+        name: name,
+        fatherName: fatherName,
         mobileNumber: mobileNumber,
-        location: document.getElementById("helpVillage").value.trim(),
-        state: document.getElementById("helpState").value,
-        district: document.getElementById("helpDistrict").value.trim(),
-        mandal: document.getElementById("helpMandal").value.trim(),
-        village: document.getElementById("helpVillage").value.trim(),
-        disasterType: document.getElementById("helpDisasterType").value,
-        gps: document.getElementById("helpGps").value,
+        phone: mobileNumber,
+        location: village || "Local Area",
+        state: state,
+        district: district,
+        mandal: mandal,
+        village: village,
+        disasterType: disasterType,
+        gps: gps,
         proof: proofData,
+        losses: lossCategories.join(", "),
         help: helpCategories.join(", "),
-        priority: document.getElementById("helpPriority").value,
-        details: document.getElementById("helpDetails").value,
+        priority: priority,
+        details: details,
         status: "Pending"
-    });
+    };
 
-    closeSubmission("helpRequestModal");
-    event.target.reset();
+    saveSubmission("disasterHelpRequests", record);
+
+    // Update tracking panel in modal
+    const trackInput = document.getElementById("helpTrackId");
+    if (trackInput) trackInput.value = trackId;
+    const trackStatus = document.getElementById("helpTrackStatus");
+    if (trackStatus) {
+        trackStatus.textContent = `Request Submitted. Track ID: ${trackId} (Status: Pending Verification)`;
+        trackStatus.className = "tracking-success";
+    }
+
+    if (alertEl) {
+        alertEl.className = "alert alert-success py-2 px-3 small d-flex justify-content-between align-items-center mb-3";
+        alertEl.innerHTML = `<div><i class="bi bi-check-circle-fill text-success me-1"></i> <strong>Request submitted successfully!</strong><div class="small text-muted">Your Track ID is <strong class="font-monospace text-primary">${trackId}</strong></div></div><button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" onclick="navigator.clipboard && navigator.clipboard.writeText('${trackId}')">Copy ID</button>`;
+        alertEl.style.display = "block";
+    }
+
+    showMessage("Help Request submitted successfully! Your Track ID is " + trackId);
+
+    // Reset inputs
+    const form = document.getElementById("helpRequestForm");
+    if (form) form.reset();
+
+    // Re-check default assistance checkbox
+    const defaultBox = document.querySelector("#helpCategoryOptions input[value='Food and water']");
+    if (defaultBox) defaultBox.checked = true;
+
+    // Reset cascade
     setupStateDistrictMandalCascade("helpState", "helpDistrict", "helpMandal");
-    showMessage("Request submitted. Your Track ID is " + trackId + ". Save it to check status.");
 
+    // Close modal after brief confirmation so citizen can see Track ID
+    setTimeout(function () {
+        closeSubmission("helpRequestModal");
+        if (alertEl) alertEl.style.display = "none";
+    }, 2400);
 }
 
 function trackHelpRequest() {
     const trackInput = document.getElementById("helpTrackId");
     const status = document.getElementById("helpTrackStatus");
-    const trackId = trackInput.value.trim().toUpperCase();
+    const query = trackInput ? trackInput.value.trim().toUpperCase() : "";
     const requests = JSON.parse(localStorage.getItem("disasterHelpRequests") || "[]");
-    const request = requests.find(function (item) { return item.trackId === trackId; });
+    const request = requests.find(function (item) {
+        return (item.trackId && item.trackId.toUpperCase() === query) ||
+               String(item.id) === query ||
+               (item.mobileNumber && item.mobileNumber === query);
+    });
 
-    if (!trackId) {
-        status.textContent = "Enter a Track ID first.";
+    if (!query) {
+        status.textContent = "Please enter a Track ID or 10-digit mobile number.";
         status.className = "tracking-error";
         return;
     }
 
     if (!request) {
-        status.textContent = "No request found for this Track ID.";
+        status.textContent = "No request found for this Track ID / Mobile Number.";
         status.className = "tracking-error";
         return;
     }
 
-    status.textContent = "Status: " + (request.status || "Pending") + " | Submitted: " + request.createdAt;
+    const assignedInfo = request.assignedVolunteer ? ` · Assigned Responder: ${request.assignedVolunteer.name} (${request.assignedVolunteer.phone || ''})` : "";
+    const lossInfo = request.losses ? ` · Reported Losses: ${request.losses}` : "";
+    status.textContent = `Status: ${request.status || "Pending"}${assignedInfo}${lossInfo} | Submitted: ${request.createdAt || "Recent"}`;
     status.className = "tracking-success";
 }
 
 
-document.getElementById("trackHelpRequest").addEventListener("click", trackHelpRequest);
+const trackHelpBtn = document.getElementById("trackHelpRequest");
+if (trackHelpBtn) {
+    trackHelpBtn.addEventListener("click", trackHelpRequest);
+}
 
-document.getElementById("sendVolunteerPhoneOtp").addEventListener("click", sendVolunteerPhoneOtp);
-document.getElementById("confirmVolunteerPhoneOtp").addEventListener("click", confirmVolunteerPhoneOtp);
+const sendOtpBtn = document.getElementById("sendVolunteerPhoneOtp");
+if (sendOtpBtn) {
+    sendOtpBtn.addEventListener("click", sendVolunteerPhoneOtp);
+}
+
+const confirmOtpBtn = document.getElementById("confirmVolunteerPhoneOtp");
+if (confirmOtpBtn) {
+    confirmOtpBtn.addEventListener("click", confirmVolunteerPhoneOtp);
+}
 
 const helpPhoneInput = document.getElementById("helpPhone");
 if (helpPhoneInput) {
@@ -1597,8 +1898,10 @@ async function submitVolunteerApplication(event) {
         mandal: document.getElementById("volunteerMandal").value.trim(),
         skills: document.getElementById("volunteerSkills").value,
         profilePhoto: photoData,
-        availability: "Available",
-        status: "New"
+        availability: "Pending Approval",
+        status: "Pending",
+        approvalStatus: "Pending",
+        approvedBy: null
     });
 
     closeSubmission("volunteerModal");
@@ -1609,8 +1912,7 @@ async function submitVolunteerApplication(event) {
     document.getElementById("volunteerPhoneOtpGroup").style.display = "none";
     document.getElementById("volunteerPhoneStatus").textContent = "Enter the 10-digit mobile number and verify it with OTP.";
     document.getElementById("volunteerPhoneStatus").style.color = "";
-    showMessage("Volunteer registered successfully. You can now sign in from Volunteer Login.");
-
+    showMessage("Volunteer application submitted! Your application is pending approval by your Mandal Officer. Once approved, you can log in.");
 }
 
 
@@ -1631,8 +1933,17 @@ function applyDonationTypes() {
 }
 
 
-function submitDonation(event) {
+function updateDonationDestinationDisplay() {
+    const dEl = document.getElementById("donationDistrict");
+    const mEl = document.getElementById("donationMandal");
+    const tEl = document.getElementById("donationIntendedDestinationText");
+    if (dEl && mEl && tEl) {
+        tEl.textContent = `${dEl.value} District Relief Fund (${mEl.value} Area/Mandal)`;
+    }
+}
+window.updateDonationDestinationDisplay = updateDonationDestinationDisplay;
 
+function submitDonation(event) {
     event.preventDefault();
 
     const donationTypes = JSON.parse(document.getElementById("donationTypeSelection").dataset.types || "[]");
@@ -1641,25 +1952,31 @@ function submitDonation(event) {
         return;
     }
 
+    const dist = document.getElementById("donationDistrict").value.trim() || "Alluri Sitharama Raju";
+    const mandal = document.getElementById("donationMandal") ? document.getElementById("donationMandal").value.trim() : "Paderu";
+
     saveSubmission("disasterDonations", {
         donor: document.getElementById("donorName").value,
-        state: document.getElementById("donationState").value,
-        district: document.getElementById("donationDistrict").value.trim(),
-        mandal: document.getElementById("donationMandal") ? document.getElementById("donationMandal").value.trim() : "",
+        state: document.getElementById("donationState").value || "Andhra Pradesh",
+        district: dist,
+        mandal: mandal,
+        destinationMandal: mandal,
+        officialAccount: "38588079208",
+        officialBank: "State Bank of India (SBIN0018884)",
+        intendedDestination: `Alluri Sitharama Raju District (${mandal})`,
         type: donationTypes.join(", "),
         quantity: document.getElementById("donationQuantity").value,
         phone: document.getElementById("donorPhone").value,
         message: document.getElementById("donationMessage").value.trim(),
-        status: "Registered"
+        status: "Registered",
+        createdAt: new Date().toLocaleString()
     });
 
     closeSubmission("donationModal");
     event.target.reset();
-    setupStateDistrictMandalCascade("donationState", "donationDistrict", "donationMandal");
-    document.getElementById("donationTypeSelection").dataset.types = "[]";
-    document.getElementById("donationTypeSelection").textContent = "No donation types selected yet.";
-    showMessage("Donation registered for Admin tracking.");
-
+    document.getElementById("donationTypeSelection").dataset.types = '["Money"]';
+    document.getElementById("donationTypeSelection").textContent = "Selected: Money";
+    showMessage(`Official donation registered successfully for ${mandal}, ${dist}! Credited to State Bank of India A/C 38588079208.`);
 }
 
 
@@ -1734,3 +2051,329 @@ setInterval(function () {
     }
 
 }, 3000);
+
+// ==========================================
+// PRE-DISASTER MOBILE TEXT ALERT FUNCTIONS
+// ==========================================
+function initHomePageSmsBanner() {
+    try {
+        const rawAlerts = localStorage.getItem("disasterAlerts");
+        const alerts = rawAlerts ? JSON.parse(rawAlerts) : [];
+        const sms = alerts.find(function (a) { return a.isSms; }) || alerts[0];
+        const bannerText = document.getElementById("latestSmsText");
+        if (bannerText && sms) {
+            bannerText.textContent = `${sms.type || 'EMERGENCY'}: ${sms.title || 'Disaster Alert'} - ${sms.message || sms.details || ''}`;
+        }
+    } catch (e) {
+        console.error("Error loading pre-disaster SMS alert banner:", e);
+    }
+}
+
+function openSmsNotificationModal(alertObj) {
+    if (!alertObj) {
+        try {
+            const rawAlerts = localStorage.getItem("disasterAlerts");
+            const alerts = rawAlerts ? JSON.parse(rawAlerts) : [];
+            alertObj = alerts.find(function (a) { return a.isSms; }) || alerts[0] || {
+                sender: "DISASTER CONTROL ROOM",
+                message: "⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your mobile. Relocate to designated shelters immediately.",
+                createdAt: "Delivered to registered mobile numbers"
+            };
+        } catch (e) {
+            alertObj = {
+                sender: "DISASTER CONTROL ROOM",
+                message: "⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your mobile. Relocate to designated shelters immediately.",
+                createdAt: "Delivered to registered mobile numbers"
+            };
+        }
+    }
+    const senderEl = document.getElementById("modalSmsSender");
+    const bodyEl = document.getElementById("modalSmsBody");
+    const timeEl = document.getElementById("modalSmsTime");
+    if (senderEl) senderEl.textContent = alertObj.sender || "DISASTER CONTROL ROOM";
+    if (bodyEl) bodyEl.textContent = alertObj.message || alertObj.details || alertObj.title || "";
+    if (timeEl) timeEl.textContent = alertObj.createdAt || "Sent to Registered Mobiles";
+
+    const modalEl = document.getElementById("smsNotificationModal");
+    if (modalEl && typeof bootstrap !== "undefined" && bootstrap.Modal) {
+        let inst = bootstrap.Modal.getInstance(modalEl);
+        if (!inst) inst = new bootstrap.Modal(modalEl);
+        inst.show();
+    }
+}
+
+window.openSmsNotificationModal = openSmsNotificationModal;
+window.viewLatestSmsAlert = function () { openSmsNotificationModal(); };
+
+// Initialize password toggle handlers and export helpers
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function() {
+        setupLoginPasswordListeners();
+        initHomePageSmsBanner();
+    });
+} else {
+    setupLoginPasswordListeners();
+    initHomePageSmsBanner();
+}
+
+window.toggleLoginPasswordVisibility = toggleLoginPasswordVisibility;
+window.updateLoginPasswordToggleVisibility = updateLoginPasswordToggleVisibility;
+window.toggleGenericPassword = toggleGenericPassword;
+window.openLogin = openLogin;
+
+// ==========================================
+// SECTION: CITIZEN LIVE WEATHER INTELLIGENCE
+// ==========================================
+const AP_DISTRICT_COORDS = {
+    "alluri sitharama raju": { lat: 18.0667, lon: 82.5333, name: "Alluri Sitharama Raju" },
+    "anakapalli": { lat: 17.6896, lon: 83.0032, name: "Anakapalli" },
+    "ananthapuramu": { lat: 14.6819, lon: 77.6006, name: "Ananthapuramu" },
+    "annamayya": { lat: 14.0167, lon: 78.7500, name: "Annamayya" },
+    "bapatla": { lat: 15.9042, lon: 80.4674, name: "Bapatla" },
+    "chittoor": { lat: 13.2172, lon: 79.1003, name: "Chittoor" },
+    "east godavari": { lat: 17.0005, lon: 81.8040, name: "East Godavari (Rajahmundry)" },
+    "eluru": { lat: 16.7107, lon: 81.0952, name: "Eluru" },
+    "guntur": { lat: 16.3067, lon: 80.4365, name: "Guntur" },
+    "kakinada": { lat: 16.9891, lon: 82.2475, name: "Kakinada" },
+    "konaseema": { lat: 16.5700, lon: 82.0000, name: "Dr. B.R. Ambedkar Konaseema" },
+    "krishna": { lat: 16.1800, lon: 81.1300, name: "Krishna (Vijayawada / Machilipatnam)" },
+    "kurnool": { lat: 15.8281, lon: 78.0373, name: "Kurnool" },
+    "nandyal": { lat: 15.4886, lon: 78.4836, name: "Nandyal" },
+    "ntr": { lat: 16.5062, lon: 80.6480, name: "NTR District (Vijayawada)" },
+    "palnadu": { lat: 16.2333, lon: 80.0500, name: "Palnadu (Narasaraopet)" },
+    "parvathipuram manyam": { lat: 18.7800, lon: 83.4300, name: "Parvathipuram Manyam" },
+    "prakasam": { lat: 15.5057, lon: 80.0499, name: "Prakasam (Ongole)" },
+    "srikakulam": { lat: 18.2969, lon: 83.8968, name: "Srikakulam" },
+    "sri potti sriramulu nellore": { lat: 14.4426, lon: 79.9865, name: "SPS Nellore" },
+    "sri sathya sai": { lat: 14.1667, lon: 77.8167, name: "Sri Sathya Sai (Puttaparthi)" },
+    "tirupati": { lat: 13.6288, lon: 79.4192, name: "Tirupati" },
+    "visakhapatnam": { lat: 17.6868, lon: 83.2185, name: "Visakhapatnam" },
+    "vizianagaram": { lat: 18.1133, lon: 83.4072, name: "Vizianagaram" },
+    "west godavari": { lat: 16.5449, lon: 81.5212, name: "West Godavari (Bhimavaram)" },
+    "ysr kadapa": { lat: 14.4673, lon: 78.8242, name: "YSR Kadapa" }
+};
+
+function getDistrictLocation(distName) {
+    if (!distName) return AP_DISTRICT_COORDS["krishna"];
+    const key = distName.toLowerCase().trim();
+    for (const dKey in AP_DISTRICT_COORDS) {
+        if (key.includes(dKey) || dKey.includes(key)) {
+            return AP_DISTRICT_COORDS[dKey];
+        }
+    }
+    return { lat: 16.5062, lon: 80.6480, name: distName };
+}
+
+async function loadCitizenLiveWeather() {
+    const tempEl = document.getElementById("citizenWeatherTemp");
+    const condEl = document.getElementById("citizenWeatherCondition");
+    const badgeEl = document.getElementById("citizenWeatherBadge");
+    const iconEl = document.getElementById("citizenWeatherIcon");
+    if (!tempEl || !condEl) return;
+
+    const loc = getDistrictLocation("Krishna");
+
+    try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true`);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const current = data.current_weather;
+        if (!current) throw new Error("No payload");
+
+        const temp = Math.round(current.temperature);
+        const code = current.weathercode;
+        const wind = current.windspeed;
+
+        let condition = "Clear Skies";
+        let iconClass = "bi-sun-fill text-warning";
+        let badgeText = "Normal";
+        let badgeClass = "bg-success";
+
+        if (code >= 51 && code <= 67) {
+            condition = "Scattered Rain";
+            iconClass = "bi-cloud-rain-fill text-info";
+            badgeText = "Rain Watch";
+            badgeClass = "bg-danger";
+        } else if (code >= 71 && code <= 77) {
+            condition = "Precipitation";
+            iconClass = "bi-cloud-snow text-primary";
+            badgeText = "Advisory";
+            badgeClass = "bg-warning text-dark";
+        } else if (code >= 80 && code <= 82) {
+            condition = "Heavy Downpour";
+            iconClass = "bi-cloud-lightning-rain-fill text-danger";
+            badgeText = "Heavy Rain Alert";
+            badgeClass = "bg-danger";
+        } else if (code >= 95) {
+            condition = "Thunderstorm Warning";
+            iconClass = "bi-lightning-charge-fill text-danger";
+            badgeText = "Storm Alert";
+            badgeClass = "bg-danger";
+        } else if (code >= 1 && code <= 3) {
+            condition = "Partly Cloudy";
+            iconClass = "bi-cloud-sun-fill text-warning";
+            badgeText = "Monitoring";
+            badgeClass = "bg-info text-dark";
+        }
+
+        if (wind > 35) {
+            badgeText = "High Winds";
+            badgeClass = "bg-danger";
+        }
+
+        tempEl.textContent = `${temp}°C`;
+        condEl.textContent = `${condition} · Andhra Pradesh`;
+        if (badgeEl) {
+            badgeEl.className = `badge ${badgeClass} text-white py-0 px-1`;
+            badgeEl.textContent = badgeText;
+            badgeEl.style.fontSize = "8.5px";
+        }
+        if (iconEl) {
+            iconEl.innerHTML = `<i class="bi ${iconClass}"></i>`;
+        }
+    } catch (e) {
+        tempEl.textContent = "29°C";
+        condEl.textContent = `Clear Skies · Andhra Pradesh`;
+        if (badgeEl) {
+            badgeEl.className = "badge bg-success text-white py-0 px-1";
+            badgeEl.textContent = "Normal";
+        }
+        if (iconEl) {
+            iconEl.innerHTML = '<i class="bi bi-sun-fill text-warning"></i>';
+        }
+    }
+}
+window.loadCitizenLiveWeather = loadCitizenLiveWeather;
+
+async function openWeatherDetailModal(districtName) {
+    const targetDist = districtName || "Krishna";
+    const loc = getDistrictLocation(targetDist);
+
+    const distSelect = document.getElementById("weatherDistrictSelect");
+    if (distSelect) {
+        for (let i = 0; i < distSelect.options.length; i++) {
+            if (distSelect.options[i].value.toLowerCase().includes(targetDist.toLowerCase()) || targetDist.toLowerCase().includes(distSelect.options[i].value.toLowerCase())) {
+                distSelect.selectedIndex = i;
+                break;
+            }
+        }
+    }
+
+    const modalEl = document.getElementById("weatherDetailModal");
+    if (!modalEl) return;
+    const modalInst = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalInst.show();
+
+    try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,wind_speed_10m`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const cur = data.current_weather || { temperature: 29, weathercode: 61, windspeed: 18 };
+
+        const temp = Math.round(cur.temperature);
+        const code = cur.weathercode;
+        const wind = Math.round(cur.windspeed);
+
+        let condition = "Scattered Showers";
+        let iconHtml = '<i class="bi bi-cloud-rain-fill text-info"></i>';
+        if (code === 0) { condition = "Clear Sunny"; iconHtml = '<i class="bi bi-sun-fill text-warning"></i>'; }
+        else if (code >= 1 && code <= 3) { condition = "Partly Cloudy"; iconHtml = '<i class="bi bi-cloud-sun-fill text-warning"></i>'; }
+        else if (code >= 51 && code <= 67) { condition = "Scattered Showers"; iconHtml = '<i class="bi bi-cloud-drizzle-fill text-info"></i>'; }
+        else if (code >= 80 && code <= 82) { condition = "Heavy Torrential Rain"; iconHtml = '<i class="bi bi-cloud-lightning-rain-fill text-danger"></i>'; }
+        else if (code >= 95) { condition = "Severe Thunderstorm"; iconHtml = '<i class="bi bi-lightning-charge-fill text-danger"></i>'; }
+
+        const heroTemp = document.getElementById("weatherModalHeroTemp");
+        if (heroTemp) heroTemp.textContent = `${temp}°C`;
+        const heroCond = document.getElementById("weatherModalHeroCondition");
+        if (heroCond) heroCond.textContent = condition;
+        const heroIcon = document.getElementById("weatherModalHeroIcon");
+        if (heroIcon) heroIcon.innerHTML = iconHtml;
+        const heroLoc = document.getElementById("weatherModalHeroLocation");
+        if (heroLoc) heroLoc.textContent = `${loc.name}, Andhra Pradesh`;
+
+        let humidity = 78;
+        let rainProb = 75;
+        let rainVol = 14.2;
+        if (data.hourly) {
+            if (data.hourly.relative_humidity_2m && data.hourly.relative_humidity_2m[0]) humidity = data.hourly.relative_humidity_2m[0];
+            if (data.hourly.precipitation_probability && data.hourly.precipitation_probability[0]) rainProb = data.hourly.precipitation_probability[0];
+            if (data.hourly.precipitation && data.hourly.precipitation[0] !== undefined) rainVol = data.hourly.precipitation.slice(0, 24).reduce((a, b) => a + (b || 0), 0).toFixed(1);
+        }
+
+        const humEl = document.getElementById("weatherModalHumidity");
+        if (humEl) humEl.textContent = `${humidity}%`;
+        const windEl = document.getElementById("weatherModalWind");
+        if (windEl) windEl.textContent = `${wind} km/h`;
+        const rainVolEl = document.getElementById("weatherModalRainVolume");
+        if (rainVolEl) rainVolEl.textContent = `${rainVol} mm`;
+        const rainProbEl = document.getElementById("weatherModalRainProb");
+        if (rainProbEl) rainProbEl.textContent = `${rainProb}%`;
+
+        const rainRisk = document.getElementById("weatherModalRainRiskText");
+        if (rainRisk) {
+            if (Number(rainVol) > 50 || rainProb > 80) {
+                rainRisk.className = "p-2 rounded border bg-danger-subtle border-danger-subtle small text-danger-emphasis";
+                rainRisk.textContent = "High flood inundation risk. Low-lying habitations must be placed under evacuation watch.";
+            } else if (Number(rainVol) > 15 || rainProb > 50) {
+                rainRisk.className = "p-2 rounded border bg-warning-subtle border-warning-subtle small text-warning-emphasis";
+                rainRisk.textContent = "Moderate precipitation forecast. Relief teams and drainage stations on standby.";
+            } else {
+                rainRisk.className = "p-2 rounded border bg-success-subtle border-success-subtle small text-success-emphasis";
+                rainRisk.textContent = "Normal weather conditions. Regular relief and logistics operations permitted.";
+            }
+        }
+
+        const windSpeedEl = document.getElementById("weatherModalWindSpeed");
+        if (windSpeedEl) windSpeedEl.textContent = `${wind} km/h`;
+        const windCatEl = document.getElementById("weatherModalWindCategory");
+        const windBoxEl = document.getElementById("weatherModalWindWarningBox");
+        if (wind > 55) {
+            if (windCatEl) { windCatEl.textContent = "Gale / Storm Force"; windCatEl.className = "badge bg-danger"; }
+            if (windBoxEl) {
+                windBoxEl.style.background = "#fef2f2"; windBoxEl.style.borderColor = "#fecaca"; windBoxEl.style.color = "#991b1b";
+                windBoxEl.textContent = "⚠️ DANGER: Strong gale winds. Tree falls and tin roof hazards expected. Follow evacuation instructions.";
+            }
+        } else if (wind > 35) {
+            if (windCatEl) { windCatEl.textContent = "Strong Breeze"; windCatEl.className = "badge bg-warning text-dark"; }
+            if (windBoxEl) {
+                windBoxEl.style.background = "#fffbeb"; windBoxEl.style.borderColor = "#fde68a"; windBoxEl.style.color = "#92400e";
+                windBoxEl.textContent = "Elevated wind speeds. Caution advised near water bodies and temporary structures.";
+            }
+        } else {
+            if (windCatEl) { windCatEl.textContent = "Moderate Breeze"; windCatEl.className = "badge bg-success"; }
+            if (windBoxEl) {
+                windBoxEl.style.background = "#f0fdf4"; windBoxEl.style.borderColor = "#bbf7d0"; windBoxEl.style.color = "#166534";
+                windBoxEl.textContent = "Wind conditions within safe operational limits for field relief and boats.";
+            }
+        }
+    } catch (e) {
+        console.warn("Open-Meteo weather load error:", e);
+    }
+}
+window.openWeatherDetailModal = openWeatherDetailModal;
+
+// Event Listeners for Citizen Weather
+if (typeof window !== "undefined") {
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () {
+            loadCitizenLiveWeather();
+        });
+    } else {
+        loadCitizenLiveWeather();
+    }
+
+    const weatherDistSelectEl = document.getElementById("weatherDistrictSelect");
+    if (weatherDistSelectEl) {
+        weatherDistSelectEl.addEventListener("change", function () {
+            openWeatherDetailModal(weatherDistSelectEl.value);
+        });
+    }
+    const btnRefreshWeatherModalEl = document.getElementById("btnRefreshWeatherModal");
+    if (btnRefreshWeatherModalEl) {
+        btnRefreshWeatherModalEl.addEventListener("click", function () {
+            const dist = weatherDistSelectEl ? weatherDistSelectEl.value : null;
+            openWeatherDetailModal(dist);
+        });
+    }
+}
+
