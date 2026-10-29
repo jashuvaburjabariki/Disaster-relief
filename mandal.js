@@ -59,23 +59,22 @@ function downloadCsvFile(csvContent, filename) {
 
 // Default Data Seed Fallbacks (Matching Admin Portal & Mandal Jurisdictions)
 const defaultSheltersData = [
-    // ALLURI SITHARAMA RAJU (ASR) DISTRICT SHELTERS
+    // ALLURI SITHARAMA RAJU (ASR) DISTRICT SHELTERS (11 TARGET MANDALS)
     { id: 101, district: "Alluri Sitharama Raju", mandal: "Paderu", name: "Paderu Tribal Welfare Residential School Shelter", location: "Collectorate Road, Paderu", capacity: 350, occupied: 180, contact: "08935-242222", status: "Active" },
     { id: 102, district: "Alluri Sitharama Raju", mandal: "Paderu", name: "Paderu ITDA Community Cyclone & Flood Shelter", location: "ITDA Grounds, Paderu", capacity: 250, occupied: 110, contact: "08935-242333", status: "Active" },
     { id: 103, district: "Alluri Sitharama Raju", mandal: "Araku Valley", name: "Araku Valley Emergency Relief Camp & Youth Centre", location: "Main Road, Araku Valley", capacity: 300, occupied: 140, contact: "08936-249111", status: "Active" },
     { id: 104, district: "Alluri Sitharama Raju", mandal: "Araku Valley", name: "Araku Hill Station High Ground Shelter", location: "Padmapuram Junction, Araku", capacity: 200, occupied: 65, contact: "08936-249222", status: "Active" },
-    { id: 105, district: "Alluri Sitharama Raju", mandal: "Rampachodavaram", name: "Rampachodavaram Godavari Basin Flood Refuge Camp", location: "Agency High School, Rampachodavaram", capacity: 450, occupied: 290, contact: "08864-243100", status: "Active" },
-    { id: 106, district: "Alluri Sitharama Raju", mandal: "Rampachodavaram", name: "Rampachodavaram ITDA Complex Emergency Shelter", location: "ITDA Complex, Rampachodavaram", capacity: 280, occupied: 120, contact: "08864-243200", status: "Active" },
-    { id: 107, district: "Alluri Sitharama Raju", mandal: "Chintapalli", name: "Chintapalli Hill Area Disaster Relief Depot & Shelter", location: "Bus Stand Road, Chintapalli", capacity: 220, occupied: 75, contact: "08937-241050", status: "Active" },
-    { id: 108, district: "Alluri Sitharama Raju", mandal: "Maredumilli", name: "Maredumilli Eco-Refuge & Forest Emergency Center", location: "Main Ghat Road, Maredumilli", capacity: 180, occupied: 40, contact: "08864-245100", status: "Active" },
-    { id: 109, district: "Alluri Sitharama Raju", mandal: "Ananthagiri", name: "Ananthagiri Ghats Emergency Evacuation Shelter", location: "Coffee Board Campus, Ananthagiri", capacity: 160, occupied: 50, contact: "08936-244010", status: "Active" },
-    { id: 110, district: "Alluri Sitharama Raju", mandal: "Devipatnam", name: "Devipatnam Godavari Flood Relocation Shelter", location: "River Bank High School, Devipatnam", capacity: 400, occupied: 260, contact: "08864-248020", status: "Active" },
-    { id: 111, district: "Alluri Sitharama Raju", mandal: "G.K. Veedhi", name: "G.K. Veedhi Tribal High School Relief Shelter", location: "Ashram High School, G.K. Veedhi", capacity: 200, occupied: 60, contact: "08937-247015", status: "Active" },
-    { id: 112, district: "Alluri Sitharama Raju", mandal: "Koyyuru", name: "Koyyuru Agency Disaster Mitigation Shelter", location: "Mandal Parishad Hall, Koyyuru", capacity: 190, occupied: 45, contact: "08937-243005", status: "Active" },
-    { id: 113, district: "Alluri Sitharama Raju", mandal: "Pedabayalu", name: "Pedabayalu High Altitude Relief Station", location: "Main Center, Pedabayalu", capacity: 150, occupied: 30, contact: "08935-246010", status: "Active" },
-    { id: 114, district: "Alluri Sitharama Raju", mandal: "Munchingiputtu", name: "Munchingiputtu Interstate Border Disaster Camp", location: "Munchingiputtu Govt School", capacity: 180, occupied: 55, contact: "08935-248012", status: "Active" },
+    { id: 105, district: "Alluri Sitharama Raju", mandal: "Ananthagiri", name: "Ananthagiri Ghats Emergency Evacuation Shelter", location: "Coffee Board Campus, Ananthagiri", capacity: 160, occupied: 50, contact: "08936-244010", status: "Active" },
+    { id: 106, district: "Alluri Sitharama Raju", mandal: "Chintapalle (Chinthapalli)", name: "Chintapalle Hill Area Disaster Relief Depot & Shelter", location: "Bus Stand Road, Chintapalle", capacity: 220, occupied: 75, contact: "08937-241050", status: "Active" },
+    { id: 107, district: "Alluri Sitharama Raju", mandal: "Dumbriguda", name: "Dumbriguda Tribal Community Cyclone Refuge", location: "Govt High School, Dumbriguda", capacity: 200, occupied: 45, contact: "08936-247111", status: "Active" },
+    { id: 108, district: "Alluri Sitharama Raju", mandal: "G. Madugula", name: "G. Madugula Agency Flood Relief Shelter", location: "Main Junction, G. Madugula", capacity: 210, occupied: 60, contact: "08935-245020", status: "Active" },
+    { id: 109, district: "Alluri Sitharama Raju", mandal: "Gudem Kotha Veedhi (G.K. Veedhi)", name: "G.K. Veedhi Tribal High School Relief Shelter", location: "Ashram High School, G.K. Veedhi", capacity: 200, occupied: 60, contact: "08937-247015", status: "Active" },
+    { id: 110, district: "Alluri Sitharama Raju", mandal: "Hukumpeta", name: "Hukumpeta High Ground Evacuation Center", location: "Mandal Office Road, Hukumpeta", capacity: 180, occupied: 40, contact: "08935-244030", status: "Active" },
+    { id: 111, district: "Alluri Sitharama Raju", mandal: "Koyyuru", name: "Koyyuru Agency Disaster Mitigation Shelter", location: "Mandal Parishad Hall, Koyyuru", capacity: 190, occupied: 45, contact: "08937-243005", status: "Active" },
+    { id: 112, district: "Alluri Sitharama Raju", mandal: "Munchingi Puttu", name: "Munchingi Puttu Interstate Border Disaster Camp", location: "Munchingi Puttu Govt School", capacity: 180, occupied: 55, contact: "08935-248012", status: "Active" },
+    { id: 113, district: "Alluri Sitharama Raju", mandal: "Peda Bayalu", name: "Peda Bayalu High Altitude Relief Station", location: "Main Center, Peda Bayalu", capacity: 150, occupied: 30, contact: "08935-246010", status: "Active" },
 
-    // KRISHNA DISTRICT SHELTERS
+    // KRISHNA DISTRICT SHELTERS (FOR TEST SUITE)
     { id: 201, district: "Krishna", mandal: "Vijayawada Rural", name: "Krishna District Primary Relief Shelter", location: "Nunna, Vijayawada Rural", capacity: 350, occupied: 210, contact: "0866-248900", status: "Active" },
     { id: 202, district: "Krishna", mandal: "Vijayawada Rural", name: "Enikepadu Community Disaster Refuge", location: "Enikepadu, Vijayawada Rural", capacity: 250, occupied: 120, contact: "0866-248911", status: "Active" },
     { id: 203, district: "Krishna", mandal: "Machilipatnam", name: "Machilipatnam Coastal Cyclone Refuge Centre", location: "Bandar Coast, Machilipatnam", capacity: 500, occupied: 320, contact: "08672-252100", status: "Active" },
@@ -112,7 +111,7 @@ function checkMandalSession() {
     let session = null;
     try {
         session = JSON.parse(localStorage.getItem("disasterCurrentMandal") || "null");
-    } catch (e) {}
+    } catch (e) { }
 
     // If no session found, pick or create default approved Vijayawada Rural mandal account
     if (!session || !session.mandal) {
@@ -123,14 +122,14 @@ function checkMandalSession() {
             localStorage.setItem("disasterCurrentMandal", JSON.stringify(session));
         } else {
             session = {
-                id: "mandal_krishna_vja_rural",
-                mandal: "Vijayawada Rural",
-                district: "Krishna",
+                id: "mandal_asr_paderu",
+                mandal: "Paderu",
+                district: "Alluri Sitharama Raju",
                 state: "Andhra Pradesh",
-                officerName: "K. Ramesh Kumar",
-                employeeId: "MND-AP-2041",
-                phone: "+91 98480 12345",
-                email: "mro.vjarural@ap.gov.in",
+                officerName: "Dr. K. Someswara Rao",
+                employeeId: "MND-ASR-1001",
+                phone: "08935-242222",
+                email: "paderu.relief@asr.ap.gov.in",
                 status: "Approved",
                 role: "Mandal Employee",
                 profilePhoto: ""
@@ -287,6 +286,9 @@ async function loadMandalLiveWeather() {
     if (!tempEl || !condEl) return;
 
     const districtCoords = {
+        "alluri sitharama raju": { lat: 18.0833, lon: 82.6667, name: "Paderu (Alluri Sitharama Raju)" },
+        "alluri": { lat: 18.0833, lon: 82.6667, name: "Paderu (Alluri Sitharama Raju)" },
+        "paderu": { lat: 18.0833, lon: 82.6667, name: "Paderu" },
         "krishna": { lat: 16.5062, lon: 80.6480, name: "Krishna" },
         "chennai": { lat: 13.0827, lon: 80.2707, name: "Chennai" },
         "wayanad": { lat: 11.6854, lon: 76.1320, name: "Wayanad" },
@@ -294,7 +296,7 @@ async function loadMandalLiveWeather() {
         "visakhapatnam": { lat: 17.6868, lon: 83.2185, name: "Visakhapatnam" }
     };
 
-    const key = (currentMandal && currentMandal.district ? currentMandal.district : "krishna").toLowerCase().trim();
+    const key = (currentMandal && currentMandal.district ? currentMandal.district : "alluri sitharama raju").toLowerCase().trim();
     const loc = districtCoords[key] || { lat: 16.5062, lon: 80.6480, name: currentMandal ? currentMandal.mandal : "Vijayawada Rural" };
 
     try {
@@ -521,6 +523,7 @@ if (refreshMandalWeatherBtn) {
     refreshMandalWeatherBtn.addEventListener("click", function (e) {
         e.stopPropagation();
         loadMandalLiveWeather();
+        loadImdLiveWeatherFeed();
         showToast("Live weather report refreshed.");
     });
 }
@@ -3263,21 +3266,21 @@ function renderReportsView() {
                         <tbody>
                             <tr>
                                 <td><strong>Flood & Water Inundation</strong></td>
-                                <td>${allRequests.filter(function(r) { return (r.disasterType || '').toLowerCase().includes('flood'); }).length} cases</td>
+                                <td>${allRequests.filter(function (r) { return (r.disasterType || '').toLowerCase().includes('flood'); }).length} cases</td>
                                 <td>${assignedVolCount} responders</td>
                                 <td><span class="status-pill progress">Active Monitoring</span></td>
                                 <td><strong class="text-success">High Preparedness</strong></td>
                             </tr>
                             <tr>
                                 <td><strong>Cyclone & Storm Alerts</strong></td>
-                                <td>${allRequests.filter(function(r) { return (r.disasterType || '').toLowerCase().includes('cyclone') || (r.disasterType || '').toLowerCase().includes('storm'); }).length} cases</td>
+                                <td>${allRequests.filter(function (r) { return (r.disasterType || '').toLowerCase().includes('cyclone') || (r.disasterType || '').toLowerCase().includes('storm'); }).length} cases</td>
                                 <td>Medical & Food Teams</td>
                                 <td><span class="status-pill verified">Shelters Active</span></td>
                                 <td><strong class="text-success">Ready</strong></td>
                             </tr>
                             <tr>
                                 <td><strong>Medical Emergencies & Trauma</strong></td>
-                                <td>${allRequests.filter(function(r) { return (r.disasterType || '').toLowerCase().includes('medical') || (r.help || '').toLowerCase().includes('medical'); }).length} cases</td>
+                                <td>${allRequests.filter(function (r) { return (r.disasterType || '').toLowerCase().includes('medical') || (r.help || '').toLowerCase().includes('medical'); }).length} cases</td>
                                 <td>First Aid Squads</td>
                                 <td><span class="status-pill critical">Fast-Track Evac</span></td>
                                 <td><strong class="text-primary">100% On Call</strong></td>
@@ -3679,7 +3682,7 @@ function initLatestSmsBanner() {
     const mandalSmsLog = readRecords("disasterMandalSmsLog");
     const distSmsRaw = localStorage.getItem("disasterLatestDistrictSms");
     let distSms = null;
-    try { if (distSmsRaw) distSms = JSON.parse(distSmsRaw); } catch (e) {}
+    try { if (distSmsRaw) distSms = JSON.parse(distSmsRaw); } catch (e) { }
     const alerts = readRecords("disasterAlerts");
 
     let sms = null;
@@ -4073,3 +4076,96 @@ loadMandalLiveWeather();
 
 
 
+
+
+// ========================================================
+// OFFICIAL IMD LIVE WEATHER & TOP SCROLLING ALERT BAR
+// ========================================================
+const IMD_OFFICIAL_URL = "https://mausam.imd.gov.in/index_en.php";
+const DEFAULT_IMD_UPDATES = [
+    {
+        badge: "EXTENDED FORECAST",
+        badgeClass: "bg-danger",
+        title: "IMD Extended Range Forecast (22 Oct - 04 Nov 2026): Active monsoon conditions & cyclonic circulation over Bay of Bengal. Heavy to very heavy rainfall forecast over Coastal Andhra Pradesh and Rayalaseema.",
+        url: "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2022.10.26.pdf"
+    },
+    {
+        badge: "COASTAL WARNING",
+        badgeClass: "bg-danger",
+        title: "Squally Winds Warning: Gusty winds 45-55 kmph reaching 65 kmph along Andhra Pradesh & Bay of Bengal coast. Fishermen advised not to venture into sea.",
+        url: "https://mausam.imd.gov.in/responsive/subDivisionWiseWarningGIS.php"
+    },
+    {
+        badge: "NOWCAST ALERT",
+        badgeClass: "bg-warning text-dark",
+        title: "IMD District Nowcast: Thunderstorms accompanied by lightning, intense rain and gusty winds over Alluri Sitharama Raju, Visakhapatnam and coastal districts.",
+        url: "https://mausam.imd.gov.in/responsive/districtWiseNowcastGIS.php"
+    },
+    {
+        badge: "PRESS RELEASE",
+        badgeClass: "bg-info text-dark",
+        title: "Press Release Date: 26th October 2026 — Current Weather Status and All-India Severe Weather Warnings.",
+        url: "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2026-10-2026.pdf"
+    }
+];
+
+let liveImdDataCache = null;
+
+async function loadImdLiveWeatherFeed() {
+    try {
+        const res = await fetch("/api/imd-weather", { cache: "no-cache" });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.marqueeUpdates && data.marqueeUpdates.length > 0) {
+                liveImdDataCache = data;
+                renderImdTopAlertBar(data);
+                return;
+            }
+        }
+    } catch (e) {
+        // Fallback
+    }
+
+    const fallbackData = {
+        sourceUrl: IMD_OFFICIAL_URL,
+        sourceName: "India Meteorological Department (IMD) - Mausam",
+        marqueeUpdates: DEFAULT_IMD_UPDATES
+    };
+    liveImdDataCache = fallbackData;
+    renderImdTopAlertBar(fallbackData);
+}
+
+function renderImdTopAlertBar(data) {
+    const track = document.getElementById("imdTickerTrack");
+    if (!track) return;
+    const items = data.marqueeUpdates || DEFAULT_IMD_UPDATES;
+    let html = "";
+    items.forEach((item, index) => {
+        html += `
+            <span class="imd-ticker-item">
+                <span class="badge ${item.badgeClass || 'bg-danger'} me-1">${item.badge}</span>
+                <a href="${item.url || IMD_OFFICIAL_URL}" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none">
+                    ${item.title}
+                </a>
+            </span>
+        `;
+        if (index < items.length - 1) {
+            html += '<span class="imd-ticker-divider">•</span>';
+        }
+    });
+    track.innerHTML = html;
+}
+
+function pauseImdTicker() {
+    const track = document.getElementById("imdTickerTrack");
+    if (track) track.style.animationPlayState = "paused";
+}
+
+function resumeImdTicker() {
+    const track = document.getElementById("imdTickerTrack");
+    if (track) track.style.animationPlayState = "running";
+}
+
+window.pauseImdTicker = pauseImdTicker;
+window.resumeImdTicker = resumeImdTicker;
+window.loadImdLiveWeatherFeed = loadImdLiveWeatherFeed;

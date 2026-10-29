@@ -7,11 +7,9 @@
     padding: 110px 0;
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #f8fafc 0%,
-            #ffffff 100%
-        );
+            #ffffff 100%);
 
     overflow: hidden;
 }
@@ -150,8 +148,7 @@ body:has(> main) .about-section {
     border-radius: 50%;
 
     box-shadow:
-        0 8px 20px
-        rgba(230,57,70,.20);
+        0 8px 20px rgba(230, 57, 70, .20);
 
 }
 
@@ -180,10 +177,8 @@ body:has(> main) .about-section {
 
 .about-point,
 .about-stat {
-
-    opacity: 0;
-
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
 
     transition:
         opacity .7s ease,
@@ -228,7 +223,7 @@ body:has(> main) .about-section {
     border-radius: 50%;
 
     border:
-        1px solid rgba(230,57,70,.12);
+        1px solid rgba(230, 57, 70, .12);
 
 }
 
@@ -249,7 +244,7 @@ body:has(> main) .about-section {
     height: 330px;
 
     background:
-        rgba(230,57,70,.035);
+        rgba(230, 57, 70, .035);
 
 }
 
@@ -295,15 +290,12 @@ body:has(> main) .about-section {
 
     background:
 
-        linear-gradient(
-            145deg,
+        linear-gradient(145deg,
             #111827,
-            #1e293b
-        );
+            #1e293b);
 
     box-shadow:
-        0 30px 70px
-        rgba(16,24,39,.25);
+        0 30px 70px rgba(16, 24, 39, .25);
 
 }
 
@@ -326,18 +318,16 @@ body:has(> main) .about-section {
     color: white;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #e63946,
-            #ff765f
-        );
+            #ff765f);
 
     font-size: 28px;
 
 }
 
 
-.about-main-card > span {
+.about-main-card>span {
 
     color: #ff8d95;
 
@@ -366,7 +356,7 @@ body:has(> main) .about-section {
 .about-main-card p {
 
     color:
-        rgba(255,255,255,.65);
+        rgba(255, 255, 255, .65);
 
     font-size: 13px;
 
@@ -400,8 +390,7 @@ body:has(> main) .about-section {
     background: white;
 
     box-shadow:
-        0 15px 35px
-        rgba(16,24,39,.12);
+        0 15px 35px rgba(16, 24, 39, .12);
 
     animation:
         floatingAbout 4s ease-in-out infinite;
@@ -619,14 +608,37 @@ body:has(> main) .about-section {
     line-height: 1.6;
 }
 
-.flood-card { border-left: 5px solid #2d9cdb; }
-.cyclone-card { border-left: 5px solid #5b8def; }
-.quake-card { border-left: 5px solid #f59e0b; }
-.fire-card { border-left: 5px solid #ef4444; }
-.storm-card { border-left: 5px solid #8b5cf6; }
-.landslide-card { border-left: 5px solid #f97316; }
-.heat-card { border-left: 5px solid #facc15; }
-.tsunami-card { border-left: 5px solid #06b6d4; }
+.flood-card {
+    border-left: 5px solid #2d9cdb;
+}
+
+.cyclone-card {
+    border-left: 5px solid #5b8def;
+}
+
+.quake-card {
+    border-left: 5px solid #f59e0b;
+}
+
+.fire-card {
+    border-left: 5px solid #ef4444;
+}
+
+.storm-card {
+    border-left: 5px solid #8b5cf6;
+}
+
+.landslide-card {
+    border-left: 5px solid #f97316;
+}
+
+.heat-card {
+    border-left: 5px solid #facc15;
+}
+
+.tsunami-card {
+    border-left: 5px solid #06b6d4;
+}
 
 .must-know-bottom {
     margin-top: 44px;

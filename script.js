@@ -219,82 +219,319 @@ function initializeDefaultData() {
         localStorage.setItem("disasterVolunteers", JSON.stringify(defaultVolunteers));
         localStorage.setItem("disasterDonations", JSON.stringify(defaultDonations));
         localStorage.setItem("disasterInitialized", "true");
+
+
+        // Ensure Alluri Sitharama Raju requests and volunteers only keep the 11 target mandals
+        try {
+            const curReqs = JSON.parse(localStorage.getItem("disasterHelpRequests") || "[]");
+            const target11Tokens = ["ananthagiri", "araku", "chintapal", "dumbriguda", "madugula", "veedhi", "gk", "hukumpeta", "koyyuru", "munchingi", "paderu", "bayalu"];
+            const cleanedReqs = curReqs.filter(r => {
+                if ((r.district || "").toLowerCase().includes("alluri")) {
+                    const m = (r.mandal || "").toLowerCase();
+                    return target11Tokens.some(tok => m.includes(tok));
+                }
+                return true;
+            });
+            // Ensure sample requests for 11 mandals
+            const sampleReqs11 = [
+                { id: 1727700000101, trackId: "DR-20261025-101122", name: "K. Balakrishna", mobileNumber: "9876543299", location: "Minumuluru", village: "Minumuluru", mandal: "Paderu", district: "Alluri Sitharama Raju", state: "Andhra Pradesh", disasterType: "Landslide", gps: "18.0833, 82.6667", help: "Rescue support, Medical aid", priority: "Critical", status: "In Progress", details: "Hill slip blocked Minumuluru ghat road. 12 tribal families cut off, medical aid needed.", createdAt: "25/10/2026, 10:30:00 AM" },
+                { id: 1727700000102, trackId: "DR-20261025-102233", name: "S. Somaraju", mobileNumber: "9845112288", location: "Padmapuram", village: "Padmapuram", mandal: "Araku Valley", district: "Alluri Sitharama Raju", state: "Andhra Pradesh", disasterType: "Flash Flood", gps: "18.3273, 82.8833", help: "Food and water, Tarpaulins", priority: "High", status: "Verified", details: "Flash runoff in valley hamlet. 30 persons sheltered in community hall.", createdAt: "25/10/2026, 02:15:00 PM" },
+                { id: 1727700000103, trackId: "DR-20261026-103344", name: "V. Surya Rao", mobileNumber: "9711223377", location: "Coffee Board Area", village: "Ananthagiri", mandal: "Ananthagiri", district: "Alluri Sitharama Raju", state: "Andhra Pradesh", disasterType: "Landslide Risk", gps: "18.2333, 83.0167", help: "Evacuation, Tarpaulins", priority: "High", status: "Assigned", details: "Ghat curve mud displacement; 8 houses require temporary relocation.", createdAt: "26/10/2026, 05:40:00 PM" },
+                { id: 1727700000104, trackId: "DR-20261026-104455", name: "G. Chinnayya", mobileNumber: "9988776644", location: "Tajangi", village: "Tajangi", mandal: "Chintapalle (Chinthapalli)", district: "Alluri Sitharama Raju", state: "Andhra Pradesh", disasterType: "Severe Weather", gps: "17.8667, 82.3500", help: "Dry rations, Blankets", priority: "Medium", status: "Pending", details: "Cold rains and roof damage in tribal hamlet.", createdAt: "26/10/2026, 08:20:00 AM" },
+                { id: 1727700000105, trackId: "DR-20261026-105566", name: "P. Trinadh", mobileNumber: "9822334411", location: "Dharakonda", village: "Dharakonda", mandal: "Gudem Kotha Veedhi (G.K. Veedhi)", district: "Alluri Sitharama Raju", state: "Andhra Pradesh", disasterType: "Stream Overflow", gps: "17.9167, 82.1667", help: "Medical aid, Boat transport", priority: "High", status: "In Progress", details: "Local hill stream swelled across crossing route.", createdAt: "26/10/2026, 09:10:00 AM" }
+            ];
+            sampleReqs11.forEach(sr => {
+                if (!cleanedReqs.some(r => r.id === sr.id || (r.mandal === sr.mandal && r.name === sr.name))) {
+                    cleanedReqs.unshift(sr);
+                }
+            });
+            localStorage.setItem("disasterHelpRequests", JSON.stringify(cleanedReqs));
+
+            const curVols = JSON.parse(localStorage.getItem("disasterVolunteers") || "[]");
+            const cleanedVols = curVols.filter(v => {
+                if ((v.district || "").toLowerCase().includes("alluri")) {
+                    const m = (v.mandal || "").toLowerCase();
+                    return target11Tokens.some(tok => m.includes(tok));
+                }
+                return true;
+            });
+            const sampleVols11 = [
+                { id: 3101, name: "G. Kondal Rao", phone: "9876501101", username: "vol_asr_paderu", state: "Andhra Pradesh", district: "Alluri Sitharama Raju", mandal: "Paderu", location: "Paderu", skills: "Tribal Terrain Rescue, First Aid, 4x4 Driving", availability: "Available", status: "Available", createdAt: "24/10/2026, 09:00:00 AM" },
+                { id: 3102, name: "K. Appala Swamy", phone: "9876501102", username: "vol_asr_araku", state: "Andhra Pradesh", district: "Alluri Sitharama Raju", mandal: "Araku Valley", location: "Araku", skills: "Ghat Evacuation, Medical Support, Food Distribution", availability: "Available", status: "Available", createdAt: "24/10/2026, 09:30:00 AM" },
+                { id: 3103, name: "S. Durga Prasad", phone: "9876501103", username: "vol_asr_ananthagiri", state: "Andhra Pradesh", district: "Alluri Sitharama Raju", mandal: "Ananthagiri", location: "Ananthagiri", skills: "Hill Evacuation, First Aid", availability: "Available", status: "Assigned", createdAt: "24/10/2026, 10:00:00 AM" },
+                { id: 3104, name: "V. Somanna", phone: "9876501104", username: "vol_asr_gkveedhi", state: "Andhra Pradesh", district: "Alluri Sitharama Raju", mandal: "Gudem Kotha Veedhi (G.K. Veedhi)", location: "G.K. Veedhi", skills: "Forest Search & Rescue, Ham Radio", availability: "Available", status: "Available", createdAt: "25/10/2026, 11:00:00 AM" },
+                { id: 3105, name: "M. Bhaskara Rao", phone: "9876501105", username: "vol_asr_chintapalle", state: "Andhra Pradesh", district: "Alluri Sitharama Raju", mandal: "Chintapalle (Chinthapalli)", location: "Chintapalle", skills: "Hill Area Logistics, Shelter Management", availability: "Available", status: "Pending", createdAt: "26/10/2026, 08:30:00 AM" },
+                { id: 3106, name: "K. Pandu", phone: "9876501106", username: "vol_asr_dumbriguda", state: "Andhra Pradesh", district: "Alluri Sitharama Raju", mandal: "Dumbriguda", location: "Dumbriguda", skills: "Emergency First Aid, Food Transport", availability: "Available", status: "Available", createdAt: "26/10/2026, 09:00:00 AM" }
+            ];
+            sampleVols11.forEach(sv => {
+                if (!cleanedVols.some(v => v.id === sv.id || (v.mandal === sv.mandal && v.name === sv.name))) {
+                    cleanedVols.unshift(sv);
+                }
+            });
+            localStorage.setItem("disasterVolunteers", JSON.stringify(cleanedVols));
+        } catch (e) { }
+
     }
 }
 
 function initializeMandalAccounts() {
-    if (!localStorage.getItem("disasterMandalAccounts")) {
-        const defaultMandalAccounts = [
-            {
-                id: "mandal_krishna_vja_rural",
-                mandal: "Vijayawada Rural",
-                district: "Krishna",
-                state: "Andhra Pradesh",
-                officerName: "K. Satyanarayana",
-                employeeId: "MND-AP-2041",
-                email: "mandal.vja.rural@disaster-ap.gov.in",
-                phone: "9876501122",
-                username: "mandal_vja_rural",
-                password: "mandal123",
-                role: "Mandal Employee",
-                status: "Approved", // Approved by Krishna District Admin
-                approvedBy: "Krishna District Admin",
-                approvedAt: "28/09/2026, 10:00:00 AM",
-                createdAt: "28/09/2026, 09:30:00 AM"
-            },
-            {
-                id: "mandal_krishna_gudivada",
-                mandal: "Gudivada",
-                district: "Krishna",
-                state: "Andhra Pradesh",
-                officerName: "M. Ramanathan",
-                employeeId: "MND-AP-2055",
-                email: "gudivada.relief@ap.gov.in",
-                phone: "9845112299",
-                username: "mandal_gudivada",
-                password: "mandal123",
-                role: "Mandal Employee",
-                status: "Pending", // Needs Admin approval to test workflow
-                approvedBy: null,
-                approvedAt: null,
-                createdAt: "29/09/2026, 11:20:00 AM"
-            },
-            {
-                id: "mandal_chennai_mylapore",
-                mandal: "Mylapore",
-                district: "Chennai",
-                state: "Tamil Nadu",
-                officerName: "S. Annamalai",
-                employeeId: "MND-TN-1082",
-                email: "mylapore.relief@chennai.gov.in",
-                phone: "9822334455",
-                username: "mandal_mylapore",
-                password: "mandal123",
-                role: "Mandal Employee",
-                status: "Approved",
-                approvedBy: "Chennai District Admin",
-                approvedAt: "29/09/2026, 01:15:00 PM",
-                createdAt: "29/09/2026, 12:00:00 PM"
-            },
-            {
-                id: "mandal_wayanad_meppadi",
-                mandal: "Meppadi",
-                district: "Wayanad",
-                state: "Kerala",
-                officerName: "Binoy Varghese",
-                employeeId: "MND-KL-4091",
-                email: "meppadi.station@wayanad.kerala.gov.in",
-                phone: "9744112233",
-                username: "mandal_meppadi",
-                password: "mandal123",
-                role: "Mandal Employee",
-                status: "Approved",
-                approvedBy: "Wayanad District Admin",
-                approvedAt: "29/09/2026, 06:30:00 PM",
-                createdAt: "29/09/2026, 05:00:00 PM"
-            }
-        ];
+    const defaultMandalAccounts = [
+        {
+            "id": "mandal_asr_paderu",
+            "mandal": "Paderu",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "Dr. K. Someswara Rao",
+            "employeeId": "MND-ASR-1001",
+            "email": "paderu.relief@asr.ap.gov.in",
+            "phone": "08935-242222",
+            "username": "mandal_paderu",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "24/10/2026, 09:00:00 AM",
+            "createdAt": "24/10/2026, 08:30:00 AM"
+        },
+        {
+            "id": "mandal_asr_araku",
+            "mandal": "Araku Valley",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "B. Venkata Ramana",
+            "employeeId": "MND-ASR-1002",
+            "email": "araku.operations@asr.ap.gov.in",
+            "phone": "08936-249111",
+            "username": "mandal_araku",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "24/10/2026, 09:15:00 AM",
+            "createdAt": "24/10/2026, 08:45:00 AM"
+        },
+        {
+            "id": "mandal_asr_ananthagiri",
+            "mandal": "Ananthagiri",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "V. Surya Prakash",
+            "employeeId": "MND-ASR-1003",
+            "email": "ananthagiri.relief@asr.ap.gov.in",
+            "phone": "08936-244010",
+            "username": "mandal_ananthagiri",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 09:30:00 AM",
+            "createdAt": "25/10/2026, 08:50:00 AM"
+        },
+        {
+            "id": "mandal_asr_dumbriguda",
+            "mandal": "Dumbriguda",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "K. Narayana Murthy",
+            "employeeId": "MND-ASR-1004",
+            "email": "dumbriguda.relief@asr.ap.gov.in",
+            "phone": "08936-247111",
+            "username": "mandal_dumbriguda",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 10:00:00 AM",
+            "createdAt": "25/10/2026, 09:10:00 AM"
+        },
+        {
+            "id": "mandal_asr_gmadugula",
+            "mandal": "G. Madugula",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "L. Appala Naidu",
+            "employeeId": "MND-ASR-1005",
+            "email": "gmadugula.relief@asr.ap.gov.in",
+            "phone": "08935-245020",
+            "username": "mandal_gmadugula",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 10:30:00 AM",
+            "createdAt": "25/10/2026, 09:20:00 AM"
+        },
+        {
+            "id": "mandal_asr_gkveedhi",
+            "mandal": "Gudem Kotha Veedhi (G.K. Veedhi)",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "P. Trinadha Rao",
+            "employeeId": "MND-ASR-1006",
+            "email": "gkveedhi.relief@asr.ap.gov.in",
+            "phone": "08937-247015",
+            "username": "mandal_gkveedhi",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 11:00:00 AM",
+            "createdAt": "25/10/2026, 09:30:00 AM"
+        },
+        {
+            "id": "mandal_asr_hukumpeta",
+            "mandal": "Hukumpeta",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "S. Govinda Rajulu",
+            "employeeId": "MND-ASR-1007",
+            "email": "hukumpeta.relief@asr.ap.gov.in",
+            "phone": "08935-244030",
+            "username": "mandal_hukumpeta",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 11:30:00 AM",
+            "createdAt": "25/10/2026, 09:40:00 AM"
+        },
+        {
+            "id": "mandal_asr_koyyuru",
+            "mandal": "Koyyuru",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "D. Sanyasi Rao",
+            "employeeId": "MND-ASR-1008",
+            "email": "koyyuru.relief@asr.ap.gov.in",
+            "phone": "08937-243005",
+            "username": "mandal_koyyuru",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 12:00:00 PM",
+            "createdAt": "25/10/2026, 09:50:00 AM"
+        },
+        {
+            "id": "mandal_asr_munchingiputtu",
+            "mandal": "Munchingi Puttu",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "M. Pandu Ranga",
+            "employeeId": "MND-ASR-1009",
+            "email": "munchingi.relief@asr.ap.gov.in",
+            "phone": "08935-248012",
+            "username": "mandal_munchingi",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 12:30:00 PM",
+            "createdAt": "25/10/2026, 10:00:00 AM"
+        },
+        {
+            "id": "mandal_asr_pedabayalu",
+            "mandal": "Peda Bayalu",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "Ch. Appala Swamy",
+            "employeeId": "MND-ASR-1010",
+            "email": "pedabayalu.relief@asr.ap.gov.in",
+            "phone": "08935-246010",
+            "username": "mandal_pedabayalu",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "District Collector & Magistrate, Alluri Sitharama Raju",
+            "approvedAt": "25/10/2026, 01:00:00 PM",
+            "createdAt": "25/10/2026, 10:15:00 AM"
+        },
+        {
+            "id": "mandal_asr_chintapalle",
+            "mandal": "Chintapalle (Chinthapalli)",
+            "district": "Alluri Sitharama Raju",
+            "state": "Andhra Pradesh",
+            "officerName": "T. Ravi Kumar",
+            "employeeId": "MND-ASR-1011",
+            "email": "chintapalle.relief@asr.ap.gov.in",
+            "phone": "08937-241050",
+            "username": "mandal_chintapalle",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Pending",
+            "approvedBy": null,
+            "approvedAt": null,
+            "createdAt": "26/10/2026, 08:00:00 AM"
+        },
+        {
+            "id": "mandal_krishna_vja_rural",
+            "mandal": "Vijayawada Rural",
+            "district": "Krishna",
+            "state": "Andhra Pradesh",
+            "officerName": "K. Satyanarayana",
+            "employeeId": "MND-AP-2041",
+            "email": "mandal.vja.rural@disaster-ap.gov.in",
+            "phone": "9876501122",
+            "username": "mandal_vja_rural",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Approved",
+            "approvedBy": "Krishna District Admin",
+            "approvedAt": "28/09/2026, 10:00:00 AM",
+            "createdAt": "28/09/2026, 09:30:00 AM"
+        },
+        {
+            "id": "mandal_krishna_gudivada",
+            "mandal": "Gudivada",
+            "district": "Krishna",
+            "state": "Andhra Pradesh",
+            "officerName": "M. Ramanathan",
+            "employeeId": "MND-AP-2055",
+            "email": "gudivada.relief@ap.gov.in",
+            "phone": "9845112299",
+            "username": "mandal_gudivada",
+            "password": "mandal123",
+            "role": "Mandal Employee",
+            "status": "Pending",
+            "approvedBy": null,
+            "approvedAt": null,
+            "createdAt": "29/09/2026, 11:20:00 AM"
+        }
+    ];
+    const target11Names = ["Ananthagiri", "Araku Valley", "Chintapalle (Chinthapalli)", "Dumbriguda", "G. Madugula", "Gudem Kotha Veedhi (G.K. Veedhi)", "Hukumpeta", "Koyyuru", "Munchingi Puttu", "Paderu", "Peda Bayalu"];
+
+    let existing = null;
+    try {
+        existing = JSON.parse(localStorage.getItem("disasterMandalAccounts") || "null");
+    } catch (e) {
+        existing = null;
+    }
+
+    if (!existing || !Array.isArray(existing) || existing.length === 0) {
         localStorage.setItem("disasterMandalAccounts", JSON.stringify(defaultMandalAccounts));
+    } else {
+        // Filter out non-target ASR mandals (keep only the 11 specified mandals + any non-ASR test records)
+        const filtered = existing.filter(function (acc) {
+            if ((acc.district || "").toLowerCase().includes("alluri")) {
+                const mName = (acc.mandal || "").toLowerCase();
+                return target11Names.some(t => mName.includes(t.toLowerCase().slice(0, 5)) || t.toLowerCase().includes(mName.slice(0, 5)));
+            }
+            return true;
+        });
+
+        // Ensure all 11 target mandals are present
+        asr11Accounts.slice(0, 11).forEach(function (defAcc) {
+            const hasIt = filtered.some(function (a) {
+                return (a.district || "").toLowerCase().includes("alluri") &&
+                    ((a.mandal || "").toLowerCase() === defAcc.mandal.toLowerCase() ||
+                        (a.username || "").toLowerCase() === defAcc.username.toLowerCase());
+            });
+            if (!hasIt) {
+                filtered.unshift(defAcc);
+            }
+        });
+
+        localStorage.setItem("disasterMandalAccounts", JSON.stringify(filtered));
     }
 }
 
@@ -844,9 +1081,10 @@ function openLogin(role) {
         }
         if (demoCredentialsEl) {
             demoCredentialsEl.innerHTML = `
-                <span>• Approved Mandal: <code>mandal_vja_rural</code> / <code>mandal123</code> (Krishna)</span><br>
-                <span>• Pending Approval: <code>mandal_gudivada</code> / <code>mandal123</code> (Requires Admin approval)</span><br>
-                <span>• Chennai Mandal: <code>mandal_mylapore</code> / <code>mandal123</code></span>
+                <span>• Approved: <code>mandal_paderu</code> / <code>mandal123</code> (Paderu)</span><br>
+                <span>• Approved: <code>mandal_araku</code> / <code>mandal123</code> (Araku Valley)</span><br>
+                <span>• Approved: <code>mandal_ananthagiri</code> / <code>mandal123</code> (Ananthagiri)</span><br>
+                <span>• Pending Approval: <code>mandal_chintapalle</code> / <code>mandal123</code> (Chintapalle - Admin Flow)</span>
             `;
         }
     } else if (role === "Admin") {
@@ -858,9 +1096,8 @@ function openLogin(role) {
         }
         if (demoCredentialsEl) {
             demoCredentialsEl.innerHTML = `
-                <span>• Krishna District Admin: <code>admin_krishna</code> / <code>admin123</code></span><br>
-                <span>• General Admin: <code>admin</code> / <code>admin123</code></span><br>
-                <span>• Chennai District Admin: <code>admin_chennai</code> / <code>admin123</code></span>
+                <span>• District Admin: <code>admin_asr</code> or <code>admin</code> / <code>admin123</code> (Alluri Sitharama Raju)</span><br>
+                <span>• Krishna Admin: <code>admin_krishna</code> / <code>admin123</code></span>
             `;
         }
     } else if (role === "Volunteer") {
@@ -1255,7 +1492,7 @@ function loginUser(event) {
             }) : null);
 
             const isPending = (target && (target.status === "Pending" || target.approvalStatus === "Pending" || target.status === "New")) ||
-                              (account && (account.status === "Pending" || account.approvalStatus === "Pending"));
+                (account && (account.status === "Pending" || account.approvalStatus === "Pending"));
 
             if (isPending) {
                 const targetMandal = (target && target.mandal) || "local";
@@ -1747,8 +1984,8 @@ function trackHelpRequest() {
     const requests = JSON.parse(localStorage.getItem("disasterHelpRequests") || "[]");
     const request = requests.find(function (item) {
         return (item.trackId && item.trackId.toUpperCase() === query) ||
-               String(item.id) === query ||
-               (item.mobileNumber && item.mobileNumber === query);
+            String(item.id) === query ||
+            (item.mobileNumber && item.mobileNumber === query);
     });
 
     if (!query) {
@@ -2107,7 +2344,7 @@ window.viewLatestSmsAlert = function () { openSmsNotificationModal(); };
 
 // Initialize password toggle handlers and export helpers
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         setupLoginPasswordListeners();
         initHomePageSmsBanner();
     });
@@ -2346,21 +2583,160 @@ async function openWeatherDetailModal(districtName) {
                 windBoxEl.textContent = "Wind conditions within safe operational limits for field relief and boats.";
             }
         }
+
+        const officialAlertBox = document.getElementById("weatherModalOfficialAlertText");
+        if (officialAlertBox) {
+            officialAlertBox.innerHTML = `⚠️ <strong>IMD Weather Advisory:</strong> Monsoon low-pressure system active over Bay of Bengal. Heavy to very heavy rainfall & thunderstorm warning over Andhra Pradesh coastal districts. View live updates directly from <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer" class="fw-bold text-danger text-decoration-underline">IMD Mausam (Govt of India)</a>. Helpline: 112 / 1077.`;
+        }
     } catch (e) {
         console.warn("Open-Meteo weather load error:", e);
     }
 }
 window.openWeatherDetailModal = openWeatherDetailModal;
 
-// Event Listeners for Citizen Weather
+// =====================================================
+// OFFICIAL IMD LIVE WEATHER & TOP SCROLLING ALERT BAR
+// Source: https://mausam.imd.gov.in/index_en.php
+// =====================================================
+
+const IMD_OFFICIAL_URL = "https://mausam.imd.gov.in/index_en.php";
+
+const DEFAULT_IMD_UPDATES = [
+    {
+        badge: "EXTENDED FORECAST",
+        badgeClass: "bg-danger",
+        title: "IMD Extended Range Forecast (22 Oct - 04 Nov 2026): Active monsoon conditions & cyclonic circulation over Bay of Bengal. Heavy to very heavy rainfall forecast over Coastal Andhra Pradesh and Rayalaseema.",
+        url: "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2022.10.26.pdf"
+    },
+    {
+        badge: "COASTAL WARNING",
+        badgeClass: "bg-danger",
+        title: "Squally Winds Warning: Gusty winds 45-55 kmph reaching 65 kmph along Andhra Pradesh & Bay of Bengal coast. Fishermen advised not to venture into sea.",
+        url: "https://mausam.imd.gov.in/responsive/subDivisionWiseWarningGIS.php"
+    },
+    {
+        badge: "NOWCAST ALERT",
+        badgeClass: "bg-warning text-dark",
+        title: "IMD District Nowcast: Thunderstorms accompanied by lightning, intense rain and gusty surface winds over Krishna, NTR, Guntur, Bapatla, Alluri Sitharama Raju and Visakhapatnam.",
+        url: "https://mausam.imd.gov.in/responsive/districtWiseNowcastGIS.php"
+    },
+    {
+        badge: "PRESS RELEASE",
+        badgeClass: "bg-info text-dark",
+        title: "Press Release Date: 26th October 2026 — Current Weather Status and All-India Severe Weather Warnings.",
+        url: "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2026-10-2026.pdf"
+    },
+    {
+        badge: "प्रेस विज्ञप्ति",
+        badgeClass: "bg-warning text-dark",
+        title: "प्रेस विज्ञप्ति तारीखः 26 अक्टूबर, 2026 — भारत मौसम विज्ञान विभाग (IMD Mausam)",
+        url: "https://mausam.imd.gov.in/Forecast/marquee_data/%E0%A4%B5%E0%A4%BF%E0%A4%9C%E0%A5%8D%E0%A4%9E%E0%A4%AA%E0%A5%8D%E0%A4%A4%E0%A4%BF%2026.10.2026.pdf"
+    },
+    {
+        badge: "FLASH FLOOD",
+        badgeClass: "bg-danger",
+        title: "Flash Flood Guidance Bulletin: Inundation risk in low-lying riparian mandals along Godavari & Krishna river drainage basins.",
+        url: "https://mausam.imd.gov.in/responsive/flashFloodBulletin.php"
+    }
+];
+
+let liveImdDataCache = null;
+
+async function loadImdLiveWeatherFeed() {
+    try {
+        const res = await fetch("/api/imd-weather", { cache: "no-cache" });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.marqueeUpdates && data.marqueeUpdates.length > 0) {
+                liveImdDataCache = data;
+                renderImdTopAlertBar(data);
+                syncPreDisasterSmsWithImd(data);
+                return;
+            }
+        }
+    } catch (e) {
+        // Fallback for static hosting
+    }
+
+    const fallbackData = {
+        sourceUrl: IMD_OFFICIAL_URL,
+        sourceName: "India Meteorological Department (IMD) - Mausam",
+        marqueeUpdates: DEFAULT_IMD_UPDATES,
+        observation: {
+            station: "Safdarjung / Andhra Pradesh Stations",
+            temp: 19,
+            condition: "Mist / Scattered Rain",
+            humidity: 92,
+            wind: "Calm 1.9 Km/h",
+            time: "2026-10-27 08:30 IST"
+        }
+    };
+    liveImdDataCache = fallbackData;
+    renderImdTopAlertBar(fallbackData);
+    syncPreDisasterSmsWithImd(fallbackData);
+}
+
+function renderImdTopAlertBar(data) {
+    const track = document.getElementById("imdTickerTrack");
+    if (!track) return;
+
+    const items = (data && data.marqueeUpdates && data.marqueeUpdates.length > 0) ? data.marqueeUpdates : DEFAULT_IMD_UPDATES;
+    let itemsHtml = "";
+
+    items.forEach(item => {
+        const badgeClass = item.badgeClass || (item.badge.includes("WARNING") || item.badge.includes("FLOOD") ? "bg-danger" : "bg-warning text-dark");
+        const url = item.url || IMD_OFFICIAL_URL;
+        itemsHtml += `
+            <span class="imd-ticker-item">
+                <span class="badge ${badgeClass} me-1">${item.badge}</span>
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none" title="View Official IMD Document / Advisory">
+                    <strong>${item.title}</strong>
+                </a>
+            </span>
+            <span class="imd-ticker-divider">•</span>
+        `;
+    });
+
+    track.innerHTML = itemsHtml + itemsHtml;
+}
+
+function pauseImdTicker() {
+    const track = document.getElementById("imdTickerTrack");
+    if (track) track.classList.add("paused");
+}
+
+function resumeImdTicker() {
+    const track = document.getElementById("imdTickerTrack");
+    if (track) track.classList.remove("paused");
+}
+
+function syncPreDisasterSmsWithImd(data) {
+    const smsEl = document.getElementById("latestSmsText");
+    if (!smsEl) return;
+    const firstWarning = (data && data.marqueeUpdates && data.marqueeUpdates[0]) ? data.marqueeUpdates[0].title : null;
+    if (firstWarning) {
+        smsEl.innerHTML = `⚠️ <strong>OFFICIAL IMD EARLY WARNING:</strong> ${firstWarning} <a href="${IMD_OFFICIAL_URL}" target="_blank" class="text-warning text-decoration-underline ms-1 fw-bold">(Source: mausam.imd.gov.in)</a>`;
+    }
+}
+
+window.loadImdLiveWeatherFeed = loadImdLiveWeatherFeed;
+window.pauseImdTicker = pauseImdTicker;
+window.resumeImdTicker = resumeImdTicker;
+
+// Event Listeners for Citizen Weather & IMD Top Alert Bar
 if (typeof window !== "undefined") {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function () {
             loadCitizenLiveWeather();
+            loadImdLiveWeatherFeed();
         });
     } else {
         loadCitizenLiveWeather();
+        loadImdLiveWeatherFeed();
     }
+
+    // Periodic refresh of IMD feed every 3 minutes
+    setInterval(loadImdLiveWeatherFeed, 180000);
 
     const weatherDistSelectEl = document.getElementById("weatherDistrictSelect");
     if (weatherDistSelectEl) {
@@ -2373,7 +2749,9 @@ if (typeof window !== "undefined") {
         btnRefreshWeatherModalEl.addEventListener("click", function () {
             const dist = weatherDistSelectEl ? weatherDistSelectEl.value : null;
             openWeatherDetailModal(dist);
+            loadImdLiveWeatherFeed();
         });
     }
 }
-
+
+

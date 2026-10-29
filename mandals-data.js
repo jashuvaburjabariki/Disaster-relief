@@ -46,9 +46,17 @@ const mandalsByDistrictData = {
     // ANDHRA PRADESH (ALL 26 DISTRICTS)
     // ==========================================
     "Alluri Sitharama Raju": [
-        "Paderu", "Araku Valley", "Ananthagiri", "Chintapalli", "G.K. Veedhi",
-        "Rampachodavaram", "Maredumilli", "Devipatnam", "Y. Ramavaram", "Koyyuru",
-        "Pedabayalu", "Munchingiputtu", "Dumbriguda", "Hukumpeta", "G. Madugula"
+        "Ananthagiri",
+        "Araku Valley",
+        "Chintapalle (Chinthapalli)",
+        "Dumbriguda",
+        "G. Madugula",
+        "Gudem Kotha Veedhi (G.K. Veedhi)",
+        "Hukumpeta",
+        "Koyyuru",
+        "Munchingi Puttu",
+        "Paderu",
+        "Peda Bayalu"
     ],
     "Anakapalli": [
         "Anakapalli", "Chodavaram", "Kasimkota", "Parawada", "Atchutapuram",

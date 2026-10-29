@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,807 +13,900 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about.css">
 </head>
-<body>
 
-<!-- =====================================================
+<body class="has-imd-topbar">
+
+    <!-- =====================================================
+     OFFICIAL IMD LIVE WEATHER SCROLLING ALERT BAR (TOP POSITION)
+     Source: https://mausam.imd.gov.in/index_en.php
+===================================================== -->
+    <div class="imd-top-alert-scroll-bar" id="imdTopAlertBar" role="region"
+        aria-label="Official IMD Weather Alerts Ticker">
+        <div class="imd-alert-badge-wrap">
+            <span class="imd-pulse-indicator"></span>
+            <span class="imd-alert-badge">
+                <i class="bi bi-broadcast"></i> IMD LIVE ALERT
+            </span>
+            <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                class="imd-source-tag" title="Official India Meteorological Department (IMD) Portal">
+                mausam.imd.gov.in <i class="bi bi-patch-check-fill text-warning ms-1"></i>
+            </a>
+        </div>
+
+        <div class="imd-ticker-container" id="imdTickerContainer" onmouseenter="pauseImdTicker()"
+            onmouseleave="resumeImdTicker()">
+            <div class="imd-ticker-track" id="imdTickerTrack">
+                <span class="imd-ticker-item">
+                    <span class="badge bg-danger me-1">WARNING</span>
+                    <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                        class="text-white text-decoration-none">
+                        <strong>IMD Extended Range Forecast (22 Oct - 04 Nov 2026):</strong> Heavy to very heavy
+                        rainfall & thunderstorm warning over Coastal Andhra Pradesh, Rayalaseema & coastal belts.
+                    </a>
+                </span>
+                <span class="imd-ticker-divider">•</span>
+                <span class="imd-ticker-item">
+                    <span class="badge bg-danger me-1">SQUALLY WINDS</span>
+                    <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                        class="text-white text-decoration-none">
+                        <strong>AP Coastal Alert:</strong> Strong winds 45-55 kmph gusting to 65 kmph along Andhra
+                        coast. Fishermen advised not to venture into sea.
+                    </a>
+                </span>
+                <span class="imd-ticker-divider">•</span>
+                <span class="imd-ticker-item">
+                    <span class="badge bg-warning text-dark me-1">NOWCAST</span>
+                    <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                        class="text-white text-decoration-none">
+                        <strong>District Nowcast:</strong> Thunderstorms with lightning & gusty surface winds across
+                        Krishna, NTR, Guntur, Bapatla, Visakhapatnam.
+                    </a>
+                </span>
+                <span class="imd-ticker-divider">•</span>
+                <span class="imd-ticker-item">
+                    <span class="badge bg-info text-dark me-1">PRESS RELEASE</span>
+                    <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                        class="text-white text-decoration-underline">
+                        Press Release Date: 26th October 2026 — IMD Mausam Govt of India
+                    </a>
+                </span>
+                <span class="imd-ticker-divider">•</span>
+                <span class="imd-ticker-item">
+                    <span class="badge bg-primary me-1">STATION OBS</span>
+                    <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                        class="text-white text-decoration-none">
+                        Observation Time: 2026-10-27 08:30 IST · Conditions: Mist & Scattered Showers (92% Humidity).
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <div class="imd-actions-wrap">
+            <button type="button" class="btn btn-sm imd-weather-modal-btn" onclick="openWeatherDetailModal()"
+                title="View Detailed Weather Report & Forecast">
+                <i class="bi bi-cloud-sun-fill me-1"></i> Weather Details
+            </button>
+            <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                class="btn btn-sm imd-portal-btn" title="Open Official IMD Mausam Website">
+                <i class="bi bi-box-arrow-up-right me-1"></i> IMD Portal
+            </a>
+        </div>
+    </div>
+
+    <!-- =====================================================
      NAVBAR
 ===================================================== -->
 
-<nav class="navbar navbar-expand-lg fixed-top scrolled" id="mainNavbar">
-    <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand" href="index.html">
-            <span class="brand-logo">
-                <i class="bi bi-shield-fill-check"></i>
-            </span>
-            <span>
-                DISASTER <strong>RELIEF</strong>
-            </span>
-        </a>
-
-        <!-- Mobile Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
-            <i class="bi bi-list"></i>
-        </button>
-
-        <!-- Menu -->
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav ms-auto align-items-lg-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="about.html">About</a>
-                </li>
-
-                <!-- LIVE WEATHER REPORT WIDGET -->
-                <li class="nav-item ms-lg-2 me-lg-2 my-1 my-lg-0">
-                    <div class="weather-topbar-widget" id="citizenWeatherWidget" role="button" tabindex="0"
-                        title="Click to view Live Weather Report & Warnings" onclick="openWeatherDetailModal()">
-                        <div class="weather-topbar-icon" id="citizenWeatherIcon"><i class="bi bi-cloud-rain-fill text-info"></i></div>
-                        <div class="weather-topbar-info">
-                            <div class="weather-temp-row">
-                                <strong id="citizenWeatherTemp">29°C</strong>
-                                <span class="badge bg-danger text-white py-0 px-1" id="citizenWeatherBadge" style="font-size: 8.5px;">Rain Watch</span>
-                            </div>
-                            <small id="citizenWeatherCondition">Scattered Rain · Andhra Pradesh</small>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- LOGIN DROPDOWN -->
-
-                <li class="nav-item dropdown ms-lg-3">
-
-                    <button
-                        class="btn login-btn dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                    >
-
-                        <i class="bi bi-person-circle"></i>
-                        Login
-
-                    </button>
-
-
-                    <ul class="dropdown-menu dropdown-menu-end login-menu">
-
-                        <li>
-                            <h6 class="dropdown-header">
-                                Choose Login Role
-                            </h6>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                onclick="openLogin('Volunteer')"
-                            >
-                                <i class="bi bi-people"></i>
-                                Volunteer
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                onclick="openLogin('Mandal Employee')"
-                            >
-                                <i class="bi bi-buildings"></i>
-                                Mandal / Employee
-                            </a>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                onclick="openLogin('Admin')"
-                            >
-                                <i class="bi bi-shield-lock"></i>
-                                District Admin
-                            </a>
-                        </li>
-
-                    </ul>
-
-                </li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-</nav>
-
-<!-- =====================================================
-     ABOUT CONTENT
-===================================================== -->
-
-<section class="about-section" style="padding-top: 160px;">
-    <div class="container">
-        <!-- PRE-DISASTER MOBILE TEXT ALERT BROADCAST BANNER -->
-        <div class="pre-disaster-sms-bar mb-4 p-3 rounded-3 shadow-lg border border-danger-subtle bg-dark text-white" id="preDisasterSmsBar">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="sms-pulse-badge"><i class="bi bi-broadcast"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
-                    <span class="sms-text-preview" id="latestSmsText">
-                        ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood alert active. Follow emergency directions immediately.
-                    </span>
-                </div>
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-light fw-bold" onclick="viewLatestSmsAlert()">
-                        <i class="bi bi-phone-fill me-1"></i> View Mobile Text
-                    </button>
-                    <a href="index.html#help" class="btn btn-sm btn-light fw-bold text-danger">
-                        <i class="bi bi-life-preserver me-1"></i> Request Help
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row align-items-center g-5">
-            <!-- LEFT CONTENT -->
-            <div class="col-lg-6">
-                <span class="section-tag">
-                    ABOUT DISASTER RELIEF
+    <nav class="navbar navbar-expand-lg fixed-top scrolled" id="mainNavbar">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html">
+                <span class="brand-logo">
+                    <i class="bi bi-shield-fill-check"></i>
                 </span>
-                <h2 class="about-title">
-                    Helping communities
-                    <span>respond, recover and rebuild.</span>
-                </h2>
-                <p class="about-text">
-                    DISASTER RELIEF is a digital platform designed to
-                    connect people affected by disasters with volunteers,
-                    relief teams and administrators.
-                </p>
-                <p class="about-text">
-                    During floods, cyclones, earthquakes, landslides,
-                    fires and other emergencies, quick communication and
-                    organized support can save lives. Our platform provides
-                    a central place where citizens can request help,
-                    volunteers can offer assistance and administrators
-                    can coordinate relief activities.
-                </p>
+                <span>
+                    DISASTER <strong>RELIEF</strong>
+                </span>
+            </a>
 
-                <a href="#must-know" class="must-know-btn">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    MUST KNOW
-                </a>
+            <!-- Mobile Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <i class="bi bi-list"></i>
+            </button>
 
-                <div class="about-points">
-                    <div class="about-point">
-                        <div class="point-icon">
-                            <i class="bi bi-check-lg"></i>
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">About</a>
+                    </li>
+
+                    <!-- LIVE WEATHER REPORT WIDGET -->
+                    <li class="nav-item ms-lg-2 me-lg-2 my-1 my-lg-0">
+                        <div class="weather-topbar-widget" id="citizenWeatherWidget" role="button" tabindex="0"
+                            title="Click to view Live Weather Report & Warnings" onclick="openWeatherDetailModal()">
+                            <div class="weather-topbar-icon" id="citizenWeatherIcon"><i
+                                    class="bi bi-cloud-rain-fill text-info"></i></div>
+                            <div class="weather-topbar-info">
+                                <div class="weather-temp-row">
+                                    <strong id="citizenWeatherTemp">29°C</strong>
+                                    <span class="badge bg-danger text-white py-0 px-1" id="citizenWeatherBadge"
+                                        style="font-size: 8.5px;">Rain Watch</span>
+                                </div>
+                                <small id="citizenWeatherCondition">Scattered Rain · Andhra Pradesh</small>
+                            </div>
                         </div>
-                        <div>
-                            <h5>Fast Emergency Response</h5>
-                            <p>Help requests can be communicated quickly to the appropriate response teams.</p>
-                        </div>
+                    </li>
+
+                    <!-- LOGIN DROPDOWN -->
+
+                    <li class="nav-item dropdown ms-lg-3">
+
+                        <button class="btn login-btn dropdown-toggle" data-bs-toggle="dropdown">
+
+                            <i class="bi bi-person-circle"></i>
+                            Login
+
+                        </button>
+
+
+                        <ul class="dropdown-menu dropdown-menu-end login-menu">
+
+                            <li>
+                                <h6 class="dropdown-header">
+                                    Choose Login Role
+                                </h6>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openLogin('Volunteer')">
+                                    <i class="bi bi-people"></i>
+                                    Volunteer
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openLogin('Mandal Employee')">
+                                    <i class="bi bi-buildings"></i>
+                                    Mandal / Employee
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openLogin('Admin')">
+                                    <i class="bi bi-shield-lock"></i>
+                                    District Admin
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+     ABOUT HERO BANNER (USING disaster hero banner.png)
+===================================================== -->
+    <section class="about-hero-section position-relative text-white overflow-hidden"
+        style="min-height: 480px; display: flex; align-items: center; padding-top: calc(130px + var(--imd-topbar-height, 42px)); padding-bottom: 70px;">
+        <!-- HERO BANNER IMAGE FROM SOURCE -->
+        <div class="about-hero-backdrop position-absolute top-0 start-0 w-100 h-100" style="z-index: 1;">
+            <img src="disaster hero banner.png" alt="Disaster Relief Hero Banner"
+                style="width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.38);">
+            <div class="position-absolute top-0 start-0 w-100 h-100"
+                style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.92) 100%);">
+            </div>
+        </div>
+
+        <div class="container position-relative" style="z-index: 2;">
+            <!-- PRE-DISASTER MOBILE TEXT ALERT BROADCAST BANNER -->
+            <div class="pre-disaster-sms-bar mb-4 p-3 rounded-3 shadow-lg border border-danger-subtle"
+                id="preDisasterSmsBar">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 w-100">
+                    <div class="d-flex align-items-center gap-2 flex-grow-1">
+                        <span class="sms-pulse-badge"><i class="bi bi-broadcast"></i> PRE-DISASTER MOBILE TEXT
+                            ALERT</span>
+                        <span class="sms-text-preview" id="latestSmsText">
+                            ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood alert active. Follow emergency
+                            directions immediately.
+                        </span>
                     </div>
-                    <div class="about-point">
-                        <div class="point-icon">
-                            <i class="bi bi-check-lg"></i>
-                        </div>
-                        <div>
-                            <h5>Community Participation</h5>
-                            <p>Citizens and volunteers can work together to support affected communities.</p>
-                        </div>
-                    </div>
-                    <div class="about-point">
-                        <div class="point-icon">
-                            <i class="bi bi-check-lg"></i>
-                        </div>
-                        <div>
-                            <h5>Organized Relief Management</h5>
-                            <p>Relief activities can be managed through a centralized platform.</p>
-                        </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-light fw-bold text-nowrap"
+                            onclick="viewLatestSmsAlert()">
+                            <i class="bi bi-phone-fill me-1"></i> View Mobile Text
+                        </button>
+                        <a href="index.html#help" class="btn btn-sm btn-light fw-bold text-danger text-nowrap">
+                            <i class="bi bi-life-preserver me-1"></i> Request Help
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- RIGHT SIDE -->
-            <div class="col-lg-6">
-                <div class="about-visual">
-                    <div class="about-circle circle-one"></div>
-                    <div class="about-circle circle-two"></div>
-                    <div class="about-main-card">
-                        <div class="about-card-icon">
-                            <i class="bi bi-shield-fill-check"></i>
-                        </div>
-                        <span>OUR MISSION</span>
-                        <h3>
-                            Stronger communities.
-                            Faster response.
-                        </h3>
-                        <p>Building a connected emergency response ecosystem for safer communities.</p>
+            <div class="row align-items-center">
+                <div class="col-lg-9">
+                    <div class="alert-pill mb-3"
+                        style="background: rgba(239, 68, 68, 0.22); border: 1px solid rgba(239, 68, 68, 0.45); color: #fff; padding: 6px 16px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px;">
+                        <span class="pulse-dot"></span>
+                        <span class="small font-monospace text-uppercase fw-bold">Official Emergency Operations</span>
                     </div>
-                    <!-- Floating cards -->
-                    <div class="floating-card floating-card-one">
-                        <div class="floating-icon red-bg">
-                            <i class="bi bi-heart-pulse-fill"></i>
+                    <p class="eyebrow text-uppercase fw-bold text-warning mb-2" style="letter-spacing: 2px;">
+                        ABOUT DISASTER RELIEF • HUMANITARIAN RESPONSE
+                    </p>
+                    <h1 class="display-4 fw-extrabold text-white mb-3"
+                        style="letter-spacing: -1.2px; line-height: 1.15;">
+                        Dedicated to Protecting Lives & Supporting Recovery Across India.
+                    </h1>
+                    <p class="lead text-white-50 mb-4" style="max-width: 720px; font-size: 1.15rem; line-height: 1.6;">
+                        A centralized emergency response network coordinating instant early warnings, shelter
+                        administration, volunteer deployment, and relief distribution across 11 frontline mandals.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#about-mission" class="btn btn-danger btn-lg px-4 py-2 fw-bold shadow">
+                            <i class="bi bi-info-circle me-1"></i> Explore Operational Mission
+                        </a>
+                        <a href="#must-know" class="btn btn-outline-light btn-lg px-4 py-2 fw-bold">
+                            <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i> Preparedness Guides
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================================
+     ABOUT CONTENT SECTION (EXACT SCREENSHOT INFORMATION)
+===================================================== -->
+    <section class="about-section py-5" id="about-mission"
+        style="background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
+                <!-- LEFT CONTENT -->
+                <div class="col-lg-6">
+                    <span class="section-tag mb-2 d-inline-block text-danger fw-bold">
+                        <i class="bi bi-shield-fill-check me-1"></i> ABOUT DISASTER RELIEF
+                    </span>
+                    <h2 class="about-title display-6 fw-extrabold text-dark mb-3">
+                        Helping communities
+                        <span class="text-danger">respond, recover and rebuild.</span>
+                    </h2>
+                    <p class="about-text text-muted mb-3" style="line-height: 1.7; font-size: 1.05rem;">
+                        DISASTER RELIEF is a high-speed emergency response platform designed to connect people affected
+                        by disasters with local volunteers, mandal relief desks, and district administrators.
+                    </p>
+                    <p class="about-text text-muted mb-4" style="line-height: 1.7; font-size: 1.05rem;">
+                        During floods, cyclones, landslides, and extreme weather emergencies, rapid communication and
+                        organized assistance save lives. Our system operates 24/7 across 11 frontline mandals in Alluri
+                        Sitharama Raju and coastal Andhra Pradesh.
+                    </p>
+
+                    <!-- Core Pillars -->
+                    <div class="about-points d-flex flex-column gap-3 mb-4">
+                        <div
+                            class="d-flex gap-3 align-items-start p-3 bg-white rounded-3 shadow-sm border border-light">
+                            <div class="rounded-circle bg-danger-subtle text-danger p-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 40px; height: 40px;">
+                                <i class="bi bi-lightning-charge-fill fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Rapid Early Warning & SMS Broadcast</h6>
+                                <p class="text-muted small mb-0">Pre-disaster mobile text warnings dispatched directly
+                                    to citizens and response teams before severe weather impacts.</p>
+                            </div>
                         </div>
-                        <div>
-                            <strong>Emergency</strong>
-                            <small>Support</small>
+                        <div
+                            class="d-flex gap-3 align-items-start p-3 bg-white rounded-3 shadow-sm border border-light">
+                            <div class="rounded-circle bg-primary-subtle text-primary p-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 40px; height: 40px;">
+                                <i class="bi bi-people-fill fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Mandal-Level Volunteer Dispatch</h6>
+                                <p class="text-muted small mb-0">Local volunteers assigned in real time to verify
+                                    citizen emergencies, provide first aid, and evacuate families.</p>
+                            </div>
+                        </div>
+                        <div
+                            class="d-flex gap-3 align-items-start p-3 bg-white rounded-3 shadow-sm border border-light">
+                            <div class="rounded-circle bg-success-subtle text-success p-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 40px; height: 40px;">
+                                <i class="bi bi-house-heart-fill fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Shelter & Relief Inventory Control</h6>
+                                <p class="text-muted small mb-0">Live monitoring of emergency shelters, meal boxes,
+                                    clean drinking water, and medical supplies.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="floating-card floating-card-two">
-                        <div class="floating-icon green-bg">
-                            <i class="bi bi-people-fill"></i>
-                        </div>
-                        <div>
-                            <strong>Community</strong>
-                            <small>Volunteers</small>
-                        </div>
+
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="#must-know" class="btn btn-danger fw-bold px-4 py-2 shadow-sm">
+                            <i class="bi bi-book-half me-1"></i> Explore Full Preparedness Guide
+                        </a>
+                        <a href="#must-know" class="btn btn-outline-secondary fw-bold px-4 py-2">
+                            <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i> Must Know Action Cards
+                        </a>
                     </div>
-                    <div class="floating-card floating-card-three">
-                        <div class="floating-icon blue-bg">
-                            <i class="bi bi-broadcast-pin"></i>
+                </div>
+
+                <!-- RIGHT CARD (EXACT MATCH TO USER SCREENSHOT) -->
+                <div class="col-lg-6">
+                    <div class="p-4 p-md-5 rounded-4 shadow-lg bg-white border position-relative overflow-hidden"
+                        style="box-shadow: 0 16px 40px rgba(0,0,0,0.08)!important;">
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <img src="alluri-sitharama-raju-district.webp" alt="Alluri Sitharama Raju District"
+                                style="height: 60px; width: auto; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafafa; padding: 2px;">
+                            <div>
+                                <span class="badge bg-danger-subtle text-danger fw-bold border mb-1"
+                                    style="font-size: 10px;">MONITORED DIVISION</span>
+                                <h4 class="fw-bold text-dark mb-0">Alluri Sitharama Raju</h4>
+                                <small class="text-muted">11 Active Mandals · Andhra Pradesh</small>
+                            </div>
                         </div>
-                        <div>
-                            <strong>Real-Time</strong>
-                            <small>Information</small>
+
+                        <h5 class="fw-bold mb-2">Our Operational Mission</h5>
+                        <p class="text-muted small mb-4" style="line-height: 1.6;">
+                            Connecting every village, tribal hamlet, and coastal settlement to immediate disaster
+                            response, life-saving shelter, and humanitarian assistance.
+                        </p>
+
+                        <!-- Mandals Quick Grid -->
+                        <h6 class="fw-bold text-uppercase small text-muted mb-2"
+                            style="font-size: 11px; letter-spacing: 0.5px;">COVERED FRONTLINE MANDALS:</h6>
+                        <div class="d-flex flex-wrap gap-1 mb-4">
+                            <span class="badge bg-light text-dark border">Paderu</span>
+                            <span class="badge bg-light text-dark border">Araku Valley</span>
+                            <span class="badge bg-light text-dark border">Ananthagiri</span>
+                            <span class="badge bg-light text-dark border">Chintapalle</span>
+                            <span class="badge bg-light text-dark border">Dumbriguda</span>
+                            <span class="badge bg-light text-dark border">G. Madugula</span>
+                            <span class="badge bg-light text-dark border">G.K. Veedhi</span>
+                            <span class="badge bg-light text-dark border">Hukumpeta</span>
+                            <span class="badge bg-light text-dark border">Koyyuru</span>
+                            <span class="badge bg-light text-dark border">Munchingi Puttu</span>
+                            <span class="badge bg-light text-dark border">Peda Bayalu</span>
+                        </div>
+
+                        <div class="row g-2 text-center">
+                            <div class="col-4">
+                                <div class="p-2 rounded bg-light border">
+                                    <strong class="d-block fs-5 text-danger">24/7</strong>
+                                    <small class="text-muted" style="font-size: 11px;">Relief Helpline</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 rounded bg-light border">
+                                    <strong class="d-block fs-5 text-primary">11</strong>
+                                    <small class="text-muted" style="font-size: 11px;">Mandals Online</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 rounded bg-light border">
+                                    <strong class="d-block fs-5 text-success">100%</strong>
+                                    <small class="text-muted" style="font-size: 11px;">Dedicated Action</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- ABOUT STATS -->
-        <div class="row about-stats mt-5">
-            <div class="col-md-3 col-6">
-                <div class="about-stat">
-                    <i class="bi bi-clock-history"></i>
-                    <strong>24/7</strong>
-                    <span>Emergency Support</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="about-stat">
-                    <i class="bi bi-people"></i>
-                    <strong>3</strong>
-                    <span>User Roles</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="about-stat">
-                    <i class="bi bi-shield-check"></i>
-                    <strong>100%</strong>
-                    <span>Dedicated Support</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="about-stat">
-                    <i class="bi bi-geo-alt"></i>
-                    <strong>India</strong>
-                    <span>Nationwide Coverage</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- =====================================================
+    <!-- =====================================================
      MUST KNOW
 ===================================================== -->
 
-<section class="must-know-section" id="must-know">
-    <div class="container">
+    <section class="must-know-section" id="must-know">
+        <div class="container">
 
-        <div class="section-heading text-center">
-            <span class="section-tag">DISASTER TYPES & PREPAREDNESS</span>
-            <h2>
-                Know the disaster.
-                <span>Know the action.</span>
-            </h2>
-        </div>
-
-        <div class="row g-4 disaster-grid">
-
-            <div class="col-lg-6">
-                <article class="disaster-card flood-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">🌊</span>
-                        <h3>Flood</h3>
-                    </div>
-                    <p>Heavy rain, river overflow, flash floods</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Keep emergency kit, identify higher ground, protect important documents</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Move to higher ground, avoid floodwater, follow official warnings</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Avoid contaminated water and return only when authorities say it is safe</span>
-                    </div>
-                </article>
+            <div class="section-heading text-center">
+                <span class="section-tag">DISASTER TYPES & PREPAREDNESS</span>
+                <h2>
+                    Know the disaster.
+                    <span>Know the action.</span>
+                </h2>
             </div>
 
-            <div class="col-lg-6">
-                <article class="disaster-card cyclone-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">🌪️</span>
-                        <h3>Cyclone</h3>
-                    </div>
-                    <p>Strong winds, storm surge</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Secure doors and windows, store food and water, charge phones</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Stay indoors away from windows and follow official alerts</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Watch for damaged buildings, fallen wires and flooding</span>
-                    </div>
-                </article>
-            </div>
+            <div class="row g-4 disaster-grid">
 
-            <div class="col-lg-6">
-                <article class="disaster-card quake-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">🌎</span>
-                        <h3>Earthquake</h3>
-                    </div>
-                    <p>Ground shaking</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Secure heavy furniture and prepare an emergency kit</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Drop, Cover, Hold On and stay away from windows</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Check injuries, gas leaks and structural damage; expect aftershocks</span>
-                    </div>
-                </article>
-            </div>
-
-            <div class="col-lg-6">
-                <article class="disaster-card fire-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">🔥</span>
-                        <h3>Fire</h3>
-                    </div>
-                    <p>Building, forest, electrical fire</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Install smoke alarms, keep exits clear and learn evacuation routes</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Raise the alarm, evacuate, stay low in smoke and call emergency services</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Do not re-enter until authorities declare it safe</span>
-                    </div>
-                </article>
-            </div>
-
-            <div class="col-lg-6">
-                <article class="disaster-card storm-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">⛈️</span>
-                        <h3>Thunderstorm / Lightning</h3>
-                    </div>
-                    <p>Lightning, strong winds</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Monitor weather warnings and identify the safest shelter</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Go indoors, stay away from windows and electrical equipment</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Avoid damaged power lines and report hazards immediately</span>
-                    </div>
-                </article>
-            </div>
-
-            <div class="col-lg-6">
-                <article class="disaster-card landslide-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">🌋</span>
-                        <h3>Landslide</h3>
-                    </div>
-                    <p>Heavy rain, unstable slopes</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Know landslide-prone areas and monitor warnings</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Move away from slopes and drainage channels when warned</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Stay away from unstable areas and damaged roads</span>
-                    </div>
-                </article>
-            </div>
-
-            <div class="col-lg-6">
-                <article class="disaster-card heat-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">☀️</span>
-                        <h3>Heatwave</h3>
-                    </div>
-                    <p>Extreme temperatures</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Stay hydrated and plan outdoor activities carefully</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>Stay in a cool place, drink water and avoid strenuous activity</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Watch for heat illness and seek medical help when needed</span>
-                    </div>
-                </article>
-            </div>
-
-            <div class="col-lg-6">
-                <article class="disaster-card tsunami-card">
-                    <div class="disaster-top">
-                        <span class="disaster-icon">🌊</span>
-                        <h3>Tsunami</h3>
-                    </div>
-                    <p>Undersea earthquake</p>
-                    <div class="disaster-phase">
-                        <strong>Before</strong>
-                        <span>Know evacuation routes and warning signs</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>During</strong>
-                        <span>If near the coast, move quickly to higher ground or inland</span>
-                    </div>
-                    <div class="disaster-phase">
-                        <strong>After</strong>
-                        <span>Stay away from the coast until authorities give an all-clear</span>
-                    </div>
-                </article>
-            </div>
-
-        </div>
-
-        <div class="must-know-bottom">
-            <div class="kit-card">
-                <div class="kit-card-header">
-                    <span class="section-tag small-tag">EMERGENCY KIT</span>
-                    <h3>Be ready before disaster hits.</h3>
+                <div class="col-lg-6">
+                    <article class="disaster-card flood-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">🌊</span>
+                            <h3>Flood</h3>
+                        </div>
+                        <p>Heavy rain, river overflow, flash floods</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Keep emergency kit, identify higher ground, protect important documents</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Move to higher ground, avoid floodwater, follow official warnings</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Avoid contaminated water and return only when authorities say it is safe</span>
+                        </div>
+                    </article>
                 </div>
-                <ul class="kit-list">
-                    <li>💧 Drinking water</li>
-                    <li>🥫 Ready-to-eat food</li>
-                    <li>🔦 Torch</li>
-                    <li>🔋 Power bank</li>
-                    <li>📻 Battery or hand-crank radio</li>
-                    <li>🩹 First-aid kit</li>
-                    <li>💊 Essential medicines</li>
-                    <li>😷 Masks</li>
-                    <li>📄 Copies of important documents</li>
-                    <li>🧤 Basic protective clothing</li>
-                    <li>💰 Some emergency cash</li>
-                    <li>📱 Charged mobile phone</li>
-                </ul>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card cyclone-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">🌪️</span>
+                            <h3>Cyclone</h3>
+                        </div>
+                        <p>Strong winds, storm surge</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Secure doors and windows, store food and water, charge phones</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Stay indoors away from windows and follow official alerts</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Watch for damaged buildings, fallen wires and flooding</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card quake-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">🌎</span>
+                            <h3>Earthquake</h3>
+                        </div>
+                        <p>Ground shaking</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Secure heavy furniture and prepare an emergency kit</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Drop, Cover, Hold On and stay away from windows</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Check injuries, gas leaks and structural damage; expect aftershocks</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card fire-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">🔥</span>
+                            <h3>Fire</h3>
+                        </div>
+                        <p>Building, forest, electrical fire</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Install smoke alarms, keep exits clear and learn evacuation routes</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Raise the alarm, evacuate, stay low in smoke and call emergency services</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Do not re-enter until authorities declare it safe</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card storm-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">⛈️</span>
+                            <h3>Thunderstorm / Lightning</h3>
+                        </div>
+                        <p>Lightning, strong winds</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Monitor weather warnings and identify the safest shelter</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Go indoors, stay away from windows and electrical equipment</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Avoid damaged power lines and report hazards immediately</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card landslide-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">🌋</span>
+                            <h3>Landslide</h3>
+                        </div>
+                        <p>Heavy rain, unstable slopes</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Know landslide-prone areas and monitor warnings</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Move away from slopes and drainage channels when warned</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Stay away from unstable areas and damaged roads</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card heat-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">☀️</span>
+                            <h3>Heatwave</h3>
+                        </div>
+                        <p>Extreme temperatures</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Stay hydrated and plan outdoor activities carefully</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>Stay in a cool place, drink water and avoid strenuous activity</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Watch for heat illness and seek medical help when needed</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="disaster-card tsunami-card">
+                        <div class="disaster-top">
+                            <span class="disaster-icon">🌊</span>
+                            <h3>Tsunami</h3>
+                        </div>
+                        <p>Undersea earthquake</p>
+                        <div class="disaster-phase">
+                            <strong>Before</strong>
+                            <span>Know evacuation routes and warning signs</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>During</strong>
+                            <span>If near the coast, move quickly to higher ground or inland</span>
+                        </div>
+                        <div class="disaster-phase">
+                            <strong>After</strong>
+                            <span>Stay away from the coast until authorities give an all-clear</span>
+                        </div>
+                    </article>
+                </div>
+
             </div>
 
-            <div class="rule-card">
-                <span class="section-tag small-tag">BASIC RULE</span>
-                <h3>BEFORE → PREPARE</h3>
-                <p>Know the risks, make a family emergency plan, save emergency contacts and prepare supplies.</p>
-                <h3>DURING → PROTECT</h3>
-                <p>Stay calm, follow official instructions, move to a safe location and avoid unnecessary risks.</p>
-                <h3>AFTER → CHECK & HELP</h3>
-                <p>Check for injuries, avoid damaged structures and utilities, use safe water and food, and help others when it is safe.</p>
+            <div class="must-know-bottom">
+                <div class="kit-card">
+                    <div class="kit-card-header">
+                        <span class="section-tag small-tag">EMERGENCY KIT</span>
+                        <h3>Be ready before disaster hits.</h3>
+                    </div>
+                    <ul class="kit-list">
+                        <li>💧 Drinking water</li>
+                        <li>🥫 Ready-to-eat food</li>
+                        <li>🔦 Torch</li>
+                        <li>🔋 Power bank</li>
+                        <li>📻 Battery or hand-crank radio</li>
+                        <li>🩹 First-aid kit</li>
+                        <li>💊 Essential medicines</li>
+                        <li>😷 Masks</li>
+                        <li>📄 Copies of important documents</li>
+                        <li>🧤 Basic protective clothing</li>
+                        <li>💰 Some emergency cash</li>
+                        <li>📱 Charged mobile phone</li>
+                    </ul>
+                </div>
+
+                <div class="rule-card">
+                    <span class="section-tag small-tag">BASIC RULE</span>
+                    <h3>BEFORE → PREPARE</h3>
+                    <p>Know the risks, make a family emergency plan, save emergency contacts and prepare supplies.</p>
+                    <h3>DURING → PROTECT</h3>
+                    <p>Stay calm, follow official instructions, move to a safe location and avoid unnecessary risks.</p>
+                    <h3>AFTER → CHECK & HELP</h3>
+                    <p>Check for injuries, avoid damaged structures and utilities, use safe water and food, and help
+                        others when it is safe.</p>
+                </div>
             </div>
+
         </div>
+    </section>
 
-    </div>
-</section>
-
-<!-- =====================================================
+    <!-- =====================================================
      FOOTER
 ===================================================== -->
 
-<footer>
+    <footer>
 
-    <div class="container">
+        <div class="container">
 
-        <div class="row footer-main">
+            <div class="row footer-main">
 
-            <!-- BRAND -->
+                <!-- BRAND -->
 
-            <div class="col-lg-5">
+                <div class="col-lg-5">
 
-                <a href="index.html#home" class="footer-brand">
+                    <a href="index.html#home" class="footer-brand">
 
-                    <span class="brand-logo">
-                        <i class="bi bi-shield-fill-check"></i>
-                    </span>
+                        <span class="brand-logo">
+                            <i class="bi bi-shield-fill-check"></i>
+                        </span>
 
-                    DISASTER <strong>RELIEF</strong>
+                        DISASTER <strong>RELIEF</strong>
 
-                </a>
-
-                <p class="footer-description">
-
-                    A disaster relief coordination platform
-                    connecting citizens, volunteers and relief
-                    teams across India.
-
-                </p>
-
-            </div>
-
-
-            <!-- PLATFORM -->
-
-            <div class="col-6 col-lg-2">
-
-                <h6>
-                    Platform
-                </h6>
-
-                <a href="index.html#home">Home</a>
-
-                <a href="index.html#overview">Overview</a>
-
-                <a href="index.html#help">Request Help</a>
-
-            </div>
-
-
-            <!-- GET INVOLVED -->
-
-            <div class="col-6 col-lg-2">
-
-                <h6>
-                    Get Involved
-                </h6>
-
-                <a href="index.html#volunteer">
-                    Volunteer
-                </a>
-
-                <a href="index.html#donate">
-                    Donate
-                </a>
-
-            </div>
-
-
-            <!-- EMERGENCY -->
-
-            <div class="col-lg-3">
-
-                <h6>
-                    Emergency
-                </h6>
-
-                <p>
-                    <i class="bi bi-telephone"></i>
-                    112 — Emergency Services
-                </p>
-
-                <p>
-                    <i class="bi bi-geo-alt"></i>
-                    India
-                </p>
-
-
-                <div class="social-icons">
-
-                    <a href="#">
-                        <i class="bi bi-facebook"></i>
                     </a>
 
-                    <a href="#">
-                        <i class="bi bi-twitter-x"></i>
+                    <p class="footer-description">
+
+                        A disaster relief coordination platform
+                        connecting citizens, volunteers and relief
+                        teams across India.
+
+                    </p>
+
+                </div>
+
+
+                <!-- PLATFORM -->
+
+                <div class="col-6 col-lg-2">
+
+                    <h6>
+                        Platform
+                    </h6>
+
+                    <a href="index.html#home">Home</a>
+
+                    <a href="index.html#overview">Overview</a>
+
+                    <a href="index.html#help">Request Help</a>
+
+                </div>
+
+
+                <!-- GET INVOLVED -->
+
+                <div class="col-6 col-lg-2">
+
+                    <h6>
+                        Get Involved
+                    </h6>
+
+                    <a href="index.html#volunteer">
+                        Volunteer
                     </a>
 
-                    <a href="#">
-                        <i class="bi bi-instagram"></i>
+                    <a href="index.html#donate">
+                        Donate
                     </a>
 
-                    <a href="#">
-                        <i class="bi bi-linkedin"></i>
-                    </a>
+                </div>
+
+
+                <!-- EMERGENCY -->
+
+                <div class="col-lg-3">
+
+                    <h6>
+                        Emergency
+                    </h6>
+
+                    <p>
+                        <i class="bi bi-telephone"></i>
+                        112 — Emergency Services
+                    </p>
+
+                    <p>
+                        <i class="bi bi-geo-alt"></i>
+                        India
+                    </p>
+
+
+                    <div class="social-icons">
+
+                        <a href="#">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+
+                    </div>
 
                 </div>
 
             </div>
 
+
+            <div class="footer-bottom">
+
+                <span>
+                    © 2026 DISASTER RELIEF. All rights reserved.
+                </span>
+
+                <span>
+                    Built for safer communities.
+                </span>
+
+            </div>
+
         </div>
 
-
-        <div class="footer-bottom">
-
-            <span>
-                © 2026 DISASTER RELIEF. All rights reserved.
-            </span>
-
-            <span>
-                Built for safer communities.
-            </span>
-
-        </div>
-
-    </div>
-
-</footer>
+    </footer>
 
 
 
-<!-- =====================================================
+    <!-- =====================================================
      LOGIN MODAL
 ===================================================== -->
 
-<div
-    class="modal fade"
-    id="loginModal"
-    tabindex="-1"
->
+    <div class="modal fade" id="loginModal" tabindex="-1">
 
-    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
 
-        <div class="modal-content login-modal">
+            <div class="modal-content login-modal">
 
-            <div class="modal-header">
+                <div class="modal-header">
 
-                <div>
+                    <div>
 
-                    <span class="section-tag">
-                        SECURE ACCESS
-                    </span>
+                        <span class="section-tag">
+                            SECURE ACCESS
+                        </span>
 
-                    <h3>
-                        <span id="loginRole">Mandal / Employee</span> Login
-                    </h3>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                ></button>
-
-            </div>
-
-
-            <div class="modal-body">
-
-                <!-- Role Selector Tabs -->
-                <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border flex-wrap">
-                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-primary" onclick="openLogin('Mandal Employee')">Mandal / Employee</button>
-                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="openLogin('Volunteer')">Volunteer</button>
-                    <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="openLogin('Admin')">District Admin</button>
-                </div>
-
-                <div id="loginRoleNotice" class="alert alert-info py-2 px-3 small mb-3" style="display: none;"></div>
-
-                <p id="loginModalSubtitle">
-                    Sign in to access your DISASTER RELIEF dashboard.
-                </p>
-
-                <form onsubmit="loginUser(event)">
-
-                    <div class="form-group">
-
-                        <label id="loginUsernameLabel">
-                            Username
-                        </label>
-
-                        <input
-                            id="loginUsername"
-                            type="text"
-                            autocomplete="username"
-                            placeholder="Enter username"
-                            required
-                        >
+                        <h3>
+                            <span id="loginRole">Mandal / Employee</span> Login
+                        </h3>
 
                     </div>
 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
-                    <div class="form-group">
+                </div>
 
-                        <label for="loginPassword">
-                            Password
-                        </label>
 
-                        <div class="password-input-wrap position-relative">
-                            <input
-                                id="loginPassword"
-                                type="password"
-                                autocomplete="current-password"
-                                placeholder="Enter password"
-                                required
-                            >
-                            <button
-                                type="button"
-                                class="password-toggle-btn"
-                                id="showPasswordToggleBtn"
-                                aria-label="Show password"
-                                title="Show password"
-                                style="display: none;"
-                            >
-                                <i class="bi bi-eye" id="showPasswordToggleIcon"></i>
-                                <span id="showPasswordToggleText">Show</span>
-                            </button>
+                <div class="modal-body">
+
+                    <!-- Role Selector Tabs -->
+                    <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border flex-wrap">
+                        <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-primary"
+                            onclick="openLogin('Mandal Employee')">Mandal / Employee</button>
+                        <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary"
+                            onclick="openLogin('Volunteer')">Volunteer</button>
+                        <button type="button" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary"
+                            onclick="openLogin('Admin')">District Admin</button>
+                    </div>
+
+                    <div id="loginRoleNotice" class="alert alert-info py-2 px-3 small mb-3" style="display: none;">
+                    </div>
+
+                    <p id="loginModalSubtitle">
+                        Sign in to access your DISASTER RELIEF dashboard.
+                    </p>
+
+                    <form onsubmit="loginUser(event)">
+
+                        <div class="form-group">
+
+                            <label id="loginUsernameLabel">
+                                Username
+                            </label>
+
+                            <input id="loginUsername" type="text" autocomplete="username" placeholder="Enter username"
+                                required>
+
                         </div>
 
-                    </div>
 
-                    <div class="login-options">
-                        <div class="d-flex align-items-center gap-3">
-                            <label class="remember-option">
-                                <input id="rememberPassword" type="checkbox">
-                                Remember password
+                        <div class="form-group">
+
+                            <label for="loginPassword">
+                                Password
                             </label>
-                            <label class="remember-option show-password-option" id="showPasswordCheckboxLabel" style="display: none;">
-                                <input id="showPasswordCheckbox" type="checkbox">
-                                Show password
-                            </label>
+
+                            <div class="password-input-wrap position-relative">
+                                <input id="loginPassword" type="password" autocomplete="current-password"
+                                    placeholder="Enter password" required>
+                                <button type="button" class="password-toggle-btn" id="showPasswordToggleBtn"
+                                    aria-label="Show password" title="Show password" style="display: none;">
+                                    <i class="bi bi-eye" id="showPasswordToggleIcon"></i>
+                                    <span id="showPasswordToggleText">Show</span>
+                                </button>
+                            </div>
+
                         </div>
-                        <a href="#" onclick="forgotPassword(); return false;">Forgot password?</a>
+
+                        <div class="login-options">
+                            <div class="d-flex align-items-center gap-3">
+                                <label class="remember-option">
+                                    <input id="rememberPassword" type="checkbox">
+                                    Remember password
+                                </label>
+                                <label class="remember-option show-password-option" id="showPasswordCheckboxLabel"
+                                    style="display: none;">
+                                    <input id="showPasswordCheckbox" type="checkbox">
+                                    Show password
+                                </label>
+                            </div>
+                            <a href="#" onclick="forgotPassword(); return false;">Forgot password?</a>
+                        </div>
+
+
+                        <button type="submit" class="btn login-submit">
+
+                            Sign In
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </form>
+
+                    <div class="p-2 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
+                        <strong>Quick Test Logins:</strong>
+                        <div class="mt-1" id="loginDemoCredentials">
+                            <span>• District Admin: <code>admin_krishna</code> / <code>admin123</code></span><br>
+                            <span>• Mandal Officer: <code>mandal_vja_rural</code> / <code>mandal123</code>
+                                (Approved)</span><br>
+                            <span>• Pending Mandal: <code>mandal_gudivada</code> / <code>mandal123</code> (Approval
+                                flow)</span>
+                        </div>
                     </div>
 
+                    <p class="register-prompt mt-3 mb-0">
+                        New to DISASTER RELIEF?
+                        <a href="#" onclick="openRegister(); return false;">
+                            Register now
+                        </a>
+                    </p>
 
-                    <button
-                        type="submit"
-                        class="btn login-submit"
-                    >
-
-                        Sign In
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </button>
-
-                </form>
-
-                <div class="p-2 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
-                    <strong>Quick Test Logins:</strong>
-                    <div class="mt-1" id="loginDemoCredentials">
-                        <span>• District Admin: <code>admin_krishna</code> / <code>admin123</code></span><br>
-                        <span>• Mandal Officer: <code>mandal_vja_rural</code> / <code>mandal123</code> (Approved)</span><br>
-                        <span>• Pending Mandal: <code>mandal_gudivada</code> / <code>mandal123</code> (Approval flow)</span>
-                    </div>
                 </div>
-
-                <p class="register-prompt mt-3 mb-0">
-                    New to DISASTER RELIEF?
-                    <a href="#" onclick="openRegister(); return false;">
-                        Register now
-                    </a>
-                </p>
 
             </div>
 
@@ -820,172 +914,150 @@
 
     </div>
 
-</div>
 
-
-<!-- =====================================================
+    <!-- =====================================================
      REGISTER MODAL
 ===================================================== -->
 
-<div
-    class="modal fade"
-    id="registerModal"
-    tabindex="-1"
->
+    <div class="modal fade" id="registerModal" tabindex="-1">
 
-    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
 
-        <div class="modal-content login-modal">
+            <div class="modal-content login-modal">
 
-            <div class="modal-header">
+                <div class="modal-header">
 
-                <div>
+                    <div>
 
-                    <span class="section-tag" id="registerSectionTag">
-                        MANDAL OPERATIONS
-                    </span>
+                        <span class="section-tag" id="registerSectionTag">
+                            MANDAL OPERATIONS
+                        </span>
 
-                    <h3 id="registerModalTitle">
-                        Mandal / Employee Registration
-                    </h3>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                ></button>
-
-            </div>
-
-
-            <div class="modal-body">
-
-                <!-- Registration Role Selector Tabs -->
-                <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border">
-                    <button type="button" id="regRoleMandalBtn" class="btn btn-sm flex-fill role-tab-btn btn-primary" onclick="setRegisterRole('Mandal Employee')">Mandal / Employee</button>
-                    <button type="button" id="regRoleAdminBtn" class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary" onclick="setRegisterRole('Admin')">District Admin</button>
-                </div>
-
-                <div id="registerRoleNotice" class="alert alert-warning py-2 px-3 small mb-3">
-                    <i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Approval Required:</strong> Mandal Employee logins are created as <em>Pending</em> and must be approved by the District Admin before access is granted.
-                </div>
-
-                <p class="text-muted small mb-3" id="registerModalSubtitle">
-                    Register as a Mandal Officer / Employee to oversee local relief operations.
-                </p>
-
-                <form onsubmit="registerUser(event)">
-
-                    <div class="form-group">
-
-                        <label for="registerName" id="registerNameLabel">
-                            Officer / Employee Full Name
-                        </label>
-
-                        <input
-                            id="registerName"
-                            type="text"
-                            placeholder="Enter full name"
-                            required
-                        >
+                        <h3 id="registerModalTitle">
+                            Mandal / Employee Registration
+                        </h3>
 
                     </div>
 
-                    <div class="form-group">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
-                        <label for="registerEmail">
-                            Official Email (for password recovery & alerts)
-                        </label>
+                </div>
 
-                        <input
-                            id="registerEmail"
-                            type="email"
-                            placeholder="e.g. officer.mandal@disaster.gov.in"
-                            required
-                        >
 
+                <div class="modal-body">
+
+                    <!-- Registration Role Selector Tabs -->
+                    <div class="d-flex gap-1 mb-3 p-1 bg-light rounded border">
+                        <button type="button" id="regRoleMandalBtn"
+                            class="btn btn-sm flex-fill role-tab-btn btn-primary"
+                            onclick="setRegisterRole('Mandal Employee')">Mandal / Employee</button>
+                        <button type="button" id="regRoleAdminBtn"
+                            class="btn btn-sm flex-fill role-tab-btn btn-outline-secondary"
+                            onclick="setRegisterRole('Admin')">District Admin</button>
                     </div>
 
-                    <div class="form-group">
-
-                        <label for="registerUsername">
-                            Login Username
-                        </label>
-
-                        <input
-                            id="registerUsername"
-                            type="text"
-                            autocomplete="username"
-                            placeholder="Choose a username (e.g. mandal_vja)"
-                            required
-                        >
-
+                    <div id="registerRoleNotice" class="alert alert-warning py-2 px-3 small mb-3">
+                        <i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Approval Required:</strong> Mandal
+                        Employee logins are created as <em>Pending</em> and must be approved by the District Admin
+                        before access is granted.
                     </div>
 
-                    <div class="form-group">
+                    <p class="text-muted small mb-3" id="registerModalSubtitle">
+                        Register as a Mandal Officer / Employee to oversee local relief operations.
+                    </p>
 
-                        <label for="registerPassword">
-                            Create Password
-                        </label>
+                    <form onsubmit="registerUser(event)">
 
-                        <div class="password-input-wrap position-relative">
-                            <input
-                                id="registerPassword"
-                                type="password"
-                                autocomplete="new-password"
-                                placeholder="Create a secure password"
-                                minlength="6"
-                                required
-                            >
-                            <button
-                                type="button"
-                                class="password-toggle-btn"
-                                id="registerPasswordToggleBtn"
-                                aria-label="Show password"
-                                title="Show password"
-                                style="display: none;"
-                                onclick="toggleGenericPassword('registerPassword', 'registerPasswordToggleBtn')"
-                            >
-                                <i class="bi bi-eye"></i>
-                                <span>Show</span>
-                            </button>
+                        <div class="form-group">
+
+                            <label for="registerName" id="registerNameLabel">
+                                Officer / Employee Full Name
+                            </label>
+
+                            <input id="registerName" type="text" placeholder="Enter full name" required>
+
                         </div>
 
-                    </div>
+                        <div class="form-group">
 
-                    <div class="form-group"><label for="registerState">State / Union Territory</label><select id="registerState" class="india-state-select" required><option value="">Select state or union territory</option></select></div>
-                    <div class="form-group"><label for="registerDistrict">District</label><select id="registerDistrict" required disabled><option value="">Select a state first</option></select></div>
-                    <div class="form-group" id="registerMandalGroup">
-                        <label for="registerMandal">Mandal / Taluk</label>
-                        <select id="registerMandal" required disabled>
-                            <option value="">Select a district first</option>
-                        </select>
-                        <small class="form-hint text-muted">Select the local mandal or taluk for your operations desk.</small>
-                    </div>
-                    <div class="form-group"><label for="registerAddress" id="registerAddressLabel">Office / Station Address</label><textarea id="registerAddress" rows="2" placeholder="Mandal Revenue Office, Emergency Operations Desk..." required></textarea></div>
+                            <label for="registerEmail">
+                                Official Email (for password recovery & alerts)
+                            </label>
 
-                    <button
-                        type="submit"
-                        class="btn login-submit"
-                        id="registerSubmitBtn"
-                    >
+                            <input id="registerEmail" type="email" placeholder="e.g. officer.mandal@disaster.gov.in"
+                                required>
 
-                        <span id="registerSubmitBtnText">Register Mandal Account</span>
+                        </div>
 
-                        <i class="bi bi-arrow-right"></i>
+                        <div class="form-group">
 
-                    </button>
+                            <label for="registerUsername">
+                                Login Username
+                            </label>
 
-                </form>
+                            <input id="registerUsername" type="text" autocomplete="username"
+                                placeholder="Choose a username (e.g. mandal_vja)" required>
 
-                <p class="register-prompt">
-                    Already registered?
-                    <a href="#" onclick="switchToLogin(); return false;">
-                        Sign in
-                    </a>
-                </p>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="registerPassword">
+                                Create Password
+                            </label>
+
+                            <div class="password-input-wrap position-relative">
+                                <input id="registerPassword" type="password" autocomplete="new-password"
+                                    placeholder="Create a secure password" minlength="6" required>
+                                <button type="button" class="password-toggle-btn" id="registerPasswordToggleBtn"
+                                    aria-label="Show password" title="Show password" style="display: none;"
+                                    onclick="toggleGenericPassword('registerPassword', 'registerPasswordToggleBtn')">
+                                    <i class="bi bi-eye"></i>
+                                    <span>Show</span>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group"><label for="registerState">State / Union Territory</label><select
+                                id="registerState" class="india-state-select" required>
+                                <option value="">Select state or union territory</option>
+                            </select></div>
+                        <div class="form-group"><label for="registerDistrict">District</label><select
+                                id="registerDistrict" required disabled>
+                                <option value="">Select a state first</option>
+                            </select></div>
+                        <div class="form-group" id="registerMandalGroup">
+                            <label for="registerMandal">Mandal / Taluk</label>
+                            <select id="registerMandal" required disabled>
+                                <option value="">Select a district first</option>
+                            </select>
+                            <small class="form-hint text-muted">Select the local mandal or taluk for your operations
+                                desk.</small>
+                        </div>
+                        <div class="form-group"><label for="registerAddress" id="registerAddressLabel">Office / Station
+                                Address</label><textarea id="registerAddress" rows="2"
+                                placeholder="Mandal Revenue Office, Emergency Operations Desk..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn login-submit" id="registerSubmitBtn">
+
+                            <span id="registerSubmitBtnText">Register Mandal Account</span>
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </form>
+
+                    <p class="register-prompt">
+                        Already registered?
+                        <a href="#" onclick="switchToLogin(); return false;">
+                            Sign in
+                        </a>
+                    </p>
+
+                </div>
 
             </div>
 
@@ -993,147 +1065,145 @@
 
     </div>
 
-</div>
 
-
-<!-- =====================================================
+    <!-- =====================================================
      FORGOT PASSWORD MODAL (REBUILD PASSWORD WITH EMAIL & OTP)
 ===================================================== -->
-<div
-    class="modal fade"
-    id="forgotPasswordModal"
-    tabindex="-1"
-    aria-labelledby="forgotPasswordModalLabel"
-    aria-hidden="true"
->
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content login-modal border-0 shadow-lg">
-            <div class="modal-header">
-                <div>
-                    <span class="section-tag text-primary">ACCOUNT SECURITY</span>
-                    <h3 class="modal-title fs-5" id="forgotPasswordModalLabel">Rebuild Password</h3>
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content login-modal border-0 shadow-lg">
+                <div class="modal-header">
+                    <div>
+                        <span class="section-tag text-primary">ACCOUNT SECURITY</span>
+                        <h3 class="modal-title fs-5" id="forgotPasswordModalLabel">Rebuild Password</h3>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <!-- STEP 1: ENTER REGISTERED EMAIL -->
-                <div id="forgotStep1">
-                    <p class="text-muted small mb-3">
-                        Enter your registered email address. We will generate and send a 6-digit verification OTP to rebuild your password.
-                    </p>
-                    <form id="forgotSendOtpForm" onsubmit="handleSendForgotOtp(event)">
-                        <div class="form-group mb-3">
-                            <label for="forgotEmail" class="form-label small fw-bold">Registered Email</label>
-                            <input type="email" class="form-control" id="forgotEmail" placeholder="e.g. admin.krishna@disaster.gov.in" required>
-                        </div>
-                        <button type="submit" class="btn login-submit w-100 py-2" id="sendForgotOtpBtn">
-                            Send Verification OTP <i class="bi bi-send"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- STEP 2: ENTER OTP & REBUILD PASSWORD -->
-                <div id="forgotStep2" style="display: none;">
-                    <div class="alert alert-success py-2 px-3 small mb-3" id="forgotOtpNoticeBox">
-                        <i class="bi bi-envelope-check-fill me-1"></i>
-                        Verification OTP sent to <strong id="forgotTargetEmailDisplay"></strong>.
-                        <div class="mt-2 p-2 bg-white rounded border border-success-subtle text-center">
-                            <span class="text-muted small d-block">Your 6-Digit OTP:</span>
-                            <span class="fs-4 text-primary font-monospace fw-bold" id="forgotGeneratedOtpCode">123456</span>
-                        </div>
+                <div class="modal-body p-4">
+                    <!-- STEP 1: ENTER REGISTERED EMAIL -->
+                    <div id="forgotStep1">
+                        <p class="text-muted small mb-3">
+                            Enter your registered email address. We will generate and send a 6-digit verification OTP to
+                            rebuild your password.
+                        </p>
+                        <form id="forgotSendOtpForm" onsubmit="handleSendForgotOtp(event)">
+                            <div class="form-group mb-3">
+                                <label for="forgotEmail" class="form-label small fw-bold">Registered Email</label>
+                                <input type="email" class="form-control" id="forgotEmail"
+                                    placeholder="e.g. admin.krishna@disaster.gov.in" required>
+                            </div>
+                            <button type="submit" class="btn login-submit w-100 py-2" id="sendForgotOtpBtn">
+                                Send Verification OTP <i class="bi bi-send"></i>
+                            </button>
+                        </form>
                     </div>
 
-                    <form id="forgotRebuildForm" onsubmit="handleRebuildPassword(event)">
-                        <div class="form-group mb-3">
-                            <label for="forgotOtpInput" class="form-label small fw-bold">6-Digit Verification OTP</label>
-                            <input type="text" class="form-control font-monospace text-center fs-5 fw-bold" id="forgotOtpInput" maxlength="6" placeholder="123456" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="forgotNewPassword" class="form-label small fw-bold">New Password</label>
-                            <div class="password-input-wrap position-relative">
-                                <input type="password" class="form-control" id="forgotNewPassword" placeholder="Minimum 6 characters" minlength="6" required>
-                                <button
-                                    type="button"
-                                    class="password-toggle-btn"
-                                    id="forgotNewPasswordToggleBtn"
-                                    aria-label="Show password"
-                                    title="Show password"
-                                    style="display: none;"
-                                    onclick="toggleGenericPassword('forgotNewPassword', 'forgotNewPasswordToggleBtn')"
-                                >
-                                    <i class="bi bi-eye"></i>
-                                    <span>Show</span>
-                                </button>
+                    <!-- STEP 2: ENTER OTP & REBUILD PASSWORD -->
+                    <div id="forgotStep2" style="display: none;">
+                        <div class="alert alert-success py-2 px-3 small mb-3" id="forgotOtpNoticeBox">
+                            <i class="bi bi-envelope-check-fill me-1"></i>
+                            Verification OTP sent to <strong id="forgotTargetEmailDisplay"></strong>.
+                            <div class="mt-2 p-2 bg-white rounded border border-success-subtle text-center">
+                                <span class="text-muted small d-block">Your 6-Digit OTP:</span>
+                                <span class="fs-4 text-primary font-monospace fw-bold"
+                                    id="forgotGeneratedOtpCode">123456</span>
                             </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="forgotConfirmPassword" class="form-label small fw-bold">Confirm New Password</label>
-                            <div class="password-input-wrap position-relative">
-                                <input type="password" class="form-control" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required>
-                                <button
-                                    type="button"
-                                    class="password-toggle-btn"
-                                    id="forgotConfirmPasswordToggleBtn"
-                                    aria-label="Show password"
-                                    title="Show password"
-                                    style="display: none;"
-                                    onclick="toggleGenericPassword('forgotConfirmPassword', 'forgotConfirmPasswordToggleBtn')"
-                                >
-                                    <i class="bi bi-eye"></i>
-                                    <span>Show</span>
-                                </button>
+
+                        <form id="forgotRebuildForm" onsubmit="handleRebuildPassword(event)">
+                            <div class="form-group mb-3">
+                                <label for="forgotOtpInput" class="form-label small fw-bold">6-Digit Verification
+                                    OTP</label>
+                                <input type="text" class="form-control font-monospace text-center fs-5 fw-bold"
+                                    id="forgotOtpInput" maxlength="6" placeholder="123456" required>
                             </div>
-                        </div>
-                        <button type="submit" class="btn login-submit w-100 py-2" id="rebuildPasswordBtn">
-                            Rebuild Password <i class="bi bi-check2-circle"></i>
-                        </button>
-                        <div class="text-center mt-2">
-                            <a href="#" class="small text-secondary text-decoration-none" onclick="backToForgotStep1(); return false;">
-                                <i class="bi bi-arrow-left"></i> Change email address
-                            </a>
-                        </div>
-                    </form>
+                            <div class="form-group mb-3">
+                                <label for="forgotNewPassword" class="form-label small fw-bold">New Password</label>
+                                <div class="password-input-wrap position-relative">
+                                    <input type="password" class="form-control" id="forgotNewPassword"
+                                        placeholder="Minimum 6 characters" minlength="6" required>
+                                    <button type="button" class="password-toggle-btn" id="forgotNewPasswordToggleBtn"
+                                        aria-label="Show password" title="Show password" style="display: none;"
+                                        onclick="toggleGenericPassword('forgotNewPassword', 'forgotNewPasswordToggleBtn')">
+                                        <i class="bi bi-eye"></i>
+                                        <span>Show</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="forgotConfirmPassword" class="form-label small fw-bold">Confirm New
+                                    Password</label>
+                                <div class="password-input-wrap position-relative">
+                                    <input type="password" class="form-control" id="forgotConfirmPassword"
+                                        placeholder="Re-enter new password" minlength="6" required>
+                                    <button type="button" class="password-toggle-btn"
+                                        id="forgotConfirmPasswordToggleBtn" aria-label="Show password"
+                                        title="Show password" style="display: none;"
+                                        onclick="toggleGenericPassword('forgotConfirmPassword', 'forgotConfirmPasswordToggleBtn')">
+                                        <i class="bi bi-eye"></i>
+                                        <span>Show</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn login-submit w-100 py-2" id="rebuildPasswordBtn">
+                                Rebuild Password <i class="bi bi-check2-circle"></i>
+                            </button>
+                            <div class="text-center mt-2">
+                                <a href="#" class="small text-secondary text-decoration-none"
+                                    onclick="backToForgotStep1(); return false;">
+                                    <i class="bi bi-arrow-left"></i> Change email address
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer bg-light border-0 py-2 px-4 justify-content-between">
-                <span class="text-muted small">Remember your password?</span>
-                <a href="#" class="text-decoration-none small fw-bold" onclick="switchToLoginFromForgot(); return false;">Sign in</a>
+                <div class="modal-footer bg-light border-0 py-2 px-4 justify-content-between">
+                    <span class="text-muted small">Remember your password?</span>
+                    <a href="#" class="text-decoration-none small fw-bold"
+                        onclick="switchToLoginFromForgot(); return false;">Sign in</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- =====================================================
+    <!-- =====================================================
      INCOMING SMARTPHONE MOBILE SMS MODAL POPUP
 ===================================================== -->
-<div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 bg-transparent shadow-none">
-            <div class="sms-phone-frame">
-                <div class="sms-phone-header">
-                    <span><i class="bi bi-reception-4"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="sms-bubble">
-                    <div class="sms-sender">
-                        <i class="bi bi-shield-fill-exclamation"></i>
-                        <span id="modalSmsSender">DISASTER CONTROL ROOM</span>
+    <div class="modal fade" id="smsNotificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent shadow-none">
+                <div class="sms-phone-frame">
+                    <div class="sms-phone-header">
+                        <span><i class="bi bi-reception-4"></i> PRE-DISASTER MOBILE TEXT ALERT</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
-                    <div class="sms-body-text" id="modalSmsBody">
-                        ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your mobile. Relocate to designated shelters immediately. Follow volunteer guidance. Call 112 for rescue dispatch.
+                    <div class="sms-bubble">
+                        <div class="sms-sender">
+                            <i class="bi bi-shield-fill-exclamation"></i>
+                            <span id="modalSmsSender">DISASTER CONTROL ROOM</span>
+                        </div>
+                        <div class="sms-body-text" id="modalSmsBody">
+                            ⚠️ URGENT PRE-DISASTER WARNING: Severe weather & flood warning dispatched to your mobile.
+                            Relocate to designated shelters immediately. Follow volunteer guidance. Call 112 for rescue
+                            dispatch.
+                        </div>
+                        <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
                     </div>
-                    <div class="sms-time" id="modalSmsTime">Today · Sent to Registered Mobiles</div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
-                    <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast Delivered</small>
-                    <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i class="bi bi-telephone-fill"></i> Dial 112</a>
+                    <div
+                        class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                        <small class="text-white-50"><i class="bi bi-check2-all text-info"></i> Broadcast
+                            Delivered</small>
+                        <a href="tel:112" class="btn btn-sm btn-danger py-1 px-3 fw-bold"><i
+                                class="bi bi-telephone-fill"></i> Dial 112</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- =====================================================
+    <!-- =====================================================
      TOAST MESSAGE
 ===================================================== -->
 
@@ -1301,51 +1371,57 @@
                     <!-- WEATHER ALERTS & OFFICIAL ADVISORIES -->
                     <div class="card p-3 border-0 shadow-sm rounded-3 bg-white">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster Weather Alerts</h6>
+                            <h6 class="fw-bold text-dark mb-0"><i
+                                    class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Official Disaster
+                                Weather Alerts</h6>
                             <span class="badge bg-danger" id="weatherModalAlertLevelBadge">ADVISORY ACTIVE</span>
                         </div>
                         <div class="alert alert-warning mb-0 p-2 small border" id="weatherModalOfficialAlertText">
                             ⚠️ <strong>IMD & AP Disaster Management Advisory:</strong> Monsoon low-pressure system
-                            active over Bay of Bengal. Citizens in coastal and low-lying zones advised to follow volunteer guidance and emergency advisories. Helpline: 112 / 1077.
+                            active over Bay of Bengal. Citizens in coastal and low-lying zones advised to follow
+                            volunteer guidance and emergency advisories. Helpline: 112 / 1077.
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer bg-white py-2">
-                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Data Source:
-                        Open-Meteo & AP Disaster Management</small>
+                    <small class="text-muted me-auto"><i class="bi bi-shield-check text-success"></i> Official Weather
+                        Source:
+                        <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                            class="fw-bold text-primary">mausam.imd.gov.in (IMD)</a></small>
+                    <a href="https://mausam.imd.gov.in/index_en.php" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-sm btn-outline-primary fw-bold">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Visit IMD Mausam Portal
+                    </a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-4">
+    <div class="toast-container position-fixed bottom-0 end-0 p-4">
 
-    <div
-        id="siteToast"
-        class="toast"
-        role="alert"
-    >
+        <div id="siteToast" class="toast" role="alert">
 
-        <div class="toast-body">
+            <div class="toast-body">
 
-            <i class="bi bi-check-circle-fill"></i>
+                <i class="bi bi-check-circle-fill"></i>
 
-            <span id="toastMessage"></span>
+                <span id="toastMessage"></span>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Custom JS -->
-<script src="mandals-data.js"></script>
-<script src="script.js"></script>
-<script src="about.js"></script>
+    <!-- Custom JS -->
+    <script src="mandals-data.js"></script>
+    <script src="script.js"></script>
+    <script src="about.js"></script>
 </body>
+
 </html>

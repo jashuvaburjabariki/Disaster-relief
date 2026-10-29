@@ -2379,7 +2379,7 @@ footer p i {
     flex-shrink: 0;
 }
 
-.loss-option input[type="checkbox"]:checked + span {
+.loss-option input[type="checkbox"]:checked+span {
     color: #1e3a8a;
     font-weight: 700;
 }
@@ -2401,8 +2401,15 @@ footer p i {
 }
 
 @keyframes pulseAlert {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.92; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.92;
+    }
 }
 
 .pre-disaster-sms-bar .sms-badge {
@@ -2442,9 +2449,10 @@ footer p i {
     color: #fff;
     max-width: 440px;
     margin: 0 auto;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     border: 3px solid #334155;
 }
+
 .sms-phone-header {
     display: flex;
     justify-content: space-between;
@@ -2453,8 +2461,9 @@ footer p i {
     color: #94a3b8;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .sms-bubble {
     background: #1e293b;
     border-left: 4px solid #ef4444;
@@ -2462,6 +2471,7 @@ footer p i {
     padding: 12px 14px;
     margin-bottom: 12px;
 }
+
 .sms-sender {
     font-size: 12px;
     font-weight: 800;
@@ -2471,17 +2481,20 @@ footer p i {
     gap: 6px;
     margin-bottom: 6px;
 }
+
 .sms-body-text {
     font-size: 13px;
     line-height: 1.5;
     color: #f1f5f9;
 }
+
 .sms-time {
     font-size: 10px;
     color: #94a3b8;
     margin-top: 6px;
     text-align: right;
 }
+
 .sms-pulse-badge {
     background: #ef4444;
     color: #fff;
@@ -2495,9 +2508,19 @@ footer p i {
     gap: 4px;
     animation: pulseBadge 1.8s infinite;
 }
+
 @keyframes pulseBadge {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(0.97); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.85;
+        transform: scale(0.97);
+    }
 }
 
 /* =====================================================
@@ -2556,4 +2579,296 @@ footer p i {
     margin-top: 2px;
     white-space: nowrap;
 }
-
+
+/* =====================================================
+   OFFICIAL IMD LIVE WEATHER SCROLLING ALERT BAR (TOP POSITION)
+   Source: https://mausam.imd.gov.in/index_en.php
+===================================================== */
+
+:root {
+    --imd-topbar-height: 42px;
+}
+
+.imd-top-alert-scroll-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--imd-topbar-height);
+    background: linear-gradient(90deg, #18050e 0%, #7f1d1d 15%, #0f172a 38%, #0f172a 75%, #7f1d1d 92%, #18050e 100%);
+    border-bottom: 2px solid #ef4444;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    z-index: 1060;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 13px;
+    user-select: none;
+    overflow: hidden;
+}
+
+.imd-alert-badge-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    z-index: 2;
+    padding-right: 10px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.imd-pulse-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ef4444;
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0.7);
+    animation: imdPulse 1.6s infinite;
+}
+
+@keyframes imdPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8);
+        transform: scale(0.95);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+        transform: scale(1.15);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        transform: scale(0.95);
+    }
+}
+
+.imd-alert-badge {
+    background: #dc2626;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+}
+
+.imd-source-tag {
+    color: #fde047;
+    font-weight: 600;
+    font-size: 11.5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.2s;
+}
+
+.imd-source-tag:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.imd-ticker-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
+}
+
+.imd-ticker-track {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
+    animation: imdTickerScroll 40s linear infinite;
+}
+
+.imd-ticker-container:hover .imd-ticker-track,
+.imd-ticker-track.paused {
+    animation-play-state: paused;
+}
+
+@keyframes imdTickerScroll {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.imd-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    color: #f1f5f9;
+}
+
+.imd-ticker-item a {
+    color: #93c5fd;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.imd-ticker-item a:hover {
+    color: #ffffff;
+}
+
+.imd-ticker-divider {
+    color: #ef4444;
+    font-weight: 900;
+    padding: 0 8px;
+    opacity: 0.8;
+}
+
+.imd-actions-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    z-index: 2;
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.imd-weather-modal-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.imd-weather-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.imd-portal-btn {
+    background: #eab308;
+    border: 1px solid #ca8a04;
+    color: #0f172a !important;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.imd-portal-btn:hover {
+    background: #facc15;
+    color: #000000 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(234, 179, 8, 0.4);
+}
+
+/* Adjust layout so fixed elements do not overlap */
+body.has-imd-topbar #mainNavbar {
+    top: var(--imd-topbar-height) !important;
+}
+
+body.has-imd-topbar .hero-section {
+    padding-top: calc(135px + var(--imd-topbar-height)) !important;
+}
+
+body.has-imd-topbar .about-hero {
+    padding-top: calc(120px + var(--imd-topbar-height)) !important;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --imd-topbar-height: 38px;
+    }
+
+    .imd-top-alert-scroll-bar {
+        padding: 0 8px;
+        gap: 6px;
+    }
+
+    .imd-source-tag {
+        display: none;
+    }
+
+    .imd-weather-modal-btn {
+        display: none;
+    }
+
+    .imd-portal-btn {
+        padding: 2px 7px;
+        font-size: 10px;
+    }
+}
+
+
+
+/* PRE-DISASTER MOBILE TEXT MESSAGE ALERT BANNER (UNIVERSAL) */
+.pre-disaster-sms-bar {
+    background: linear-gradient(90deg, #b91c1c 0%, #dc2626 50%, #991b1b 100%) !important;
+    color: #ffffff !important;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    position: relative;
+    z-index: 1050;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(220, 38, 38, 0.35);
+    animation: pulseAlert 2.5s infinite;
+}
+
+.pre-disaster-sms-bar .sms-pulse-badge {
+    background: #ffffff !important;
+    color: #b91c1c !important;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+}
+
+.pre-disaster-sms-bar .sms-text-preview {
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+.hero-action-cards {
+    position: relative;
+    z-index: 4;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.hero-action-cards .action-card {
+    min-height: 290px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
