@@ -30,7 +30,11 @@ function initializeDefaultData() {
                 username: "volunteer",
                 password: "volunteer123",
                 role: "Volunteer",
-                profileName: "Ramesh Kumar",
+                profileName: "G. Kondal Rao",
+                state: "Andhra Pradesh",
+                district: "Alluri Sitharama Raju",
+                mandal: "Paderu",
+                status: "Approved",
                 createdAt: new Date().toLocaleString()
             },
             {
@@ -155,18 +159,40 @@ function initializeDefaultData() {
 
         const defaultVolunteers = [
             {
+                id: 3101,
+                volunteerId: "DRVOL-3101",
+                name: "G. Kondal Rao",
+                fatherName: "G. Somaraju",
+                phone: "9876501101",
+                email: "paderu.volunteer@asr.ap.gov.in",
+                username: "volunteer",
+                state: "Andhra Pradesh",
+                district: "Alluri Sitharama Raju",
+                mandal: "Paderu",
+                location: "Paderu",
+                bloodGroup: "B+",
+                skills: "Tribal Terrain Rescue, First Aid, 4x4 Driving, Logistics",
+                availability: "Available",
+                status: "Available",
+                approvalStatus: "Approved",
+                createdAt: "24/10/2026, 09:00:00 AM"
+            },
+            {
                 id: 3001,
+                volunteerId: "DRVOL-3001",
                 name: "Ramesh Kumar",
                 fatherName: "K. Prasad",
                 phone: "9876543210",
-                username: "volunteer",
+                username: "vol_krishna",
                 state: "Andhra Pradesh",
                 district: "Krishna",
                 mandal: "Vijayawada Rural",
                 location: "Vijayawada",
+                bloodGroup: "O+",
                 skills: "Water Rescue, First Aid, Driving, Logistics",
                 availability: "Available",
                 status: "Available",
+                approvalStatus: "Approved",
                 createdAt: "28/09/2026, 09:00:00 AM"
             },
             {
@@ -883,6 +909,7 @@ function updatePasswordToggleState(isVisible) {
     const toggleBtn = document.getElementById("showPasswordToggleBtn");
     const toggleIcon = document.getElementById("showPasswordToggleIcon");
     const toggleText = document.getElementById("showPasswordToggleText");
+    const checkboxInput = document.getElementById("showPasswordCheckbox");
 
     if (toggleIcon) {
         toggleIcon.className = isVisible ? "bi bi-eye-slash" : "bi bi-eye";
@@ -895,29 +922,20 @@ function updatePasswordToggleState(isVisible) {
         toggleBtn.setAttribute("aria-label", label);
         toggleBtn.setAttribute("title", label);
     }
+    if (checkboxInput) {
+        checkboxInput.checked = Boolean(isVisible);
+    }
 }
 
 function updateLoginPasswordToggleVisibility() {
-    const passwordInput = document.getElementById("loginPassword");
     const toggleBtn = document.getElementById("showPasswordToggleBtn");
     const checkboxLabel = document.getElementById("showPasswordCheckboxLabel");
-    const checkboxInput = document.getElementById("showPasswordCheckbox");
-
-    if (!passwordInput) return;
-
-    const hasValue = Boolean(passwordInput.value && passwordInput.value.length > 0);
 
     if (toggleBtn) {
-        toggleBtn.style.display = hasValue ? "inline-flex" : "none";
+        toggleBtn.style.display = "inline-flex";
     }
     if (checkboxLabel) {
-        checkboxLabel.style.display = hasValue ? "inline-flex" : "none";
-    }
-
-    if (!hasValue) {
-        passwordInput.type = "password";
-        if (checkboxInput) checkboxInput.checked = false;
-        updatePasswordToggleState(false);
+        checkboxLabel.style.display = "inline-flex";
     }
 }
 
@@ -926,21 +944,16 @@ function toggleLoginPasswordVisibility(forceState) {
     const checkboxInput = document.getElementById("showPasswordCheckbox");
     if (!passwordInput) return;
 
-    const isCurrentlyVisible = passwordInput.type === "text";
+    const isCurrentlyVisible = (passwordInput.type === "text" || passwordInput.getAttribute("type") === "text");
     const nextState = typeof forceState === "boolean" ? forceState : !isCurrentlyVisible;
 
     passwordInput.type = nextState ? "text" : "password";
+    passwordInput.setAttribute("type", nextState ? "text" : "password");
 
     if (checkboxInput) {
         checkboxInput.checked = nextState;
     }
     updatePasswordToggleState(nextState);
-
-    if (typeof passwordInput.setSelectionRange === "function") {
-        const len = passwordInput.value.length;
-        passwordInput.setSelectionRange(len, len);
-    }
-    passwordInput.focus();
 }
 
 function toggleGenericPassword(inputId, btnId) {
@@ -1051,19 +1064,110 @@ function onRegisterRoleChange(role) {
     // Kept as safe no-op for backward compatibility
 }
 
-function openLogin(role) {
-    if (!role || role === "Citizen") role = "Mandal Employee";
+function renderQuickDemoLogins(activeRole) {
+    const demoCredentialsEl = document.getElementById("loginDemoCredentials");
+    if (!demoCredentialsEl) return;
+
+    let normRole = "Mandal Employee";
+    if (activeRole) {
+        const lower = activeRole.toLowerCase();
+        if (lower.includes("vol")) normRole = "Volunteer";
+        else if (lower.includes("adm")) normRole = "Admin";
+        else normRole = "Mandal Employee";
+    }
+
+    const isMandal = normRole === "Mandal Employee";
+    const isVolunteer = normRole === "Volunteer";
+    const isAdmin = normRole === "Admin";
+
+    demoCredentialsEl.innerHTML = `
+        <div class="demo-logins-grid d-flex flex-column gap-2">
+            <!-- 1. MANDAL / EMPLOYEE -->
+            <div class="demo-cred-card p-2 rounded-2 border d-flex align-items-center justify-content-between ${isMandal ? 'active-demo-card border-primary bg-primary-subtle' : 'bg-white'}"
+                 onclick="fillDemoLogin('Mandal Employee', 'mandal_paderu', 'mandal123')">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge ${isMandal ? 'bg-primary' : 'bg-primary-subtle text-primary border border-primary'}">Mandal Desk</span>
+                    <div>
+                        <div class="fw-bold text-dark" style="font-size: 13px;">
+                            <code>mandal_paderu</code> / <code>mandal123</code>
+                        </div>
+                        <div class="text-muted" style="font-size: 11px;">Paderu Mandal Operations (Approved)</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm ${isMandal ? 'btn-primary' : 'btn-outline-primary'} py-1 px-2 fw-semibold demo-fill-btn" style="font-size: 11px;"
+                        onclick="event.stopPropagation(); fillDemoLogin('Mandal Employee', 'mandal_paderu', 'mandal123')">
+                    <i class="bi ${isMandal ? 'bi-check2' : 'bi-box-arrow-in-right'} me-1"></i>${isMandal ? 'Active' : 'Fill'}
+                </button>
+            </div>
+
+            <!-- 2. VOLUNTEER (PADERU MANDAL) -->
+            <div class="demo-cred-card p-2 rounded-2 border d-flex align-items-center justify-content-between ${isVolunteer ? 'active-demo-card border-success bg-success-subtle' : 'bg-white'}"
+                 onclick="fillDemoLogin('Volunteer', 'volunteer', 'volunteer123')">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge ${isVolunteer ? 'bg-success' : 'bg-success-subtle text-success border border-success'}">Volunteer (Paderu)</span>
+                    <div>
+                        <div class="fw-bold text-dark" style="font-size: 13px;">
+                            <code>volunteer</code> / <code>volunteer123</code>
+                        </div>
+                        <div class="text-muted" style="font-size: 11px;">G. Kondal Rao · Paderu Mandal (Alluri Sitharama Raju)</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm ${isVolunteer ? 'btn-success' : 'btn-outline-success'} py-1 px-2 fw-semibold demo-fill-btn" style="font-size: 11px;"
+                        onclick="event.stopPropagation(); fillDemoLogin('Volunteer', 'volunteer', 'volunteer123')">
+                    <i class="bi ${isVolunteer ? 'bi-check2' : 'bi-box-arrow-in-right'} me-1"></i>${isVolunteer ? 'Active' : 'Fill'}
+                </button>
+            </div>
+
+            <!-- 3. DISTRICT ADMIN -->
+            <div class="demo-cred-card p-2 rounded-2 border d-flex align-items-center justify-content-between ${isAdmin ? 'active-demo-card border-danger bg-danger-subtle' : 'bg-white'}"
+                 onclick="fillDemoLogin('Admin', 'admin_asr', 'admin123')">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge ${isAdmin ? 'bg-danger' : 'bg-danger-subtle text-danger border border-danger'}">District Admin</span>
+                    <div>
+                        <div class="fw-bold text-dark" style="font-size: 13px;">
+                            <code>admin_asr</code> / <code>admin123</code>
+                        </div>
+                        <div class="text-muted" style="font-size: 11px;">Alluri Sitharama Raju Collectorate</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm ${isAdmin ? 'btn-danger' : 'btn-outline-danger'} py-1 px-2 fw-semibold demo-fill-btn" style="font-size: 11px;"
+                        onclick="event.stopPropagation(); fillDemoLogin('Admin', 'admin_asr', 'admin123')">
+                    <i class="bi ${isAdmin ? 'bi-check2' : 'bi-box-arrow-in-right'} me-1"></i>${isAdmin ? 'Active' : 'Fill'}
+                </button>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-1 pt-2 mt-2 border-top" style="font-size: 11px;">
+            <span class="text-muted fw-semibold">More test logins:</span>
+            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 11px;"
+                    onclick="fillDemoLogin('Mandal Employee', 'mandal_araku', 'mandal123')">Araku Mandal</button>
+            <button type="button" class="btn btn-xs btn-outline-warning py-0 px-2 text-dark" style="font-size: 11px;"
+                    onclick="fillDemoLogin('Mandal Employee', 'mandal_chintapalle', 'mandal123')" title="Pending Admin Approval flow test">Chintapalle (Pending)</button>
+            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 11px;"
+                    onclick="fillDemoLogin('Admin', 'admin_krishna', 'admin123')">Krishna Admin</button>
+        </div>
+    `;
+}
+
+function fillDemoLogin(role, username, password) {
+    if (!role) role = "Volunteer";
+
+    // Normalize role string
+    const lower = role.toLowerCase();
+    let normRole = "Volunteer";
+    if (lower.includes("mandal")) normRole = "Mandal Employee";
+    else if (lower.includes("admin")) normRole = "Admin";
+    else normRole = "Volunteer";
 
     const roleEl = document.getElementById("loginRole");
-    if (roleEl) roleEl.textContent = role;
+    if (roleEl) roleEl.textContent = normRole;
 
     const noticeEl = document.getElementById("loginRoleNotice");
-    const demoCredentialsEl = document.getElementById("loginDemoCredentials");
     const subtitleEl = document.getElementById("loginModalSubtitle");
 
-    // Highlight active role tab button if available
+    // Highlight active role tab button
     document.querySelectorAll(".role-tab-btn").forEach(function (btn) {
-        if (btn.textContent.trim().toLowerCase().includes(role.toLowerCase().slice(0, 5))) {
+        if (btn.textContent.trim().toLowerCase().includes(normRole.toLowerCase().slice(0, 5))) {
             btn.classList.add("btn-primary");
             btn.classList.remove("btn-outline-secondary");
         } else {
@@ -1072,72 +1176,94 @@ function openLogin(role) {
         }
     });
 
-    if (role === "Mandal Employee") {
+    if (normRole === "Mandal Employee") {
         if (subtitleEl) subtitleEl.textContent = "Sign in to access your Mandal Emergency Operations Desk.";
         if (noticeEl) {
             noticeEl.style.display = "block";
             noticeEl.className = "alert alert-warning py-2 px-3 small mb-3";
             noticeEl.innerHTML = '<i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Approval Required:</strong> Mandal/Employee logins must be approved by their District Admin before access is granted.';
         }
-        if (demoCredentialsEl) {
-            demoCredentialsEl.innerHTML = `
-                <span>• Approved: <code>mandal_paderu</code> / <code>mandal123</code> (Paderu)</span><br>
-                <span>• Approved: <code>mandal_araku</code> / <code>mandal123</code> (Araku Valley)</span><br>
-                <span>• Approved: <code>mandal_ananthagiri</code> / <code>mandal123</code> (Ananthagiri)</span><br>
-                <span>• Pending Approval: <code>mandal_chintapalle</code> / <code>mandal123</code> (Chintapalle - Admin Flow)</span>
-            `;
-        }
-    } else if (role === "Admin") {
+    } else if (normRole === "Admin") {
         if (subtitleEl) subtitleEl.textContent = "Sign in to access District Disaster Emergency Operations Center.";
         if (noticeEl) {
             noticeEl.style.display = "block";
             noticeEl.className = "alert alert-info py-2 px-3 small mb-3";
             noticeEl.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> <strong>District Admin Portal:</strong> Manage all mandals, review pending employee logins, and coordinate district relief.';
         }
-        if (demoCredentialsEl) {
-            demoCredentialsEl.innerHTML = `
-                <span>• District Admin: <code>admin_asr</code> or <code>admin</code> / <code>admin123</code> (Alluri Sitharama Raju)</span><br>
-                <span>• Krishna Admin: <code>admin_krishna</code> / <code>admin123</code></span>
-            `;
-        }
-    } else if (role === "Volunteer") {
-        if (subtitleEl) subtitleEl.textContent = "Sign in to access the field response volunteer directory.";
-        if (noticeEl) {
-            noticeEl.style.display = "none";
-        }
-        if (demoCredentialsEl) {
-            demoCredentialsEl.innerHTML = `
-                <span>• Demo Volunteer: <code>volunteer</code> / <code>volunteer123</code></span>
-            `;
-        }
     } else {
-        if (subtitleEl) subtitleEl.textContent = "Sign in to access your DISASTER RELIEF dashboard.";
+        if (subtitleEl) subtitleEl.textContent = "Sign in to access the field response volunteer directory.";
         if (noticeEl) noticeEl.style.display = "none";
-        if (demoCredentialsEl) {
-            demoCredentialsEl.innerHTML = `
-                <span>• Demo Volunteer: <code>volunteer</code> / <code>volunteer123</code></span>
-            `;
-        }
     }
 
-    const rememberedEmail = localStorage.getItem("disasterRememberedEmail");
-    const rememberedPassword = localStorage.getItem("disasterRememberedPassword");
+    renderQuickDemoLogins(normRole);
 
     const usernameInput = document.getElementById("loginUsername");
     const passwordInput = document.getElementById("loginPassword");
-    const rememberCheckbox = document.getElementById("rememberPassword");
 
-    if (usernameInput) usernameInput.value = rememberedEmail || "";
-    if (passwordInput) {
-        passwordInput.value = rememberedPassword || "";
-        passwordInput.type = "password";
+    if (usernameInput) {
+        usernameInput.value = username;
+        usernameInput.classList.remove("input-demo-pulse");
+        void usernameInput.offsetWidth;
+        usernameInput.classList.add("input-demo-pulse");
     }
-    if (rememberCheckbox) rememberCheckbox.checked = Boolean(rememberedEmail || rememberedPassword);
+    if (passwordInput) {
+        passwordInput.value = password;
+        passwordInput.type = "password";
+        passwordInput.classList.remove("input-demo-pulse");
+        void passwordInput.offsetWidth;
+        passwordInput.classList.add("input-demo-pulse");
+    }
+
+    const autoFillRoleNameEl = document.getElementById("autoFillRoleName");
+    if (autoFillRoleNameEl) autoFillRoleNameEl.textContent = normRole;
+
+    const statusEl = document.getElementById("demoFillStatus");
+    if (statusEl) {
+        statusEl.innerHTML = `<i class="bi bi-check-circle-fill text-success me-1"></i> Demo credentials loaded for <strong>${normRole}</strong> (<code>${username}</code>). Click <strong>Sign In</strong> below!`;
+        statusEl.style.display = "block";
+    }
 
     const checkboxInput = document.getElementById("showPasswordCheckbox");
     if (checkboxInput) checkboxInput.checked = false;
     updatePasswordToggleState(false);
     updateLoginPasswordToggleVisibility();
+}
+
+function autoFillActiveDemoLogin() {
+    const roleEl = document.getElementById("loginRole");
+    const role = roleEl ? roleEl.textContent.trim() : "Volunteer";
+    if (role.toLowerCase().includes("mandal")) {
+        fillDemoLogin("Mandal Employee", "mandal_paderu", "mandal123");
+    } else if (role.toLowerCase().includes("admin")) {
+        fillDemoLogin("Admin", "admin_asr", "admin123");
+    } else {
+        fillDemoLogin("Volunteer", "volunteer", "volunteer123");
+    }
+}
+
+function openLogin(role) {
+    if (!role || role === "Citizen") role = "Volunteer";
+
+    let demoUser = "volunteer";
+    let demoPass = "volunteer123";
+    let cleanRole = "Volunteer";
+
+    const lower = role.toLowerCase();
+    if (lower.includes("mandal")) {
+        cleanRole = "Mandal Employee";
+        demoUser = "mandal_paderu";
+        demoPass = "mandal123";
+    } else if (lower.includes("admin")) {
+        cleanRole = "Admin";
+        demoUser = "admin_asr";
+        demoPass = "admin123";
+    } else {
+        cleanRole = "Volunteer";
+        demoUser = "volunteer";
+        demoPass = "volunteer123";
+    }
+
+    fillDemoLogin(cleanRole, demoUser, demoPass);
 
     const modalElement = document.getElementById("loginModal");
     if (modalElement) {
@@ -1386,9 +1512,19 @@ function registerUser(event) {
 function loginUser(event) {
     event.preventDefault();
 
-    const role = document.getElementById("loginRole").textContent.trim();
+    const rawRole = (document.getElementById("loginRole") ? document.getElementById("loginRole").textContent.trim() : "");
     const username = document.getElementById("loginUsername").value.trim().toLowerCase();
     const password = document.getElementById("loginPassword").value;
+
+    let role = "Volunteer";
+    const lowerRole = rawRole.toLowerCase();
+    if (username.startsWith("mandal_") || username === "mandal" || lowerRole.includes("mandal") || lowerRole.includes("employee")) {
+        role = "Mandal Employee";
+    } else if (username.startsWith("admin_") || username === "admin" || lowerRole.includes("admin")) {
+        role = "Admin";
+    } else {
+        role = "Volunteer";
+    }
 
     if (document.getElementById("rememberPassword").checked) {
         localStorage.setItem("disasterRememberedEmail", username);
@@ -1400,10 +1536,151 @@ function loginUser(event) {
 
     // MANDAL EMPLOYEE LOGIN (Requires prior District Admin approval)
     if (role === "Mandal Employee") {
-        const mandalAccounts = JSON.parse(localStorage.getItem("disasterMandalAccounts") || "[]");
-        const account = mandalAccounts.find(function (acc) {
+        let mandalAccounts = [];
+        try {
+            mandalAccounts = JSON.parse(localStorage.getItem("disasterMandalAccounts") || "[]");
+            if (!Array.isArray(mandalAccounts)) mandalAccounts = [];
+        } catch (e) {
+            mandalAccounts = [];
+        }
+
+        let account = mandalAccounts.find(function (acc) {
             return (acc.username || "").toLowerCase() === username && acc.password === password;
         });
+
+        // Built-in Demo accounts fallback for Mandal Employee
+        const DEMO_MANDAL_ACCOUNTS = {
+            "mandal_paderu": {
+                id: "mandal_asr_paderu",
+                mandal: "Paderu",
+                district: "Alluri Sitharama Raju",
+                state: "Andhra Pradesh",
+                officerName: "Dr. K. Someswara Rao",
+                employeeId: "MND-ASR-1001",
+                email: "paderu.relief@asr.ap.gov.in",
+                phone: "08935-242222",
+                username: "mandal_paderu",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Approved",
+                approvedBy: "District Collector & Magistrate, Alluri Sitharama Raju",
+                approvedAt: "24/10/2026, 09:00:00 AM",
+                createdAt: "24/10/2026, 08:30:00 AM"
+            },
+            "mandal": {
+                id: "mandal_asr_paderu",
+                mandal: "Paderu",
+                district: "Alluri Sitharama Raju",
+                state: "Andhra Pradesh",
+                officerName: "Dr. K. Someswara Rao",
+                employeeId: "MND-ASR-1001",
+                email: "paderu.relief@asr.ap.gov.in",
+                phone: "08935-242222",
+                username: "mandal_paderu",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Approved",
+                approvedBy: "District Collector & Magistrate, Alluri Sitharama Raju",
+                approvedAt: "24/10/2026, 09:00:00 AM",
+                createdAt: "24/10/2026, 08:30:00 AM"
+            },
+            "mandal_araku": {
+                id: "mandal_asr_araku",
+                mandal: "Araku Valley",
+                district: "Alluri Sitharama Raju",
+                state: "Andhra Pradesh",
+                officerName: "B. Venkata Ramana",
+                employeeId: "MND-ASR-1002",
+                email: "araku.operations@asr.ap.gov.in",
+                phone: "08936-249111",
+                username: "mandal_araku",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Approved",
+                approvedBy: "District Collector & Magistrate, Alluri Sitharama Raju",
+                approvedAt: "24/10/2026, 09:15:00 AM",
+                createdAt: "24/10/2026, 08:45:00 AM"
+            },
+            "mandal_ananthagiri": {
+                id: "mandal_asr_ananthagiri",
+                mandal: "Ananthagiri",
+                district: "Alluri Sitharama Raju",
+                state: "Andhra Pradesh",
+                officerName: "V. Surya Prakash",
+                employeeId: "MND-ASR-1003",
+                email: "ananthagiri.relief@asr.ap.gov.in",
+                phone: "08936-244010",
+                username: "mandal_ananthagiri",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Approved",
+                approvedBy: "District Collector & Magistrate, Alluri Sitharama Raju",
+                approvedAt: "25/10/2026, 09:30:00 AM",
+                createdAt: "25/10/2026, 08:50:00 AM"
+            },
+            "mandal_dumbriguda": {
+                id: "mandal_asr_dumbriguda",
+                mandal: "Dumbriguda",
+                district: "Alluri Sitharama Raju",
+                state: "Andhra Pradesh",
+                officerName: "K. Narayana Murthy",
+                employeeId: "MND-ASR-1004",
+                email: "dumbriguda.relief@asr.ap.gov.in",
+                phone: "08936-247111",
+                username: "mandal_dumbriguda",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Approved",
+                approvedBy: "District Collector & Magistrate, Alluri Sitharama Raju",
+                approvedAt: "25/10/2026, 10:00:00 AM",
+                createdAt: "25/10/2026, 09:10:00 AM"
+            },
+            "mandal_vja_rural": {
+                id: "mandal_krishna_vja_rural",
+                mandal: "Vijayawada Rural",
+                district: "Krishna",
+                state: "Andhra Pradesh",
+                officerName: "K. Satyanarayana",
+                employeeId: "MND-AP-2041",
+                email: "mandal.vja.rural@disaster-ap.gov.in",
+                phone: "9876501122",
+                username: "mandal_vja_rural",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Approved",
+                approvedBy: "Krishna District Admin",
+                approvedAt: "28/09/2026, 10:00:00 AM",
+                createdAt: "28/09/2026, 09:30:00 AM"
+            },
+            "mandal_chintapalle": {
+                id: "mandal_asr_chintapalle",
+                mandal: "Chintapalle (Chinthapalli)",
+                district: "Alluri Sitharama Raju",
+                state: "Andhra Pradesh",
+                officerName: "M. Bhaskara Rao",
+                employeeId: "MND-ASR-1005",
+                email: "chintapalle.relief@asr.ap.gov.in",
+                phone: "08936-246222",
+                username: "mandal_chintapalle",
+                password: "mandal123",
+                role: "Mandal Employee",
+                status: "Pending",
+                approvedBy: null,
+                approvedAt: null,
+                createdAt: "25/10/2026, 09:20:00 AM"
+            }
+        };
+
+        if (!account && DEMO_MANDAL_ACCOUNTS[username] && (password === "mandal123" || password === DEMO_MANDAL_ACCOUNTS[username].password)) {
+            account = Object.assign({}, DEMO_MANDAL_ACCOUNTS[username]);
+            const existingIdx = mandalAccounts.findIndex(function (a) { return (a.username || "").toLowerCase() === username; });
+            if (existingIdx >= 0) {
+                mandalAccounts[existingIdx] = Object.assign({}, mandalAccounts[existingIdx], account);
+            } else {
+                mandalAccounts.push(account);
+            }
+            localStorage.setItem("disasterMandalAccounts", JSON.stringify(mandalAccounts));
+        }
 
         if (!account) {
             showMessage("Invalid username or password for Mandal / Employee login.");
@@ -1466,7 +1743,50 @@ function loginUser(event) {
     // VOLUNTEER LOGIN (Requires Mandal Officer approval)
     if (role === "Volunteer") {
         const accounts = JSON.parse(localStorage.getItem("disasterUserAccounts") || "[]");
-        const volunteers = JSON.parse(localStorage.getItem("disasterVolunteers") || "[]");
+        let volunteers = JSON.parse(localStorage.getItem("disasterVolunteers") || "[]");
+
+        // Paderu Volunteer master demo object (Belongs to Paderu Mandal)
+        const paderuVolunteer = {
+            id: 3101,
+            volunteerId: "DRVOL-3101",
+            name: "G. Kondal Rao",
+            fatherName: "G. Somaraju",
+            phone: "9876501101",
+            email: "paderu.volunteer@asr.ap.gov.in",
+            username: "volunteer",
+            state: "Andhra Pradesh",
+            district: "Alluri Sitharama Raju",
+            mandal: "Paderu",
+            location: "Paderu",
+            bloodGroup: "B+",
+            skills: "Tribal Terrain Rescue, First Aid, 4x4 Driving, Emergency Response",
+            availability: "Available",
+            status: "Available",
+            approvalStatus: "Approved",
+            role: "Volunteer",
+            createdAt: "24/10/2026, 09:00:00 AM"
+        };
+
+        const isPaderuVolunteer = (username === "volunteer" || username === "vol_asr_paderu" || username === "vol_paderu" || username === "paderu_volunteer");
+        if (isPaderuVolunteer && (password === "volunteer123" || password === "9876501101")) {
+            // Ensure this Paderu volunteer exists in disasterVolunteers
+            const pIdx = volunteers.findIndex(function (v) {
+                return (v.username && v.username.toLowerCase() === "volunteer") ||
+                       (v.mandal && v.mandal.toLowerCase() === "paderu" && v.name === "G. Kondal Rao") ||
+                       v.id === 3101;
+            });
+            if (pIdx >= 0) {
+                volunteers[pIdx] = Object.assign({}, volunteers[pIdx], paderuVolunteer);
+            } else {
+                volunteers.unshift(paderuVolunteer);
+            }
+            localStorage.setItem("disasterVolunteers", JSON.stringify(volunteers));
+
+            localStorage.setItem("disasterCurrentUser", JSON.stringify(paderuVolunteer));
+            localStorage.setItem("disasterCurrentVolunteer", JSON.stringify(paderuVolunteer));
+            window.location.href = "volunteer.html";
+            return;
+        }
 
         const account = accounts.find(function (savedAccount) {
             return (savedAccount.username || "").toLowerCase() === username &&
@@ -1479,29 +1799,26 @@ function loginUser(event) {
                 (v.phone === password || password === "volunteer123" || v.password === password);
         });
 
-        if (!account && !volMatch && !(username === "volunteer" && password === "volunteer123")) {
+        if (!account && !volMatch) {
             showMessage("Invalid username or password for Volunteer login.");
             return;
         }
 
         // CHECK MANDAL OFFICER APPROVAL
-        const isDemo = username === "volunteer" && password === "volunteer123";
-        if (!isDemo) {
-            const target = volMatch || (account ? volunteers.find(function (v) {
-                return (v.username || "").toLowerCase() === (account.username || "").toLowerCase() || v.name === account.profileName;
-            }) : null);
+        const target = volMatch || (account ? volunteers.find(function (v) {
+            return (v.username || "").toLowerCase() === (account.username || "").toLowerCase() || v.name === account.profileName;
+        }) : null);
 
-            const isPending = (target && (target.status === "Pending" || target.approvalStatus === "Pending" || target.status === "New")) ||
-                (account && (account.status === "Pending" || account.approvalStatus === "Pending"));
+        const isPending = (target && (target.status === "Pending" || target.approvalStatus === "Pending" || target.status === "New")) ||
+            (account && (account.status === "Pending" || account.approvalStatus === "Pending"));
 
-            if (isPending) {
-                const targetMandal = (target && target.mandal) || "local";
-                showMessage(`Approval Required: Your Volunteer registration for ${targetMandal} Mandal is PENDING APPROVAL by the Mandal Officer. Once approved, you can log in.`);
-                return;
-            }
+        if (isPending) {
+            const targetMandal = (target && target.mandal) || "local";
+            showMessage(`Approval Required: Your Volunteer registration for ${targetMandal} Mandal is PENDING APPROVAL by the Mandal Officer. Once approved, you can log in.`);
+            return;
         }
 
-        const volUser = account || volMatch || { username: "volunteer", role: "Volunteer", name: "Volunteer", status: "Approved" };
+        const volUser = account || volMatch || paderuVolunteer;
         localStorage.setItem("disasterCurrentUser", JSON.stringify(volUser));
         localStorage.setItem("disasterCurrentVolunteer", JSON.stringify(volUser));
         window.location.href = "volunteer.html";
@@ -2357,6 +2674,9 @@ window.toggleLoginPasswordVisibility = toggleLoginPasswordVisibility;
 window.updateLoginPasswordToggleVisibility = updateLoginPasswordToggleVisibility;
 window.toggleGenericPassword = toggleGenericPassword;
 window.openLogin = openLogin;
+window.fillDemoLogin = fillDemoLogin;
+window.autoFillActiveDemoLogin = autoFillActiveDemoLogin;
+window.renderQuickDemoLogins = renderQuickDemoLogins;
 
 // ==========================================
 // SECTION: CITIZEN LIVE WEATHER INTELLIGENCE

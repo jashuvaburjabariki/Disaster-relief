@@ -16,11 +16,12 @@ The website is currently **LIVE** on your local machine:
 
 ## 🔑 Demo Login Credentials
 
-| Role | Username | Password | Destination |
-| :--- | :--- | :--- | :--- |
-| **Volunteer** | `volunteer` | `volunteer123` | [volunteer.html](http://localhost:8080/volunteer.html) |
-| **Admin** | Any username (e.g. `admin`) | Any password | [admin.html](http://localhost:8080/admin.html) |
-| **Citizen** | `citizen` | `citizen123` | Direct login modal welcome |
+| Role | Username | Password | Jurisdiction / Details | Destination |
+| :--- | :--- | :--- | :--- | :--- |
+| **Volunteer (Paderu)** | `volunteer` or `vol_asr_paderu` | `volunteer123` | **G. Kondal Rao** (Paderu Mandal, Alluri Sitharama Raju) | [volunteer.html](http://localhost:8080/volunteer.html) |
+| **Mandal Officer (Paderu)** | `mandal_paderu` | `mandal123` | Dr. K. Someswara Rao (Paderu Mandal Desk - Approved) | [mandal.html](http://localhost:8080/mandal.html) |
+| **District Admin** | `admin` or `admin_asr` | `admin123` | District Collectorate (Alluri Sitharama Raju) | [admin.html](http://localhost:8080/admin.html) |
+| **Citizen** | `citizen` | `citizen123` | Direct login modal welcome | [index.html](http://localhost:8080) |
 
 ---
 

@@ -698,7 +698,8 @@
                                 <input id="loginPassword" type="password" autocomplete="current-password"
                                     placeholder="Enter password" required>
                                 <button type="button" class="password-toggle-btn" id="showPasswordToggleBtn"
-                                    aria-label="Show password" title="Show password" style="display: none;">
+                                    onclick="toggleLoginPasswordVisibility(); return false;"
+                                    aria-label="Show password" title="Show password">
                                     <i class="bi bi-eye" id="showPasswordToggleIcon"></i>
                                     <span id="showPasswordToggleText">Show</span>
                                 </button>
@@ -712,15 +713,22 @@
                                     <input id="rememberPassword" type="checkbox">
                                     Remember password
                                 </label>
-                                <label class="remember-option show-password-option" id="showPasswordCheckboxLabel"
-                                    style="display: none;">
-                                    <input id="showPasswordCheckbox" type="checkbox">
+                                <label class="remember-option show-password-option" id="showPasswordCheckboxLabel">
+                                    <input id="showPasswordCheckbox" type="checkbox" onchange="toggleLoginPasswordVisibility(this.checked)">
                                     Show password
                                 </label>
                             </div>
                             <a href="#" onclick="forgotPassword(); return false;">Forgot password?</a>
                         </div>
 
+
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2 fw-semibold"
+                                id="autoFillRoleBtn" onclick="autoFillActiveDemoLogin()">
+                                <i class="bi bi-lightning-charge-fill text-warning"></i>
+                                <span>Auto-Fill <strong id="autoFillRoleName">Volunteer</strong> Demo Credentials</span>
+                            </button>
+                        </div>
 
                         <button type="submit" class="btn login-submit">
 
@@ -732,19 +740,14 @@
 
                     </form>
 
-                    <div class="p-2 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
-                        <strong>Quick Test Logins:</strong>
-                        <div class="mt-1" id="loginDemoCredentials">
-                            <span>• District Admin: <code>admin_asr</code> or <code>admin</code> / <code>admin123</code>
-                                (Alluri Sitharama Raju)</span><br>
-                            <span>• Approved Mandal: <code>mandal_paderu</code> / <code>mandal123</code>
-                                (Paderu)</span><br>
-                            <span>• Approved Mandal: <code>mandal_araku</code> / <code>mandal123</code> (Araku
-                                Valley)</span><br>
-                            <span>• Approved Mandal: <code>mandal_ananthagiri</code> / <code>mandal123</code>
-                                (Ananthagiri)</span><br>
-                            <span>• Pending Mandal: <code>mandal_chintapalle</code> / <code>mandal123</code>
-                                (Chintapalle - Admin Approval Flow)</span>
+                    <div class="p-3 mt-3 rounded bg-light border text-muted small" id="loginDemoHint">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <strong class="text-dark"><i class="bi bi-key-fill text-warning me-1"></i> Quick Demo Logins (Click any to auto-fill):</strong>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">1-Click Fill</span>
+                        </div>
+                        <div id="demoFillStatus" class="alert alert-success py-1 px-2 small mb-2" style="display: none; font-size: 12px;"></div>
+                        <div class="d-flex flex-column gap-2" id="loginDemoCredentials">
+                            <!-- Populated dynamically by renderQuickDemoLogins() -->
                         </div>
                     </div>
 

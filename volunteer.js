@@ -41,17 +41,18 @@ function currentVolunteer() {
         const found = volunteers.find(function (v) { return String(v.id) === String(sessionVol.id); });
         if (found) return found;
     }
-    return volunteers[0] || {
-        id: "demo-volunteer",
-        name: "Jashuva K.",
-        phone: "+91 98765 43210",
+    return volunteers.find(function (v) { return v.mandal && v.mandal.toLowerCase() === "paderu"; }) || volunteers[0] || {
+        id: 3101,
+        volunteerId: "DRVOL-3101",
+        name: "G. Kondal Rao",
+        phone: "+91 98765 01101",
         state: "Andhra Pradesh",
-        district: "Krishna",
-        mandal: "Vijayawada Rural",
-        bloodGroup: "O+",
-        skills: "First Aid, Search & Rescue, Logistics",
+        district: "Alluri Sitharama Raju",
+        mandal: "Paderu",
+        bloodGroup: "B+",
+        skills: "Tribal Terrain Rescue, First Aid, 4x4 Driving",
         status: "Available",
-        volunteerId: "DRVOL-0001",
+        volunteerId: "DRVOL-3101",
         profilePhoto: ""
     };
 }
@@ -98,7 +99,7 @@ function renderProfile() {
     if (profNameEl) profNameEl.textContent = volunteer.name;
 
     const profContactEl = document.getElementById("profileContact");
-    if (profContactEl) profContactEl.textContent = `${volunteer.phone || "Phone not added"} · ${volunteer.mandal ? volunteer.mandal + ", " : ""}${volunteer.district || "Krishna"}, ${volunteer.state || "India"}`;
+    if (profContactEl) profContactEl.textContent = `${volunteer.phone || "Phone not added"} · ${volunteer.mandal ? volunteer.mandal + ", " : ""}${volunteer.district || "Alluri Sitharama Raju"}, ${volunteer.state || "India"}`;
 
     // Topbar avatar
     const volAvatarEl = document.getElementById("volunteerAvatar");
@@ -129,7 +130,7 @@ function renderProfile() {
 
     const tagsEl = document.getElementById("profileTags");
     if (tagsEl) {
-        tagsEl.innerHTML = `<span>${escapeValue(volunteer.status || "Available")}</span><span>${escapeValue(volunteer.district || "Krishna")}</span><span>${escapeValue(volunteer.mandal || "Vijayawada Rural")}</span><span class="badge bg-success-subtle text-success border">Verified Volunteer</span>`;
+        tagsEl.innerHTML = `<span>${escapeValue(volunteer.status || "Available")}</span><span>${escapeValue(volunteer.district || "Alluri Sitharama Raju")}</span><span>${escapeValue(volunteer.mandal || "Paderu")}</span><span class="badge bg-success-subtle text-success border">Verified Volunteer</span>`;
     }
 
     const skills = (volunteer.skills || "Emergency First Aid, Field Logistics").split(/,|\n/).map(function (skill) { return skill.trim(); }).filter(Boolean);
@@ -541,10 +542,10 @@ function openVolunteerIdCard() {
     if (volIdEl) volIdEl.textContent = frontId;
 
     const distEl = document.getElementById("idCardDistrict");
-    if (distEl) distEl.textContent = vol.district || "Krishna";
+    if (distEl) distEl.textContent = vol.district || "Alluri Sitharama Raju";
 
     const mandalEl = document.getElementById("idCardMandal");
-    if (mandalEl) mandalEl.textContent = vol.mandal || "Vijayawada Rural";
+    if (mandalEl) mandalEl.textContent = vol.mandal || "Paderu";
 
     const roleEl = document.getElementById("idCardRole");
     if (roleEl) roleEl.textContent = "Disaster Relief Volunteer";
@@ -566,10 +567,10 @@ function openVolunteerIdCard() {
     if (backVolIdEl) backVolIdEl.textContent = backId;
 
     const backDistEl = document.getElementById("idCardBackDistrict");
-    if (backDistEl) backDistEl.textContent = vol.district || "Krishna";
+    if (backDistEl) backDistEl.textContent = vol.district || "Alluri Sitharama Raju";
 
     const backMandalEl = document.getElementById("idCardBackMandal");
-    if (backMandalEl) backMandalEl.textContent = vol.mandal || "Vijayawada Rural";
+    if (backMandalEl) backMandalEl.textContent = vol.mandal || "Paderu";
 
     // QR Code
     const qrPayload = JSON.stringify({

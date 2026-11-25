@@ -235,7 +235,7 @@ const server = http.createServer((req, res) => {
     }
 
     const safePath = path.normalize(path.join(ROOT_DIR, pathname));
-    if (!safePath.startsWith(ROOT_DIR)) {
+    if (!safePath.toLowerCase().startsWith(ROOT_DIR.toLowerCase())) {
         res.writeHead(403, { "Content-Type": "text/plain" });
         res.end("403 Forbidden");
         return;

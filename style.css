@@ -1919,7 +1919,7 @@ footer p i {
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     gap: 6px;
     padding: 5px 10px;
@@ -1932,7 +1932,7 @@ footer p i {
     cursor: pointer;
     line-height: 1.3;
     transition: all 0.2s ease;
-    z-index: 3;
+    z-index: 10;
     user-select: none;
 }
 
@@ -1952,7 +1952,7 @@ footer p i {
 }
 
 .show-password-option {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     gap: 6px;
     cursor: pointer;
@@ -1965,6 +1965,50 @@ footer p i {
 .show-password-option input {
     accent-color: var(--red);
     cursor: pointer;
+}
+
+/* Quick Demo Logins Interactive Card Styles */
+.demo-cred-card {
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #dee2e6;
+}
+
+.demo-cred-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #0d6efd !important;
+}
+
+.demo-cred-card.active-demo-card {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.16);
+}
+
+.demo-fill-btn {
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.demo-fill-btn:hover {
+    transform: scale(1.04);
+}
+
+.input-demo-pulse {
+    animation: inputPulseEffect 1s ease-out;
+    border-color: #198754 !important;
+    background-color: #f6fff8 !important;
+}
+
+@keyframes inputPulseEffect {
+    0% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(25, 135, 84, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+    }
 }
 
 
